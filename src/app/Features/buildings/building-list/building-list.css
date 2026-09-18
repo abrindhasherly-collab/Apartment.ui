@@ -1,0 +1,74 @@
+.page {
+  padding: 30px;
+}
+
+.page-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 25px;
+}
+
+.add-button {
+  background-color: #2563eb;
+
+  color: white;
+
+  padding: 10px 16px;
+
+  border-radius: 5px;
+
+  text-decoration: none;
+}
+
+.table-container {
+  background: white;
+
+  border-radius: 8px;
+
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 13px;
+
+  border-bottom: 1px solid #ddd;
+
+  text-align: left;
+}
+
+th {
+  background-color: #f3f4f6;
+}
+
+td a {
+  margin-right: 12px;
+
+  color: #2563eb;
+
+  text-decoration: none;
+}
+
+td button {
+  background: #dc2626;
+
+  color: white;
+
+  border: none;
+
+  padding: 6px 10px;
+
+  border-radius: 4px;
+
+  cursor: pointer;
+}

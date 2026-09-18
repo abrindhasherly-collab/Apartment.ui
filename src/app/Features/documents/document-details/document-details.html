@@ -1,0 +1,92 @@
+<div class="details-container">
+
+  <h2>Document Details</h2>
+
+  @if (loading()) {
+    <p>Loading...</p>
+  }
+
+  @if (errorMessage()) {
+    <p class="error">
+      {{ errorMessage() }}
+    </p>
+  }
+
+  @if (document()) {
+
+    <div class="details-card">
+
+      <p>
+        <strong>ID:</strong>
+        {{ document()!.id }}
+      </p>
+
+      <p>
+        <strong>Title:</strong>
+        {{ document()!.title }}
+      </p>
+
+      <p>
+        <strong>Description:</strong>
+        {{ document()!.description }}
+      </p>
+
+      <p>
+        <strong>File Name:</strong>
+        {{ document()!.fileName }}
+      </p>
+
+      <p>
+        <strong>File Path:</strong>
+        {{ document()!.filePath }}
+      </p>
+
+      <p>
+        <strong>Uploaded Date:</strong>
+        {{ document()!.uploadedDate | date }}
+      </p>
+
+      <p>
+        <strong>Uploaded By:</strong>
+        {{ document()!.uploadedBy }}
+      </p>
+
+      <p>
+        <strong>Status:</strong>
+
+        @if (document()!.status === 1) {
+          Active
+        } @else {
+          Archived
+        }
+
+      </p>
+
+      <div class="actions">
+
+        <a
+          [routerLink]="[
+            '/documents/edit',
+            document()!.id
+          ]">
+          Edit
+        </a>
+
+        <button
+          type="button"
+          (click)="deleteDocument()">
+          Delete
+        </button>
+
+        <a
+          routerLink="/documents">
+          Back
+        </a>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

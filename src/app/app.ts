@@ -1,12 +1,51 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {
+  Component,
+  signal
+} from '@angular/core';
+
+import {
+  Router,
+  RouterOutlet,
+  NavigationEnd
+} from '@angular/router';
+
+import { filter } from 'rxjs';
+
+import { Navbar } from './Shared/navbar/navbar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+
+  imports: [
+    RouterOutlet,
+    Navbar
+  ],
+
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('ApartmentManagement');
+
+  showNavbar = signal(false);
+
+  constructor(private router: Router) {
+
+    this.router.events
+      .pipe(
+        filter(
+          event => event instanceof NavigationEnd
+        )
+      )
+      .subscribe(
+        (event: NavigationEnd) => {
+
+          const authPage =
+            event.urlAfterRedirects === '/login' ||
+            event.urlAfterRedirects === '/register';
+
+          this.showNavbar.set(!authPage);
+        }
+      );
+  }
 }

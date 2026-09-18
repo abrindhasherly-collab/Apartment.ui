@@ -1,0 +1,84 @@
+.page {
+  padding: 30px;
+}
+
+.page-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 25px;
+}
+
+.add-button {
+  background-color: #2563eb;
+
+  color: white;
+
+  padding: 10px 16px;
+
+  border-radius: 5px;
+
+  text-decoration: none;
+}
+
+.table-container {
+  background: white;
+
+  border-radius: 8px;
+
+  overflow-x: auto;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 13px;
+
+  border-bottom: 1px solid #ddd;
+
+  text-align: left;
+}
+
+th {
+  background-color: #f3f4f6;
+}
+
+.view,
+.edit {
+  margin-right: 10px;
+
+  text-decoration: none;
+}
+
+.view {
+  color: #2563eb;
+}
+
+.edit {
+  color: #ca8a04;
+}
+
+.delete {
+  border: none;
+
+  background-color: #dc2626;
+
+  color: white;
+
+  padding: 6px 10px;
+
+  border-radius: 4px;
+
+  cursor: pointer;
+}

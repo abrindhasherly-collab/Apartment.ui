@@ -1,0 +1,156 @@
+<div class="document-container">
+
+  <div class="page-header">
+
+    <div>
+      <h2>Documents</h2>
+      <p>View and manage apartment documents</p>
+    </div>
+
+    <a
+      routerLink="/documents/add"
+      class="add-button">
+      + Add Document
+    </a>
+
+  </div>
+
+
+  @if (loading()) {
+
+    <div class="loading">
+      Loading documents...
+    </div>
+
+  }
+
+
+  @if (errorMessage()) {
+
+    <div class="error">
+      {{ errorMessage() }}
+    </div>
+
+  }
+
+
+  @if (!loading() && documents().length === 0) {
+
+    <div class="empty">
+      No documents found.
+    </div>
+
+  }
+
+
+  @if (!loading() && documents().length > 0) {
+
+    <div class="document-table-wrapper">
+
+      <table class="document-table">
+
+        <thead>
+
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>File Name</th>
+            <th>Uploaded Date</th>
+            <th>Uploaded By</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          @for (document of documents(); track document.id) {
+
+            <tr>
+
+              <td>
+                {{ document.id }}
+              </td>
+
+              <td class="title">
+                {{ document.title }}
+              </td>
+
+              <td class="description">
+                {{ document.description }}
+              </td>
+
+              <td>
+                {{ document.fileName }}
+              </td>
+
+              <td>
+                {{ document.uploadedDate | date }}
+              </td>
+
+              <td>
+                {{ document.uploadedBy }}
+              </td>
+
+              <td>
+
+                @if (document.status === 1) {
+
+                  <span class="status active">
+                    Active
+                  </span>
+
+                } @else {
+
+                  <span class="status archived">
+                    Archived
+                  </span>
+
+                }
+
+              </td>
+
+              <td class="actions">
+
+                <a
+                  [routerLink]="[
+                    '/documents',
+                    document.id
+                  ]"
+                  class="view-button">
+                  View
+                </a>
+
+                <a
+                  [routerLink]="[
+                    '/documents/edit',
+                    document.id
+                  ]"
+                  class="edit-button">
+                  Edit
+                </a>
+
+                <button
+                  type="button"
+                  class="delete-button"
+                  (click)="deleteDocument(document.id)">
+                  Delete
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>

@@ -1,0 +1,116 @@
+<p>register works!</p>
+<div class="register-container">
+
+  <div class="register-card">
+
+    <h1>Apartment Management</h1>
+
+    <h2>Register</h2>
+
+    <form
+      [formGroup]="registerForm"
+      (ngSubmit)="register()">
+
+      <div class="form-group">
+
+        <label>Name</label>
+
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="Enter name">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Email</label>
+
+        <input
+          type="email"
+          formControlName="email"
+          placeholder="Enter email">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Password</label>
+
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="Enter password">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Phone Number</label>
+
+        <input
+          type="text"
+          formControlName="phoneNumber"
+          placeholder="Enter phone number">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Role</label>
+
+        <select formControlName="role">
+
+          <option [ngValue]="1">
+            Secretary
+          </option>
+
+          <option [ngValue]="2">
+            Resident
+          </option>
+
+          <option [ngValue]="3">
+            Watchman
+          </option>
+
+          <option [ngValue]="4">
+            Owner
+          </option>
+
+        </select>
+
+      </div>
+
+      @if (errorMessage()) {
+
+        <p class="error">
+          {{ errorMessage() }}
+        </p>
+
+      }
+
+      <button
+        type="submit"
+        [disabled]="loading()">
+
+        @if (loading()) {
+          Registering...
+        } @else {
+          Register
+        }
+
+      </button>
+
+    </form>
+
+    <p>
+      Already have an account?
+
+      <a routerLink="/login">
+        Login
+      </a>
+    </p>
+
+  </div>
+
+</div>

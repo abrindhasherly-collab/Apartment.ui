@@ -1,0 +1,115 @@
+<div class="page">
+
+  <div class="page-header">
+
+    <h2>Buildings</h2>
+
+    <a
+      routerLink="/buildings/add"
+      class="add-button">
+
+      + Add Building
+
+    </a>
+
+  </div>
+
+  @if (loading()) {
+
+    <p>Loading buildings...</p>
+
+  } @else {
+
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Floors</th>
+            <th>Flats</th>
+            <th>Status</th>
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          @for (
+            building of buildings();
+            track building.id
+          ) {
+
+            <tr>
+
+              <td>{{ building.id }}</td>
+
+              <td>{{ building.name }}</td>
+
+              <td>{{ building.address }}</td>
+
+              <td>{{ building.totalFloors }}</td>
+
+              <td>{{ building.totalFlats }}</td>
+
+              <td>
+
+                @if (building.isActive) {
+                  Active
+                } @else {
+                  Inactive
+                }
+
+              </td>
+
+              <td>
+
+                <a
+                  [routerLink]="[
+                    '/buildings',
+                    building.id
+                  ]">
+
+                  View
+
+                </a>
+
+                <a
+                  [routerLink]="[
+                    '/buildings/edit',
+                    building.id
+                  ]">
+
+                  Edit
+
+                </a>
+
+                <button
+                  (click)="deleteBuilding(building.id)">
+
+                  Delete
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>

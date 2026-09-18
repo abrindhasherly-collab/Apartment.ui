@@ -1,0 +1,157 @@
+<div class="notice-container">
+
+  <div class="page-header">
+
+    <div>
+      <h2>Notices</h2>
+      <p>View and manage apartment notices</p>
+    </div>
+
+    <a
+      routerLink="/notices/add"
+      class="add-button">
+      + Add Notice
+    </a>
+
+  </div>
+
+
+  @if (loading()) {
+
+    <div class="loading">
+      Loading notices...
+    </div>
+
+  }
+
+
+  @if (errorMessage()) {
+
+    <div class="error">
+      {{ errorMessage() }}
+    </div>
+
+  }
+
+
+  @if (!loading() && notices().length === 0) {
+
+    <div class="empty">
+      No notices found.
+    </div>
+
+  }
+
+
+  @if (!loading() && notices().length > 0) {
+
+    <div class="notice-table-wrapper">
+
+      <table class="notice-table">
+
+        <thead>
+
+          <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Posted Date</th>
+            <th>Posted By</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          @for (notice of notices(); track notice.id) {
+
+            <tr>
+
+              <td>
+                {{ notice.id }}
+              </td>
+
+              <td class="title">
+                {{ notice.title }}
+              </td>
+
+              <td class="description">
+                {{ notice.description }}
+              </td>
+
+              <td>
+                {{ notice.postedDate | date }}
+              </td>
+
+              <td>
+                {{ notice.postedBy }}
+              </td>
+
+              <td>
+
+                @if (notice.status === 1) {
+
+                  <span class="status draft">
+                    Draft
+                  </span>
+
+                } @else if (notice.status === 2) {
+
+                  <span class="status published">
+                    Published
+                  </span>
+
+                } @else {
+
+                  <span class="status archived">
+                    Archived
+                  </span>
+
+                }
+
+              </td>
+
+              <td class="actions">
+
+                <a
+                  [routerLink]="[
+                    '/notices',
+                    notice.id
+                  ]"
+                  class="view-button">
+                  View
+                </a>
+
+                <a
+                  [routerLink]="[
+                    '/notices/edit',
+                    notice.id
+                  ]"
+                  class="edit-button">
+                  Edit
+                </a>
+
+                <button
+                  type="button"
+                  class="delete-button"
+                  (click)="deleteNotice(notice.id)">
+                  Delete
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>

@@ -1,0 +1,66 @@
+
+<nav class="navbar">
+
+  <div class="navbar-brand">
+    Apartment Management
+  </div>
+
+  <button
+    class="menu-button"
+    (click)="toggleMenu()">
+
+    ☰
+
+  </button>
+
+  <div
+    class="nav-links"
+    [class.open]="menuOpen()">
+
+    <a
+      routerLink="/users"
+      routerLinkActive="active"
+      (click)="closeMenu()">
+
+      Users
+
+    </a>
+
+    <a
+      routerLink="/buildings"
+      routerLinkActive="active"
+      (click)="closeMenu()">
+
+      Buildings
+
+    </a>
+
+    <a
+      routerLink="/notices"
+      routerLinkActive="active"
+      (click)="closeMenu()">
+
+      Notices
+
+    </a>
+
+    <a
+      routerLink="/documents"
+      routerLinkActive="active"
+      (click)="closeMenu()">
+
+      Documents
+
+    </a>
+
+    <button
+      class="logout-button"
+      (click)="logout()">
+
+      Logout
+
+    </button>
+
+  </div>
+
+</nav>

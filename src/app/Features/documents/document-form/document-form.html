@@ -1,0 +1,160 @@
+<div class="document-form-container">
+
+  <div class="page-header">
+    <div>
+      <h2>{{ isEdit() ? 'Edit Document' : 'Add Document' }}</h2>
+      <p>
+        {{ isEdit()
+          ? 'Update apartment document details'
+          : 'Upload a new apartment document' }}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="back-button"
+      (click)="cancel()">
+      Back
+    </button>
+  </div>
+
+
+  @if (errorMessage()) {
+    <div class="error-message">
+      {{ errorMessage() }}
+    </div>
+  }
+
+
+  @if (loading()) {
+    <div class="loading">
+      Processing...
+    </div>
+  }
+
+
+  <form
+    [formGroup]="documentForm"
+    (ngSubmit)="saveDocument()"
+    class="document-form">
+
+    <!-- Title -->
+    <div class="form-group">
+      <label for="title">Document Title</label>
+
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        placeholder="Enter document title">
+
+      @if (
+        documentForm.get('title')?.touched &&
+        documentForm.get('title')?.invalid
+      ) {
+        <small class="validation">
+          Document title is required.
+        </small>
+      }
+    </div>
+
+
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description">Description</label>
+
+      <textarea
+        id="description"
+        rows="4"
+        formControlName="description"
+        placeholder="Enter document description">
+      </textarea>
+
+      @if (
+        documentForm.get('description')?.touched &&
+        documentForm.get('description')?.invalid
+      ) {
+        <small class="validation">
+          Description is required.
+        </small>
+      }
+    </div>
+
+
+    <!-- PDF Upload -->
+    <div class="form-group">
+      <label for="file">
+        {{ isEdit() ? 'Replace PDF (Optional)' : 'Select PDF File' }}
+      </label>
+
+      <input
+        id="file"
+        type="file"
+        accept=".pdf,application/pdf"
+        (change)="onFileSelected($event)">
+
+      @if (selectedFile) {
+        <div class="selected-file">
+          Selected file:
+          <strong>{{ selectedFile.name }}</strong>
+        </div>
+      }
+
+      @if (isEdit()) {
+        <small class="help-text">
+          Leave empty to keep the existing PDF.
+        </small>
+      }
+    </div>
+
+
+    <!-- Status - only edit -->
+    @if (isEdit()) {
+
+      <div class="form-group">
+
+        <label for="status">Status</label>
+
+        <select
+          id="status"
+          formControlName="status">
+
+          <option [value]="1">
+            Active
+          </option>
+
+          <option [value]="2">
+            Archived
+          </option>
+
+        </select>
+
+      </div>
+
+    }
+
+
+    <!-- Buttons -->
+    <div class="form-actions">
+
+      <button
+        type="button"
+        class="cancel-button"
+        (click)="cancel()">
+        Cancel
+      </button>
+
+      <button
+        type="submit"
+        class="save-button"
+        [disabled]="loading()">
+
+        {{ isEdit() ? 'Update Document' : 'Upload Document' }}
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

@@ -1,0 +1,127 @@
+<div class="details-page">
+
+  @if (loading()) {
+
+    <p>Loading...</p>
+
+  } @else if (user()) {
+
+    <div class="details-card">
+
+      <div class="details-header">
+
+        <h2>User Details</h2>
+
+        <a
+          [routerLink]="[
+            '/users/edit',
+            user()!.id
+          ]">
+
+          Edit
+
+        </a>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>ID</strong>
+
+        <span>
+          {{ user()!.id }}
+        </span>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>Name</strong>
+
+        <span>
+          {{ user()!.name }}
+        </span>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>Email</strong>
+
+        <span>
+          {{ user()!.email }}
+        </span>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>Phone</strong>
+
+        <span>
+          {{ user()!.phoneNumber }}
+        </span>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>Role</strong>
+
+        <span>
+          {{ getRole(user()!.role) }}
+        </span>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>Status</strong>
+
+        <span>
+          {{ getStatus(user()!.status) }}
+        </span>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>Created Date</strong>
+
+        <span>
+          {{ user()!.createdDate }}
+        </span>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="delete"
+          (click)="deleteUser()">
+
+          Delete
+
+        </button>
+
+        <a
+          routerLink="/users"
+          class="back">
+
+          Back
+
+        </a>
+
+      </div>
+
+    </div>
+
+  } @else {
+
+    <p class="error">
+      {{ errorMessage() }}
+    </p>
+
+  }
+
+</div>

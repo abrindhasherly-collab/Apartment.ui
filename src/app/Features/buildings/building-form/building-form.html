@@ -1,0 +1,130 @@
+<div class="form-page">
+
+  <div class="form-card">
+
+    <h2>
+      @if (isEdit()) {
+        Edit Building
+      } @else {
+        Add Building
+      }
+    </h2>
+
+    <form
+      [formGroup]="buildingForm"
+      (ngSubmit)="saveBuilding()">
+
+      <div class="form-group">
+
+        <label>Building Name</label>
+
+        <input
+          type="text"
+          formControlName="name"
+          placeholder="Enter building name">
+
+        @if (
+          buildingForm.get('name')?.touched &&
+          buildingForm.get('name')?.invalid
+        ) {
+          <small>Building name is required.</small>
+        }
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Address</label>
+
+        <textarea
+          formControlName="address"
+          placeholder="Enter address">
+        </textarea>
+
+        @if (
+          buildingForm.get('address')?.touched &&
+          buildingForm.get('address')?.invalid
+        ) {
+          <small>Address is required.</small>
+        }
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Total Floors</label>
+
+        <input
+          type="number"
+          formControlName="totalFloors">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Total Flats</label>
+
+        <input
+          type="number"
+          formControlName="totalFlats">
+
+      </div>
+
+      @if (isEdit()) {
+
+        <div class="form-group checkbox">
+
+          <label>
+
+            <input
+              type="checkbox"
+              formControlName="isActive">
+
+            Active
+
+          </label>
+
+        </div>
+
+      }
+
+      @if (errorMessage()) {
+
+        <p class="error">
+          {{ errorMessage() }}
+        </p>
+
+      }
+
+      <div class="buttons">
+
+        <button
+          type="submit"
+          [disabled]="loading()">
+
+          @if (loading()) {
+            Saving...
+          } @else if (isEdit()) {
+            Update
+          } @else {
+            Save
+          }
+
+        </button>
+
+        <button
+          type="button"
+          class="cancel"
+          (click)="cancel()">
+
+          Cancel
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

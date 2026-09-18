@@ -1,0 +1,133 @@
+<div class="details-page">
+
+  @if (loading()) {
+
+    <p>Loading...</p>
+
+  } @else if (notice()) {
+
+    <div class="details-card">
+
+      <div class="details-header">
+
+        <h2>Notice Details</h2>
+
+        <a
+          [routerLink]="[
+            '/notices/edit',
+            notice()!.id
+          ]">
+
+          Edit
+
+        </a>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>ID</strong>
+
+        <span>
+          {{ notice()!.id }}
+        </span>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>Title</strong>
+
+        <span>
+          {{ notice()!.title }}
+        </span>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>Description</strong>
+
+        <span>
+          {{ notice()!.description }}
+        </span>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>Posted By</strong>
+
+        <span>
+          {{ notice()!.postedBy }}
+        </span>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>Posted Date</strong>
+
+        <span>
+          {{ notice()!.postedDate }}
+        </span>
+
+      </div>
+
+      <div class="details-row">
+
+        <strong>Status</strong>
+
+        <span>
+
+          @switch (notice()!.status) {
+
+            @case (1) {
+              Draft
+            }
+
+            @case (2) {
+              Published
+            }
+
+            @case (3) {
+              Archived
+            }
+
+          }
+
+        </span>
+
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="delete"
+          (click)="deleteNotice()">
+
+          Delete
+
+        </button>
+
+        <a
+          routerLink="/notices"
+          class="back">
+
+          Back
+
+        </a>
+
+      </div>
+
+    </div>
+
+  } @else {
+
+    <p class="error">
+      {{ errorMessage() }}
+    </p>
+
+  }
+
+</div>

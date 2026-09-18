@@ -1,0 +1,160 @@
+.notice-container {
+  padding: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.page-header h2 {
+  margin: 0;
+  font-size: 28px;
+}
+
+.page-header p {
+  margin: 6px 0 0;
+  color: #666;
+}
+
+.add-button {
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  padding: 11px 18px;
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+.add-button:hover {
+  background: #1d4ed8;
+}
+
+.notice-table-wrapper {
+  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.notice-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.notice-table th,
+.notice-table td {
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.notice-table th {
+  background: #f5f6f8;
+  font-weight: 600;
+}
+
+.notice-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.title {
+  font-weight: 600;
+  min-width: 150px;
+}
+
+.description {
+  max-width: 300px;
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.draft {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.published {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.archived {
+  background: #e2e3e5;
+  color: #41464b;
+}
+
+.actions {
+  white-space: nowrap;
+}
+
+.actions a,
+.actions button {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 7px 11px;
+  border-radius: 5px;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.view-button {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.edit-button {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.delete-button {
+  background: #fee2e2;
+  color: #b91c1c;
+  border: none;
+}
+
+.view-button:hover {
+  background: #bae6fd;
+}
+
+.edit-button:hover {
+  background: #fde68a;
+}
+
+.delete-button:hover {
+  background: #fecaca;
+}
+
+.loading {
+  padding: 30px;
+  text-align: center;
+  color: #666;
+}
+
+.error {
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  background: #fee2e2;
+  color: #b91c1c;
+  border-radius: 6px;
+}
+
+.empty {
+  padding: 40px;
+  text-align: center;
+  background: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+}

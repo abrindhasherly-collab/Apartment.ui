@@ -1,0 +1,96 @@
+.details-page {
+  padding: 30px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.details-card {
+  width: 650px;
+
+  background: white;
+
+  padding: 30px;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+.details-header {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 25px;
+}
+
+.details-header a {
+  background: #2563eb;
+
+  color: white;
+
+  padding: 8px 15px;
+
+  border-radius: 5px;
+
+  text-decoration: none;
+}
+
+.details-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  padding: 14px 0;
+
+  border-bottom: 1px solid #eee;
+}
+
+.details-row strong {
+  width: 35%;
+}
+
+.details-row span {
+  width: 65%;
+}
+
+.actions {
+  margin-top: 25px;
+
+  display: flex;
+
+  gap: 10px;
+}
+
+.actions button,
+.actions a {
+  padding: 10px 18px;
+
+  border: none;
+
+  border-radius: 5px;
+
+  text-decoration: none;
+
+  cursor: pointer;
+}
+
+.delete {
+  background: #dc2626;
+
+  color: white;
+}
+
+.back {
+  background: #6b7280;
+
+  color: white;
+}
+
+.error {
+  color: #dc2626;
+}
