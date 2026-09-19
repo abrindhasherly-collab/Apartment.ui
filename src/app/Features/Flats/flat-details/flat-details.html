@@ -1,0 +1,83 @@
+<div class="details-page">
+
+  <div class="details-header">
+
+    <div>
+      <h1>Flat Details</h1>
+      <p>View flat information</p>
+    </div>
+
+    <button
+      class="back-btn"
+      (click)="goBack()">
+      ← Back
+    </button>
+
+  </div>
+
+  <div
+    class="error-message"
+    *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div
+    class="loading"
+    *ngIf="loading">
+    Loading...
+  </div>
+
+  <div
+    class="details-card"
+    *ngIf="flat && !loading">
+
+    <div class="detail-row">
+      <span>Flat Number</span>
+      <strong>{{ flat.flatNumber }}</strong>
+    </div>
+
+    <div class="detail-row">
+      <span>Floor</span>
+      <strong>{{ flat.floor }}</strong>
+    </div>
+
+    <div class="detail-row">
+      <span>Building ID</span>
+      <strong>{{ flat.buildingId }}</strong>
+    </div>
+
+    <div class="detail-row">
+      <span>Flat Type</span>
+      <strong>{{ flat.flatType }}</strong>
+    </div>
+
+    <div class="detail-row">
+      <span>Status</span>
+
+      <strong
+        [class.occupied]="flat.status === 'Occupied'"
+        [class.unoccupied]="flat.status === 'Unoccupied'"
+      >
+        {{ flat.status }}
+      </strong>
+
+    </div>
+
+    <div class="detail-row">
+      <span>Resident ID</span>
+      <strong>{{ flat.residentId || '-' }}</strong>
+    </div>
+
+    <div class="detail-actions">
+
+      <button
+        class="edit-btn"
+        (click)="editFlat()">
+        Edit Flat
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

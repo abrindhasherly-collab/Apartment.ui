@@ -1,0 +1,179 @@
+<div class="parking-page">
+
+  <!-- HEADER -->
+
+  <div class="page-header">
+
+    <div>
+      <h1>Parking Management</h1>
+      <p>Manage apartment parking slots and vehicles</p>
+    </div>
+
+    <a
+      routerLink="/parking/add"
+      class="add-btn">
+
+      + Add Parking
+
+    </a>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  @if (errorMessage()) {
+
+    <div class="error-message">
+
+      {{ errorMessage() }}
+
+    </div>
+
+  }
+
+
+  <!-- LOADING -->
+
+  @if (loading()) {
+
+    <div class="loading">
+
+      Loading parking details...
+
+    </div>
+
+  }
+
+
+  <!-- TABLE -->
+
+  @if (!loading()) {
+
+    <div class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>ID</th>
+            <th>Slot Number</th>
+            <th>Vehicle Number</th>
+            <th>Flat ID</th>
+            <th>Vehicle Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <!-- PARKING RECORDS -->
+
+          @for (
+            parking of parkings();
+            track parking.id
+          ) {
+
+            <tr>
+
+              <td>
+                {{ parking.id }}
+              </td>
+
+              <td>
+                <strong>
+                  {{ parking.slotNumber }}
+                </strong>
+              </td>
+
+              <td>
+                {{ parking.vehicleNumber || '-' }}
+              </td>
+
+              <td>
+                {{ parking.flatId || '-' }}
+              </td>
+
+              <td>
+                {{ parking.vehicleType || '-' }}
+              </td>
+
+              <td>
+
+                <span
+                  class="status"
+                  [class.available]="parking.status === 'Available'"
+                  [class.occupied]="parking.status === 'Occupied'">
+
+                  {{ parking.status }}
+
+                </span>
+
+              </td>
+
+              <td class="actions">
+
+                <button
+                  class="view-btn"
+                  (click)="viewParking(parking.id)">
+
+                  View
+
+                </button>
+
+                <button
+                  class="edit-btn"
+                  (click)="editParking(parking.id)">
+
+                  Edit
+
+                </button>
+
+                <button
+                  class="delete-btn"
+                  (click)="deleteParking(parking.id)">
+
+                  Delete
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- EMPTY -->
+
+          @if (parkings().length === 0) {
+
+            <tr>
+
+              <td
+                colspan="7"
+                class="empty">
+
+                No parking slots found.
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>

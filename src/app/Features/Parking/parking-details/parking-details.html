@@ -1,0 +1,139 @@
+<div class="details-page">
+
+  <div class="details-header">
+
+    <div>
+
+      <h1>Parking Details</h1>
+
+      <p>
+        View parking slot information
+      </p>
+
+    </div>
+
+    <div class="header-actions">
+
+      <a
+        routerLink="/parking"
+        class="back-btn"
+      >
+        ← Back
+      </a>
+
+      <button
+        class="edit-btn"
+        (click)="editParking()"
+        *ngIf="parking"
+      >
+        Edit
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- LOADING -->
+
+  <div
+    class="loading"
+    *ngIf="loading"
+  >
+    Loading parking details...
+  </div>
+
+
+  <!-- DETAILS -->
+
+  <div
+    class="details-card"
+    *ngIf="parking && !loading"
+  >
+
+    <div class="detail-row">
+
+      <span class="label">
+        Parking ID
+      </span>
+
+      <span class="value">
+        {{ parking.id }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Slot Number
+      </span>
+
+      <span class="value">
+        {{ parking.slotNumber }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Vehicle Number
+      </span>
+
+      <span class="value">
+        {{ parking.vehicleNumber || '-' }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Flat ID
+      </span>
+
+      <span class="value">
+        {{ parking.flatId || '-' }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Vehicle Type
+      </span>
+
+      <span class="value">
+        {{ parking.vehicleType || '-' }}
+      </span>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span class="label">
+        Status
+      </span>
+
+      <span
+        class="status"
+        [ngClass]="{
+          'available': parking.status === 'Available',
+          'occupied': parking.status === 'Occupied'
+        }"
+      >
+        {{ parking.status }}
+      </span>
+
+    </div>
+
+  </div>
+
+</div>

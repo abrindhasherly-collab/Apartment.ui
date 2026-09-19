@@ -1,0 +1,176 @@
+<div class="maintenance-page">
+
+  <!-- HEADER -->
+
+  <div class="page-header">
+
+    <div>
+      <h1>Maintenance</h1>
+      <p>Manage apartment maintenance payments</p>
+    </div>
+
+    <a
+      routerLink="/maintenance/add"
+      class="add-btn">
+
+      + Add Maintenance
+
+    </a>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  @if (errorMessage()) {
+
+    <div class="error-message">
+
+      {{ errorMessage() }}
+
+    </div>
+
+  }
+
+
+  <!-- LOADING -->
+
+  @if (loading()) {
+
+    <div class="loading">
+
+      Loading maintenance records...
+
+    </div>
+
+  }
+
+
+  <!-- TABLE -->
+
+  @if (!loading()) {
+
+    <div class="table-card">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Flat ID</th>
+            <th>Amount</th>
+            <th>Month</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <!-- MAINTENANCE RECORDS -->
+
+          @for (
+            maintenance of maintenances();
+            track maintenance.id
+          ) {
+
+            <tr>
+
+              <td>
+                {{ maintenance.flatId }}
+              </td>
+
+              <td>
+                ₹{{ maintenance.amount }}
+              </td>
+
+              <td>
+                {{ maintenance.month | date:'MMM yyyy' }}
+              </td>
+
+              <td>
+                {{ maintenance.dueDate | date:'dd MMM yyyy' }}
+              </td>
+
+              <td>
+
+                <span
+                  class="status"
+                  [class.pending]="maintenance.status === 'Pending'"
+                  [class.paid]="maintenance.status === 'Paid'"
+                  [class.overdue]="maintenance.status === 'Overdue'">
+
+                  {{ maintenance.status }}
+
+                </span>
+
+              </td>
+
+
+              <td class="actions">
+
+                <button
+                  class="view-btn"
+                  (click)="viewMaintenance(maintenance.id)">
+
+                  View
+
+                </button>
+
+
+                <button
+                  class="edit-btn"
+                  (click)="editMaintenance(maintenance.id)">
+
+                  Edit
+
+                </button>
+
+
+                <button
+                  class="delete-btn"
+                  (click)="deleteMaintenance(maintenance.id)">
+
+                  Delete
+
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- EMPTY -->
+
+          @if (maintenances().length === 0) {
+
+            <tr>
+
+              <td
+                colspan="6"
+                class="empty">
+
+                No maintenance records found.
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>

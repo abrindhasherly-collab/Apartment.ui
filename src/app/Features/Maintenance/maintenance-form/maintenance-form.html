@@ -1,0 +1,191 @@
+<div class="form-page">
+
+  <!-- HEADER -->
+
+  <div class="form-header">
+
+    <div>
+
+      <h1>
+        {{
+          isEditMode
+            ? 'Edit Maintenance'
+            : 'Add Maintenance'
+        }}
+      </h1>
+
+      <p>
+        {{
+          isEditMode
+            ? 'Update maintenance information'
+            : 'Enter maintenance payment details'
+        }}
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    class="error-message"
+    *ngIf="errorMessage">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- FORM -->
+
+  <div class="form-card">
+
+    <form
+      [formGroup]="maintenanceForm"
+      (ngSubmit)="saveMaintenance()">
+
+
+      <!-- FLAT ID -->
+
+      <div class="form-group">
+
+        <label>Flat ID</label>
+
+        <input
+          type="number"
+          formControlName="flatId"
+          placeholder="Example: 1"
+        />
+
+        <small
+          *ngIf="
+            maintenanceForm.get('flatId')?.touched &&
+            maintenanceForm.get('flatId')?.invalid
+          ">
+
+          Flat ID is required.
+
+        </small>
+
+      </div>
+
+
+      <!-- AMOUNT -->
+
+      <div class="form-group">
+
+        <label>Amount</label>
+
+        <input
+          type="number"
+          formControlName="amount"
+          placeholder="Example: 2500"
+        />
+
+        <small
+          *ngIf="
+            maintenanceForm.get('amount')?.touched &&
+            maintenanceForm.get('amount')?.invalid
+          ">
+
+          Enter a valid amount.
+
+        </small>
+
+      </div>
+
+
+      <!-- MONTH -->
+
+      <div class="form-group">
+
+        <label>Month</label>
+
+        <input
+          type="date"
+          formControlName="month"
+        />
+
+      </div>
+
+
+      <!-- DUE DATE -->
+
+      <div class="form-group">
+
+        <label>Due Date</label>
+
+        <input
+          type="date"
+          formControlName="dueDate"
+        />
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div class="form-group">
+
+        <label>Status</label>
+
+        <select
+          formControlName="status">
+
+          <option value="Pending">
+            Pending
+          </option>
+
+          <option value="Paid">
+            Paid
+          </option>
+
+          <option value="Overdue">
+            Overdue
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- BUTTONS -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="cancel()">
+
+          Cancel
+
+        </button>
+
+
+        <button
+          type="submit"
+          class="save-btn"
+          [disabled]="loading">
+
+          {{
+            loading
+              ? 'Saving...'
+              : (
+                isEditMode
+                  ? 'Update Maintenance'
+                  : 'Save Maintenance'
+              )
+          }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

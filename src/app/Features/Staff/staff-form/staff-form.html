@@ -1,0 +1,202 @@
+<div class="form-page">
+
+  <!-- HEADER -->
+
+  <div class="form-header">
+
+    <div>
+
+      <h1>
+        {{ isEditMode ? 'Edit Staff' : 'Add Staff' }}
+      </h1>
+
+      <p>
+        {{
+          isEditMode
+            ? 'Update staff member details'
+            : 'Add a new staff member'
+        }}
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- FORM -->
+
+  <div class="form-card">
+
+    <form
+      [formGroup]="staffForm"
+      (ngSubmit)="saveStaff()"
+    >
+
+
+      <!-- NAME -->
+
+      <div class="form-group">
+
+        <label for="name">
+          Name
+        </label>
+
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Enter staff name"
+        />
+
+        <small
+          class="error"
+          *ngIf="
+            staffForm.get('name')?.touched &&
+            staffForm.get('name')?.invalid
+          "
+        >
+          Name is required.
+        </small>
+
+      </div>
+
+
+      <!-- PHONE -->
+
+      <div class="form-group">
+
+        <label for="phone">
+          Phone
+        </label>
+
+        <input
+          id="phone"
+          type="text"
+          formControlName="phone"
+          placeholder="Enter phone number"
+        />
+
+        <small
+          class="error"
+          *ngIf="
+            staffForm.get('phone')?.touched &&
+            staffForm.get('phone')?.invalid
+          "
+        >
+          Phone number is required.
+        </small>
+
+      </div>
+
+
+      <!-- JOB ROLE -->
+
+      <div class="form-group">
+
+        <label for="jobRole">
+          Job Role
+        </label>
+
+        <input
+          id="jobRole"
+          type="text"
+          formControlName="jobRole"
+          placeholder="Example: Security Guard"
+        />
+
+        <small
+          class="error"
+          *ngIf="
+            staffForm.get('jobRole')?.touched &&
+            staffForm.get('jobRole')?.invalid
+          "
+        >
+          Job role is required.
+        </small>
+
+      </div>
+
+
+      <!-- JOINING DATE -->
+
+      <div class="form-group">
+
+        <label for="joiningDate">
+          Joining Date
+        </label>
+
+        <input
+          id="joiningDate"
+          type="date"
+          formControlName="joiningDate"
+        />
+
+        <small
+          class="error"
+          *ngIf="
+            staffForm.get('joiningDate')?.touched &&
+            staffForm.get('joiningDate')?.invalid
+          "
+        >
+          Joining date is required.
+        </small>
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div class="form-group">
+
+        <label for="status">
+          Status
+        </label>
+
+        <select
+          id="status"
+          formControlName="status"
+        >
+
+          <option value="Active">
+            Active
+          </option>
+
+          <option value="Inactive">
+            Inactive
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- BUTTONS -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="save-btn"
+        >
+          {{
+            isEditMode
+              ? 'Update Staff'
+              : 'Add Staff'
+          }}
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

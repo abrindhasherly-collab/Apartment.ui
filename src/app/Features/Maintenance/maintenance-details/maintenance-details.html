@@ -1,0 +1,133 @@
+<div class="details-page">
+
+  <!-- HEADER -->
+
+  <div class="details-header">
+
+    <div>
+
+      <h1>Maintenance Details</h1>
+
+      <p>
+        View maintenance payment information
+      </p>
+
+    </div>
+
+    <button
+      class="back-btn"
+      (click)="goBack()">
+
+      ← Back
+
+    </button>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    class="error-message"
+    *ngIf="errorMessage">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- LOADING -->
+
+  <div
+    class="loading"
+    *ngIf="loading">
+
+    Loading...
+
+  </div>
+
+
+  <!-- DETAILS -->
+
+  <div
+    class="details-card"
+    *ngIf="maintenance && !loading">
+
+
+    <div class="detail-row">
+
+      <span>Flat ID</span>
+
+      <strong>
+        {{ maintenance.flatId }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span>Amount</span>
+
+      <strong>
+        ₹{{ maintenance.amount }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span>Month</span>
+
+      <strong>
+        {{ maintenance.month | date:'MMMM yyyy' }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span>Due Date</span>
+
+      <strong>
+        {{ maintenance.dueDate | date:'dd MMMM yyyy' }}
+      </strong>
+
+    </div>
+
+
+    <div class="detail-row">
+
+      <span>Status</span>
+
+      <strong
+        [class.pending]="maintenance.status === 'Pending'"
+        [class.paid]="maintenance.status === 'Paid'"
+        [class.overdue]="maintenance.status === 'Overdue'">
+
+        {{ maintenance.status }}
+
+      </strong>
+
+    </div>
+
+
+    <!-- ACTION -->
+
+    <div class="detail-actions">
+
+      <button
+        class="edit-btn"
+        (click)="editMaintenance()">
+
+        Edit Maintenance
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
