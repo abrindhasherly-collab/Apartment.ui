@@ -1,0 +1,182 @@
+<div class="form-page">
+
+  <div class="form-header">
+
+    <div>
+      <h1>
+        {{ isEditMode ? 'Edit Flat' : 'Add Flat' }}
+      </h1>
+
+      <p>
+        {{ isEditMode
+          ? 'Update flat information'
+          : 'Enter new flat information'
+        }}
+      </p>
+    </div>
+
+  </div>
+
+  <div
+    class="error-message"
+    *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <div class="form-card">
+
+    <form
+      [formGroup]="flatForm"
+      (ngSubmit)="saveFlat()">
+
+      <!-- FLAT NUMBER -->
+
+      <div class="form-group">
+
+        <label>Flat Number</label>
+
+        <input
+          type="text"
+          formControlName="flatNumber"
+          placeholder="Example: A-101"
+        />
+
+        <small
+          *ngIf="
+            flatForm.get('flatNumber')?.touched &&
+            flatForm.get('flatNumber')?.invalid
+          "
+        >
+          Flat number is required.
+        </small>
+
+      </div>
+
+
+      <!-- FLOOR -->
+
+      <div class="form-group">
+
+        <label>Floor</label>
+
+        <input
+          type="number"
+          formControlName="floor"
+        />
+
+      </div>
+
+
+      <!-- BUILDING -->
+
+      <div class="form-group">
+
+        <label>Building ID</label>
+
+        <input
+          type="number"
+          formControlName="buildingId"
+        />
+
+      </div>
+
+
+      <!-- FLAT TYPE -->
+
+      <div class="form-group">
+
+        <label>Flat Type</label>
+
+        <select formControlName="flatType">
+
+          <option value="">
+            Select Flat Type
+          </option>
+
+          <option value="1BHK">
+            1 BHK
+          </option>
+
+          <option value="2BHK">
+            2 BHK
+          </option>
+
+          <option value="3BHK">
+            3 BHK
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div class="form-group">
+
+        <label>Status</label>
+
+        <select formControlName="status">
+
+          <option value="Occupied">
+            Occupied
+          </option>
+
+          <option value="Unoccupied">
+            Unoccupied
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- RESIDENT -->
+
+      <div class="form-group">
+
+        <label>Resident ID</label>
+
+        <input
+          type="number"
+          formControlName="residentId"
+          placeholder="Optional"
+        />
+
+        <small>
+          Leave empty if the flat is unoccupied.
+        </small>
+
+      </div>
+
+
+      <!-- BUTTONS -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="cancel()">
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="save-btn"
+          [disabled]="loading">
+
+          {{ loading
+            ? 'Saving...'
+            : (isEditMode ? 'Update Flat' : 'Save Flat')
+          }}
+
+        </button>
+
+      </div>
+
+    </form>
+
+  </div>
+
+</div>

@@ -1,0 +1,142 @@
+<div class="flat-page">
+
+  <!-- HEADER -->
+  <div class="page-header">
+
+    <div>
+      <h1>Flats</h1>
+      <p>Manage apartment flats</p>
+    </div>
+
+    <a routerLink="/flats/add" class="add-btn">
+      Add Flat
+    </a>
+
+  </div>
+
+
+  <!-- ERROR -->
+  @if (errorMessage()) {
+    <div class="error-message">
+      {{ errorMessage() }}
+    </div>
+  }
+
+
+  <!-- LOADING -->
+  @if (loading()) {
+    <div class="loading">
+      Loading flats...
+    </div>
+  }
+
+
+  <!-- TABLE -->
+  @if (!loading()) {
+
+    <div class="table-card">
+
+      <table>
+
+        <thead>
+          <tr>
+            <th>Flat No</th>
+            <th>Floor</th>
+            <th>Building</th>
+            <th>Flat Type</th>
+            <th>Status</th>
+            <th>Resident ID</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+
+        <tbody>
+
+          <!-- FLATS -->
+          @for (flat of flats(); track flat.id) {
+
+            <tr>
+
+              <td>
+                {{ flat.flatNumber }}
+              </td>
+
+              <td>
+                {{ flat.floor }}
+              </td>
+
+              <td>
+                {{ flat.buildingId }}
+              </td>
+
+              <td>
+                {{ flat.flatType }}
+              </td>
+
+              <td>
+
+                <span
+                  class="status"
+                  [class.occupied]="flat.status === 'Occupied'"
+                  [class.unoccupied]="flat.status === 'Unoccupied'"
+                >
+                  {{ flat.status }}
+                </span>
+
+              </td>
+
+              <td>
+                {{ flat.residentId || '-' }}
+              </td>
+
+              <td class="actions">
+
+                <button
+                  class="view-btn"
+                  (click)="viewFlat(flat.id)">
+                  View
+                </button>
+
+                <button
+                  class="edit-btn"
+                  (click)="editFlat(flat.id)">
+                  Edit
+                </button>
+
+                <button
+                  class="delete-btn"
+                  (click)="deleteFlat(flat.id)">
+                  Delete
+                </button>
+
+              </td>
+
+            </tr>
+
+          }
+
+
+          <!-- EMPTY -->
+          @if (flats().length === 0) {
+
+            <tr>
+
+              <td colspan="7" class="empty">
+                No flats found.
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>
+

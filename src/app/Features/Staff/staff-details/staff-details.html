@@ -1,0 +1,158 @@
+<div class="details-page">
+
+  <!-- HEADER -->
+
+  <div class="details-header">
+
+    <div>
+
+      <h1>
+        Staff Details
+      </h1>
+
+      <p>
+        View staff member information
+      </p>
+
+    </div>
+
+
+    <div class="header-actions">
+
+      <a
+        routerLink="/staff"
+        class="back-btn"
+      >
+        ← Back
+      </a>
+
+
+      <button
+        class="edit-btn"
+        (click)="editStaff()"
+        *ngIf="staff"
+      >
+        Edit
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- LOADING -->
+
+  <div
+    class="loading"
+    *ngIf="loading"
+  >
+    Loading staff details...
+  </div>
+
+
+  <!-- DETAILS CARD -->
+
+  <div
+    class="details-card"
+    *ngIf="staff && !loading"
+  >
+
+
+    <!-- ID -->
+
+    <div class="detail-row">
+
+      <span class="label">
+        Staff ID
+      </span>
+
+      <span class="value">
+        {{ staff.id }}
+      </span>
+
+    </div>
+
+
+    <!-- NAME -->
+
+    <div class="detail-row">
+
+      <span class="label">
+        Name
+      </span>
+
+      <span class="value">
+        {{ staff.name }}
+      </span>
+
+    </div>
+
+
+    <!-- PHONE -->
+
+    <div class="detail-row">
+
+      <span class="label">
+        Phone
+      </span>
+
+      <span class="value">
+        {{ staff.phone }}
+      </span>
+
+    </div>
+
+
+    <!-- JOB ROLE -->
+
+    <div class="detail-row">
+
+      <span class="label">
+        Job Role
+      </span>
+
+      <span class="value">
+        {{ staff.jobRole }}
+      </span>
+
+    </div>
+
+
+    <!-- JOINING DATE -->
+
+    <div class="detail-row">
+
+      <span class="label">
+        Joining Date
+      </span>
+
+      <span class="value">
+        {{ staff.joiningDate | date:'dd MMM yyyy' }}
+      </span>
+
+    </div>
+
+
+    <!-- STATUS -->
+
+    <div class="detail-row">
+
+      <span class="label">
+        Status
+      </span>
+
+      <span
+        class="status"
+        [ngClass]="{
+          'active': staff.status === 'Active',
+          'inactive': staff.status === 'Inactive'
+        }"
+      >
+        {{ staff.status }}
+      </span>
+
+    </div>
+
+  </div>
+
+</div>

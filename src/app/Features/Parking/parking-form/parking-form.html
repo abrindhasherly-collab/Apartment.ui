@@ -1,0 +1,179 @@
+<div class="form-page">
+
+  <div class="form-header">
+
+    <div>
+      <h1>
+        {{ isEditMode ? 'Edit Parking' : 'Add Parking' }}
+      </h1>
+
+      <p>
+        {{ isEditMode
+          ? 'Update parking slot details'
+          : 'Add a new parking slot'
+        }}
+      </p>
+    </div>
+
+  </div>
+
+
+  <div class="form-card">
+
+    <form
+      [formGroup]="parkingForm"
+      (ngSubmit)="saveParking()"
+    >
+
+
+      <!-- SLOT NUMBER -->
+
+      <div class="form-group">
+
+        <label for="slotNumber">
+          Slot Number
+        </label>
+
+        <input
+          id="slotNumber"
+          type="text"
+          formControlName="slotNumber"
+          placeholder="Example: P-01"
+        />
+
+        <small
+          class="error"
+          *ngIf="
+            parkingForm.get('slotNumber')?.touched &&
+            parkingForm.get('slotNumber')?.invalid
+          "
+        >
+          Slot number is required.
+        </small>
+
+      </div>
+
+
+      <!-- VEHICLE NUMBER -->
+
+      <div class="form-group">
+
+        <label for="vehicleNumber">
+          Vehicle Number
+        </label>
+
+        <input
+          id="vehicleNumber"
+          type="text"
+          formControlName="vehicleNumber"
+          placeholder="Example: TN01AB1234"
+        />
+
+      </div>
+
+
+      <!-- FLAT ID -->
+
+      <div class="form-group">
+
+        <label for="flatId">
+          Flat ID
+        </label>
+
+        <input
+          id="flatId"
+          type="number"
+          formControlName="flatId"
+          placeholder="Enter Flat ID"
+        />
+
+      </div>
+
+
+      <!-- VEHICLE TYPE -->
+
+      <div class="form-group">
+
+        <label for="vehicleType">
+          Vehicle Type
+        </label>
+
+        <select
+          id="vehicleType"
+          formControlName="vehicleType"
+        >
+
+          <option value="">
+            Select Vehicle Type
+          </option>
+
+          <option value="Car">
+            Car
+          </option>
+
+          <option value="Bike">
+            Bike
+          </option>
+
+          <option value="Scooter">
+            Scooter
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div class="form-group">
+
+        <label for="status">
+          Status
+        </label>
+
+        <select
+          id="status"
+          formControlName="status"
+        >
+
+          <option value="Available">
+            Available
+          </option>
+
+          <option value="Occupied">
+            Occupied
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- BUTTONS -->
+
+      <div class="form-actions">
+
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="save-btn"
+        >
+          {{ isEditMode ? 'Update Parking' : 'Add Parking' }}
+        </button>
+
+      </div>
+
+
+    </form>
+
+  </div>
+
+</div>
