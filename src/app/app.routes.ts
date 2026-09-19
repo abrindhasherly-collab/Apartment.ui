@@ -139,25 +139,7 @@ export const routes: Routes = [
         .then(m => m.DocumentDetails)
   },
 
-  // INVALID URL
-  {
-    path: '**',
-    redirectTo: 'login'
-  }
-];
-export const routes: Routes = [
-
-  // Default
-  {
-    path: '',
-    redirectTo: 'flats',
-    pathMatch: 'full'
-  },
-
-  // =========================
   // FLATS
-  // =========================
-
   {
     path: 'flats/add',
     loadComponent: () =>
@@ -165,32 +147,28 @@ export const routes: Routes = [
         .then(m => m.FlatForm)
   },
 
-  {
+{
     path: 'flats/edit/:id',
     loadComponent: () =>
       import('./Features/Flats/flat-form/flat-form')
         .then(m => m.FlatForm)
   },
 
-  {
+{
     path: 'flats/:id',
     loadComponent: () =>
       import('./Features/Flats/flat-details/flat-details')
         .then(m => m.FlatDetails)
   },
 
-  {
+{
     path: 'flats',
     loadComponent: () =>
       import('./Features/Flats/flat-list/flat-list')
         .then(m => m.FlatList)
   },
 
-
-  // =========================
   // MAINTENANCE
-  // =========================
-
   {
     path: 'maintenance/add',
     loadComponent: () =>
@@ -219,10 +197,7 @@ export const routes: Routes = [
         .then(m => m.MaintenanceList)
   },
 
-
-  // =========================
-  // PARKING
-  // =========================
+// PARKING
 
   {
     path: 'parking/add',
@@ -252,10 +227,7 @@ export const routes: Routes = [
         .then(m => m.ParkingList)
   },
 
-
-  // =========================
-  // STAFF
-  // =========================
+// STAFF
 
   {
     path: 'staff/add',
@@ -286,13 +258,9 @@ export const routes: Routes = [
   },
 
 
-  // =========================
   // INVALID URL
-  // =========================
-
   {
     path: '**',
-    redirectTo: 'flats'
+    redirectTo: 'login'
   }
-
 ];
