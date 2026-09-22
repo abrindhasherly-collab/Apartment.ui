@@ -1,86 +1,91 @@
 
-<nav class="navbar-wrapper">
+<nav class="navbar">
 
-  <div class="navbar-container">
-
-    <!-- Brand -->
-    <a routerLink="/dashboard" class="navbar-brand">
-
-      <div class="brand-icon">
-        <i class="bi bi-buildings-fill"></i>
+  <div class="navbar-brand">
+    Apartment Management
       </div>
 
-      <div class="brand-text">
-        <strong>Apartment</strong>
-        <span>Management</span>
-      </div>
+  <button
+    class="menu-button"
+    (click)="toggleMenu()">
+
+    ☰
+
+  </button>
+
+  <div
+    class="nav-links"
+    [class.open]="menuOpen()">
+
+      <a
+      routerLink="/users"
+        routerLinkActive="active"
+      (click)="closeMenu()">
+
+      Users
 
     </a>
 
+    <a
+      routerLink="/buildings"
+      routerLinkActive="active"
+      (click)="closeMenu()">
 
-    <!-- Navigation -->
-    <div class="nav-links">
+      Buildings
+
+    </a>
 
       <a
-        routerLink="/dashboard"
+      routerLink="/notices"
         routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">
+      (click)="closeMenu()">
 
-        <i class="bi bi-grid-1x2-fill"></i>
-        <span>Dashboard</span>
+      Notices
 
       </a>
-
 
       <a
-        routerLink="/resident"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">
+      routerLink="/documents"
+      routerLinkActive="active"
+      (click)="closeMenu()">
 
-        <i class="bi bi-people-fill"></i>
-        <span>Residents</span>
+      Documents
 
       </a>
-
 
       <a
-        routerLink="/payment"
-        routerLinkActive="active">
-
-        <i class="bi bi-credit-card-fill"></i>
-        <span>Payments</span>
-
-      </a>
-
+  routerLink="/flats"
+  routerLinkActive="active"
+>
+  Flats
+</a>
 
       <a
-        routerLink="/complaint"
-        routerLinkActive="active">
+  routerLink="/maintenance"
+  routerLinkActive="active"
+>
+   Maintenance
+</a>
 
-        <i class="bi bi-chat-left-text-fill"></i>
-        <span>Complaints</span>
-
+<a
+  routerLink="/parking"
+  routerLinkActive="active"
+>
+  Parking
       </a>
 
+<a
+  routerLink="/staff"
+  routerLinkActive="active"
+>
+  Staff
+</a>
+    <button
+      class="logout-button"
+      (click)="logout()">
 
-      <a
-        routerLink="/emergency"
-        routerLinkActive="active">
+      Logout
 
-        <i class="bi bi-shield-exclamation"></i>
-        <span>Emergency</span>
-
-      </a>
-
-    </div>
-
-
-    <!-- Right Section -->
-    <div class="navbar-right">
-
-      <button class="notification-btn" type="button">
-        <i class="bi bi-bell"></i>
-        <span class="notification-dot"></span>
       </button>
 
 
