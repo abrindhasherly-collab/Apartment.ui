@@ -1,0 +1,644 @@
+<div class="page bg-light min-vh-100 p-3 p-md-4">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="container-fluid">
+
+
+<div class="card border-0 shadow-sm mb-4">
+
+  <div class="card-body p-4">
+
+    <div class="d-flex flex-column flex-md-row
+                justify-content-between
+                align-items-md-center gap-3">
+
+      <div class="d-flex align-items-center gap-3">
+
+        <div class="complaint-header-icon">
+          <i class="bi bi-chat-left-text"></i>
+        </div>
+
+        <div>
+
+          <h4 class="fw-bold mb-1 text-dark">
+            Resident Complaints
+          </h4>
+
+          <p class="text-muted mb-0 small">
+            Manage and track complaints from apartment residents.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="btn btn-primary px-4"
+        (click)="openAddForm()">
+
+        <i class="bi bi-plus-lg me-2"></i>
+
+        Raise Complaint
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= TABLE CARD ================= -->
+
+<div class="card border-0 shadow-sm">
+
+  <!-- TOOLBAR -->
+
+  <div class="card-body border-bottom">
+
+    <div class="row g-3 align-items-center">
+
+      <!-- SEARCH -->
+
+      <div class="col-12 col-md-7">
+
+        <div class="input-group">
+
+          <span class="input-group-text bg-white">
+
+            <i class="bi bi-search text-muted"></i>
+
+          </span>
+
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search by issue, resident..."
+            [ngModel]="searchText()"
+            (ngModelChange)="searchText.set($event)"
+          />
+
+        </div>
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div class="col-12 col-md-3">
+
+        <select
+          class="form-select"
+          [ngModel]="statusFilter()"
+          (ngModelChange)="statusFilter.set($event)">
+
+          <option value="All Status">
+            All Status
+          </option>
+
+          <option value="Pending">
+            Pending
+          </option>
+
+          <option value="In Progress">
+            In Progress
+          </option>
+
+          <option value="Resolved">
+            Resolved
+          </option>
+
+          <option value="Rejected">
+            Rejected
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- RESULT COUNT -->
+
+      <div class="col-12 col-md-2 text-md-end">
+
+        <span class="text-muted small">
+
+          {{ filteredComplaints().length }}
+          complaints
+
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================= LOADING ================= -->
+
+  <div
+    *ngIf="loading()"
+    class="text-center py-5">
+
+    <div
+      class="spinner-border text-primary mb-3">
+    </div>
+
+    <div class="text-muted">
+      Loading complaints...
+    </div>
+
+  </div>
+
+
+  <!-- ================= TABLE ================= -->
+
+  <div
+    class="table-responsive"
+    *ngIf="!loading()">
+
+    <table class="table table-hover align-middle mb-0">
+
+      <thead class="table-light">
+
+        <tr>
+
+          <th class="px-4">
+            ID
+          </th>
+
+          <th>
+            RESIDENT
+          </th>
+
+          <th>
+            FLAT
+          </th>
+
+          <th>
+            COMPLAINT
+          </th>
+
+          <th>
+            STATUS
+          </th>
+
+          <th>
+            DATE
+          </th>
+
+          <th class="text-center">
+            ACTION
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <!-- COMPLAINT ROW -->
+
+        <tr
+          *ngFor="let complaint of filteredComplaints()">
+
+          <!-- ID -->
+
+          <td class="px-4">
+
+            <span class="fw-semibold text-primary">
+
+              {{ complaint.id }}
+
+            </span>
+
+          </td>
+
+
+          <!-- RESIDENT -->
+
+          <td>
+
+            <div class="d-flex align-items-center gap-2">
+
+              <div class="resident-avatar">
+
+                {{ complaint.residentId }}
+
+              </div>
+
+              <div>
+
+                <div class="fw-semibold small">
+
+                  Resident {{ complaint.residentId }}
+
+                </div>
+
+                <div class="text-muted small">
+
+                  ID: {{ complaint.residentId }}
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </td>
+
+
+          <!-- FLAT -->
+
+          <td>
+
+            <span class="badge bg-light text-dark border">
+
+              <i class="bi bi-house-door me-1"></i>
+
+              {{ complaint.flatId }}
+
+            </span>
+
+          </td>
+
+
+          <!-- COMPLAINT -->
+
+          <td>
+
+            <div
+              class="fw-semibold text-dark complaint-title">
+
+              {{ complaint.title }}
+
+            </div>
+
+            <div class="text-muted small">
+
+              Resident complaint
+
+            </div>
+
+          </td>
+
+
+          <!-- STATUS -->
+
+          <td>
+
+            <span
+              class="badge rounded-pill px-3 py-2"
+              [class.bg-warning-subtle]="complaint.status === 1"
+              [class.text-warning-emphasis]="complaint.status === 1"
+              [class.bg-primary-subtle]="complaint.status === 2"
+              [class.text-primary-emphasis]="complaint.status === 2"
+              [class.bg-success-subtle]="complaint.status === 3"
+              [class.text-success-emphasis]="complaint.status === 3"
+              [class.bg-danger-subtle]="complaint.status === 4"
+              [class.text-danger-emphasis]="complaint.status === 4">
+
+              {{ getStatus(complaint.status) }}
+
+            </span>
+
+          </td>
+
+
+          <!-- DATE -->
+
+          <td>
+
+            <span class="text-muted small">
+
+              <i class="bi bi-calendar3 me-1"></i>
+
+              {{ complaint.complaintDate | date:'dd MMM yyyy' }}
+
+            </span>
+
+          </td>
+
+
+          <!-- ACTION -->
+
+          <td>
+
+            <div
+              class="d-flex justify-content-center gap-2">
+
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary"
+                title="Edit"
+                (click)="openEditForm(complaint)">
+
+                <i class="bi bi-pencil"></i>
+
+              </button>
+
+
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger"
+                title="Delete"
+                (click)="deleteComplaint(complaint.id)">
+
+                <i class="bi bi-trash"></i>
+
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+
+        <!-- ================= NO DATA ================= -->
+
+        <tr
+          *ngIf="filteredComplaints().length === 0">
+
+          <td
+            colspan="7"
+            class="text-center py-5">
+
+            <div class="text-muted">
+
+              <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+
+              <h6 class="fw-semibold">
+                No complaints found
+              </h6>
+
+              <p class="small mb-3">
+                No complaints match your current search or filter.
+              </p>
+
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                (click)="openAddForm()">
+
+                <i class="bi bi-plus-lg me-1"></i>
+
+                Raise Complaint
+
+              </button>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+```
+
+  </div>
+
+  <!-- ================================================= -->
+
+  <!-- ADD / EDIT COMPLAINT MODAL -->
+
+  <!-- ================================================= -->
+
+  <div
+    class="modal-backdrop-custom"
+    *ngIf="showForm()">
+
+```
+<div class="modal-dialog-custom">
+
+  <div class="card border-0 shadow-lg">
+
+
+    <!-- MODAL HEADER -->
+
+    <div class="card-header bg-white border-bottom p-4">
+
+      <div
+        class="d-flex justify-content-between align-items-start">
+
+        <div>
+
+          <h5 class="fw-bold mb-1">
+
+            <i class="bi bi-chat-left-text text-primary me-2"></i>
+
+            {{ editMode()
+              ? 'Edit Complaint'
+              : 'Raise Complaint'
+            }}
+
+          </h5>
+
+          <p class="text-muted small mb-0">
+
+            {{ editMode()
+              ? 'Update complaint information'
+              : 'Submit a new resident complaint'
+            }}
+
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeForm()">
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- MODAL BODY -->
+
+    <div class="card-body p-4">
+
+      <div class="row g-3">
+
+
+        <!-- RESIDENT ID -->
+
+        <div class="col-md-6">
+
+          <label class="form-label fw-semibold">
+
+            Resident ID
+
+          </label>
+
+          <div class="input-group">
+
+            <span class="input-group-text bg-white">
+
+              <i class="bi bi-person text-muted"></i>
+
+            </span>
+
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Enter resident ID"
+              [(ngModel)]="complaintForm.residentId"
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- FLAT ID -->
+
+        <div class="col-md-6">
+
+          <label class="form-label fw-semibold">
+
+            Flat ID
+
+          </label>
+
+          <div class="input-group">
+
+            <span class="input-group-text bg-white">
+
+              <i class="bi bi-house text-muted"></i>
+
+            </span>
+
+            <input
+              type="number"
+              class="form-control"
+              placeholder="Enter flat ID"
+              [(ngModel)]="complaintForm.flatId"
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <div class="col-12">
+
+          <label class="form-label fw-semibold">
+
+            Complaint Title
+
+          </label>
+
+          <div class="input-group">
+
+            <span class="input-group-text bg-white">
+
+              <i class="bi bi-exclamation-circle text-muted"></i>
+
+            </span>
+
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter complaint title"
+              [(ngModel)]="complaintForm.title"
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="col-12">
+
+          <label class="form-label fw-semibold">
+
+            Description
+
+          </label>
+
+          <textarea
+            class="form-control"
+            rows="5"
+            placeholder="Describe the complaint..."
+            [(ngModel)]="complaintForm.description">
+          </textarea>
+
+          <div class="form-text">
+
+            Provide detailed information about the issue.
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- MODAL FOOTER -->
+
+    <div class="card-footer bg-light border-0 p-3">
+
+      <div class="d-flex justify-content-end gap-2">
+
+        <button
+          type="button"
+          class="btn btn-light border px-4"
+          (click)="closeForm()">
+
+          Cancel
+
+        </button>
+
+
+        <button
+          type="button"
+          class="btn btn-primary px-4"
+          (click)="saveComplaint()">
+
+          <i
+            class="bi"
+            [class.bi-check-lg]="editMode()"
+            [class.bi-send]="!editMode()">
+          </i>
+
+          {{ editMode()
+            ? 'Update Complaint'
+            : 'Submit Complaint'
+          }}
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+  </div>
+
+</div>
