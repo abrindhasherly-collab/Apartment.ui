@@ -2,26 +2,26 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
 
-  {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
-  },
+  // {
+  //   path: '',
+  //   redirectTo: 'login',
+  //   pathMatch: 'full'
+  // },
 
-  // AUTH
-  {
-    path: 'login',
-    loadComponent: () =>
-      import('./Features/login/login')
-        .then(m => m.Login)
-  },
+  // // AUTH
+  // {
+  //   path: 'login',
+  //   loadComponent: () =>
+  //     import('./Features/auth/login/login')
+  //       .then(m => m.Login)
+  // },
 
-  {
-    path: 'register',
-    loadComponent: () =>
-      import('./Features/register/register')
-        .then(m => m.Register)
-  },
+  // {
+  //   path: 'register',
+  //   loadComponent: () =>
+  //     import('./Features/auth/register/register')
+  //       .then(m => m.Register)
+  // },
 
   // USERS
   {
@@ -257,21 +257,6 @@ export const routes: Routes = [
         .then(m => m.StaffList)
   },
 
-
-  // INVALID URL
-  {
-    path: '**',
-    redirectTo: 'login'
-  }
-];
-export const routes: Routes = [
-  {
-  path: 'dashboard',
-  loadComponent: () =>
-    import('../app/dashboard/dashboard')
-      .then(m => m.Dashboard)
-},
-
   {
     path: 'resident',
     loadComponent: () =>
@@ -300,15 +285,11 @@ export const routes: Routes = [
         .then(m => m.EmergencyComponent)
   },
 
-  {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
-  },
 
-  {
-    path: '**',
-    redirectTo: 'dashboard'
-  }
 
+  // // INVALID URL
+  // {
+  //   path: '**',
+  //   redirectTo: 'login'
+  // }
 ];

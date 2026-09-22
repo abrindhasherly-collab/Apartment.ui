@@ -33,7 +33,7 @@ export interface LoginResponse {
 export class AuthService {
 
   private apiUrl =
-    'https://localhost:7202/api/Auth';
+    'https://localhost:xxxx/api/Auth';
 
   constructor(
     private http: HttpClient

@@ -32,7 +32,7 @@ export interface MaintenanceUpdate {
 })
 export class MaintenanceService {
 
-  private apiUrl = 'https://localhost:7290/api/Maintenance';
+  private apiUrl = 'https://localhost:xxxx/api/Maintenance';
 
   constructor(private http: HttpClient) {}
 

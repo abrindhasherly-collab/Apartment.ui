@@ -32,7 +32,7 @@ export interface StaffUpdate {
 })
 export class StaffService {
 
-  private apiUrl = 'https://localhost:7290/api/Staff';
+  private apiUrl = 'https://localhost:xxxx/api/Staff';
 
   constructor(private http: HttpClient) {}
 

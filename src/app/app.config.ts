@@ -1,5 +1,4 @@
 import { ApplicationConfig } from '@angular/core';
-import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import {
   provideHttpClient,
@@ -7,7 +6,7 @@ import {
 } from '@angular/common/http';
 
 import { routes } from './app.routes';
-import { authInterceptor } from './Features/auth/auth-interceptor';
+import { authInterceptor } from './Shared/Interceptor/auth-interceptor';
 
 
 export const appConfig: ApplicationConfig = {

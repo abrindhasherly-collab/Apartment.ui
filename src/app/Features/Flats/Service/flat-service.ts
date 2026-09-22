@@ -35,7 +35,7 @@ export interface FlatUpdate {
 })
 export class FlatService {
 
-  private apiUrl = 'https://localhost:7290/api/Flat';
+  private apiUrl = 'https://localhost:xxxx/api/Flat';
 
   constructor(private http: HttpClient) {}
 

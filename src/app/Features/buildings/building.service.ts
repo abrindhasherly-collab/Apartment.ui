@@ -65,7 +65,7 @@ export interface UpdateBuilding {
 export class BuildingService {
 
   private apiUrl =
-    'https://localhost:7202/api/Buildings';
+    'https://localhost:xxxx/api/Buildings';
 
   buildings = signal<Building[]>([]);
 

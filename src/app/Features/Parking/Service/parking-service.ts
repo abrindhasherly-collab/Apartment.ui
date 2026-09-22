@@ -32,7 +32,7 @@ export interface ParkingUpdate {
 })
 export class ParkingService {
 
-  private apiUrl = 'https://localhost:7290/api/Parking';
+  private apiUrl = 'https://localhost:xxxx/api/Parking';
 
   constructor(private http: HttpClient) {}
 

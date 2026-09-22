@@ -1,0 +1,96 @@
+<nav class="navbar">
+
+  <!-- Logo / Brand -->
+  <div class="navbar-brand" routerLink="/dashboard">
+    <span class="logo-icon">🏢</span>
+    <span>Apartment Management</span>
+  </div>
+
+  <!-- Mobile Menu Button -->
+  <button class="menu-btn" (click)="toggleMenu()">
+    ☰
+  </button>
+
+  <!-- Navigation Links -->
+  <div class="nav-links" [class.active]="menuOpen">
+
+    <a routerLink="/buildings"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      🏢 Buildings
+    </a>
+
+    <a routerLink="/complaint"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      📢 Complaint
+    </a>
+
+    <a routerLink="/documents"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      📄 Documents
+    </a>
+
+    <a routerLink="/emergency"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      🚨 Emergency
+    </a>
+
+    <a routerLink="/flats"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      🏠 Flats
+    </a>
+
+    <a routerLink="/maintenance"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      🔧 Maintenance
+    </a>
+
+    <a routerLink="/notices"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      📢 Notices
+    </a>
+
+    <a routerLink="/parking"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      🚗 Parking
+    </a>
+
+    <a routerLink="/payment"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      💳 Payment
+    </a>
+
+    <a routerLink="/resident"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      👤 Resident
+    </a>
+
+    <a routerLink="/staff"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      👨‍💼 Staff
+    </a>
+
+    <a routerLink="/users"
+       routerLinkActive="active"
+       (click)="closeMenu()">
+      👥 Users
+    </a>
+
+    <!-- Logout -->
+    <button class="logout-btn" (click)="logout()">
+      🚪 Logout
+    </button>
+
+  </div>
+
+</nav>

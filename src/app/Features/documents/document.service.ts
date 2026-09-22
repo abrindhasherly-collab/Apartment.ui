@@ -31,7 +31,7 @@ export interface ApartmentDocument {
 export class DocumentService {
 
   private apiUrl =
-    'https://localhost:7202/api/Documents';
+    'https://localhost:xxxx/api/Documents';
 
   documents = signal<ApartmentDocument[]>([]);
   loading = signal(false);

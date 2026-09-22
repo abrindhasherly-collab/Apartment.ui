@@ -11,7 +11,7 @@ import {
 
 import { filter } from 'rxjs';
 
-import { Navbar } from './Shared/navbar/navbar';
+import { NavbarComponent } from './Shared/Navbar/navbar/navbar';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +19,7 @@ import { Navbar } from './Shared/navbar/navbar';
 
   imports: [
     RouterOutlet,
-    Navbar
+    NavbarComponent
   ],
 
   templateUrl: './app.html',
