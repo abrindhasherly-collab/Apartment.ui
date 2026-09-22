@@ -1,0 +1,288 @@
+
+/* ===============================
+   PAGE
+================================ */
+
+.page {
+  min-height: 100vh;
+}
+
+
+/* ===============================
+   HEADER ICON
+================================ */
+
+.resident-header-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #e7f1ff;
+  color: #0d6efd;
+
+  border-radius: 12px;
+
+  font-size: 25px;
+}
+
+
+/* ===============================
+   INFO CARD
+================================ */
+
+.resident-info-card {
+  border-left: 5px solid #0d6efd !important;
+}
+
+.resident-info-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #e7f1ff;
+  color: #0d6efd;
+
+  border-radius: 50%;
+
+  font-size: 20px;
+}
+
+
+/* ===============================
+   TABLE
+================================ */
+
+.table th {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6c757d;
+
+  padding: 16px;
+
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 15px 16px;
+
+  font-size: 14px;
+}
+
+.table tbody tr {
+  transition: 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: #f8fbff;
+}
+
+
+/* ===============================
+   RESIDENT AVATAR
+================================ */
+
+.resident-avatar {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e7f1ff;
+  color: #0d6efd;
+
+  font-size: 17px;
+}
+
+
+/* ===============================
+   PROFILE AVATAR
+================================ */
+
+.resident-profile-avatar {
+  width: 80px;
+  height: 80px;
+
+  margin: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e7f1ff;
+  color: #0d6efd;
+
+  font-size: 38px;
+}
+
+
+/* ===============================
+   DETAIL BOX
+================================ */
+
+.detail-box {
+  background: #f8f9fa;
+
+  border: 1px solid #e9ecef;
+
+  border-radius: 10px;
+
+  padding: 12px 15px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.detail-box small {
+  color: #6c757d;
+
+  font-size: 12px;
+
+  font-weight: 500;
+}
+
+.detail-box strong {
+  color: #212529;
+
+  font-size: 14px;
+
+  word-break: break-word;
+}
+
+
+/* ===============================
+   INPUT FOCUS
+================================ */
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #0d6efd;
+
+  box-shadow:
+    0 0 0 0.2rem rgba(13, 110, 253, 0.12);
+}
+
+
+/* ===============================
+   BUTTON
+================================ */
+
+.btn {
+  border-radius: 8px;
+}
+
+.btn-primary {
+  font-weight: 500;
+}
+
+
+/* ===============================
+   EMPTY STATE
+================================ */
+
+.empty-state {
+  padding: 25px;
+}
+
+
+/* ===============================
+   MODAL
+================================ */
+
+.modal-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(15, 23, 42, 0.60);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  z-index: 1050;
+
+  padding: 20px;
+}
+
+.modal-dialog-custom {
+  width: 100%;
+  max-width: 650px;
+
+  max-height: 90vh;
+
+  overflow-y: auto;
+
+  animation: modalOpen 0.2s ease;
+}
+
+.view-modal {
+  max-width: 700px;
+}
+
+
+@keyframes modalOpen {
+
+  from {
+    opacity: 0;
+    transform: translateY(-15px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+}
+
+
+/* ===============================
+   INPUT GROUP
+================================ */
+
+.input-group-text {
+  background: #f8f9fa;
+
+  color: #6c757d;
+}
+
+
+/* ===============================
+   MOBILE
+================================ */
+
+@media (max-width: 768px) {
+
+  .page {
+    padding: 12px !important;
+  }
+
+  .table th,
+  .table td {
+    white-space: nowrap;
+  }
+
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .modal-dialog-custom {
+    max-height: 95vh;
+  }
+
+}
+

@@ -1,0 +1,244 @@
+
+.dashboard {
+  min-height: 100vh;
+}
+
+/* Header */
+
+.dashboard-header {
+  border-radius: 14px;
+}
+
+.dashboard-header-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e7f1ff;
+  color: #0d6efd;
+  border-radius: 12px;
+  font-size: 25px;
+}
+
+.dashboard-date {
+  background: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: #6c757d;
+  font-size: 14px;
+}
+
+
+/* Statistics Cards */
+
+.dashboard-card {
+  border-radius: 14px;
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10) !important;
+}
+
+.dashboard-card .card-body {
+  padding: 22px;
+}
+
+.card-label {
+  color: #6c757d;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.card-number {
+  font-size: 30px;
+  font-weight: 700;
+  color: #212529;
+}
+
+.card-status {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.stat-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+
+/* Card Themes */
+
+.residents-card {
+  border-top: 4px solid #0d6efd !important;
+}
+
+.residents-card .stat-icon {
+  background: #e7f1ff;
+  color: #0d6efd;
+}
+
+
+.payments-card {
+  border-top: 4px solid #198754 !important;
+}
+
+.payments-card .stat-icon {
+  background: #e8f7ef;
+  color: #198754;
+}
+
+
+.complaints-card {
+  border-top: 4px solid #ffc107 !important;
+}
+
+.complaints-card .stat-icon {
+  background: #fff8df;
+  color: #ffc107;
+}
+
+
+.emergency-card {
+  border-top: 4px solid #dc3545 !important;
+}
+
+.emergency-card .stat-icon {
+  background: #fdebed;
+  color: #dc3545;
+}
+
+
+/* Overview */
+
+.overview-item {
+  padding: 18px 0;
+  border-bottom: 1px solid #eef0f2;
+}
+
+.overview-item span {
+  font-size: 14px;
+  color: #495057;
+}
+
+.overview-item strong {
+  font-size: 14px;
+  color: #212529;
+}
+
+.progress {
+  background-color: #edf0f2;
+  border-radius: 10px;
+}
+
+.progress-bar {
+  border-radius: 10px;
+}
+
+
+/* Quick Actions */
+
+.quick-action {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 5px;
+  margin-bottom: 8px;
+  text-align: left;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+}
+
+.quick-action:hover {
+  background: #f8f9fa;
+  padding-left: 10px;
+}
+
+.quick-action strong {
+  display: block;
+  font-size: 14px;
+  color: #212529;
+}
+
+.quick-action small {
+  display: block;
+  color: #6c757d;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.quick-action > i {
+  color: #adb5bd;
+}
+
+
+/* Quick Action Icons */
+
+.quick-icon {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 17px;
+}
+
+.resident-icon {
+  background: #e7f1ff;
+  color: #0d6efd;
+}
+
+.payment-icon {
+  background: #e8f7ef;
+  color: #198754;
+}
+
+.complaint-icon {
+  background: #fff8df;
+  color: #ffc107;
+}
+
+.emergency-icon {
+  background: #fdebed;
+  color: #dc3545;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .dashboard {
+    padding: 12px !important;
+  }
+
+  .dashboard-header-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 20px;
+  }
+
+  .card-number {
+    font-size: 26px;
+  }
+
+  .dashboard-date {
+    width: 100%;
+    text-align: center;
+  }
+
+}
+

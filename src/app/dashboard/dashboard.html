@@ -1,0 +1,380 @@
+
+<div class="dashboard bg-light min-vh-100 p-3 p-md-4">
+
+  <!-- Page Header -->
+  <div class="dashboard-header card border-0 shadow-sm mb-4">
+    <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+
+      <div>
+        <div class="d-flex align-items-center gap-3">
+          <div class="dashboard-header-icon">
+            <i class="bi bi-speedometer2"></i>
+          </div>
+
+          <div>
+            <h1 class="mb-1 fw-bold">Dashboard</h1>
+            <p class="text-muted mb-0">
+              Apartment Management Overview
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-date">
+        <i class="bi bi-building me-2"></i>
+        Apartment Management
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Summary Cards -->
+  <div class="row g-4 mb-4">
+
+    <!-- Residents -->
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="dashboard-card residents-card card border-0 shadow-sm h-100">
+
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between align-items-start">
+
+            <div>
+              <p class="card-label mb-2">
+                Total Residents
+              </p>
+
+              <h2 class="card-number mb-2">
+                {{ totalResidents }}
+              </h2>
+
+              <span class="card-status text-success">
+                <i class="bi bi-people-fill me-1"></i>
+                Registered residents
+              </span>
+            </div>
+
+            <div class="stat-icon">
+              <i class="bi bi-people-fill"></i>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Payments -->
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="dashboard-card payments-card card border-0 shadow-sm h-100">
+
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between align-items-start">
+
+            <div>
+              <p class="card-label mb-2">
+                Total Payments
+              </p>
+
+              <h2 class="card-number mb-2">
+                {{ totalPayments }}
+              </h2>
+
+              <span class="card-status text-primary">
+                <i class="bi bi-credit-card-fill me-1"></i>
+                Payment records
+              </span>
+            </div>
+
+            <div class="stat-icon">
+              <i class="bi bi-credit-card-fill"></i>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Complaints -->
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="dashboard-card complaints-card card border-0 shadow-sm h-100">
+
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between align-items-start">
+
+            <div>
+              <p class="card-label mb-2">
+                Total Complaints
+              </p>
+
+              <h2 class="card-number mb-2">
+                {{ totalComplaints }}
+              </h2>
+
+              <span class="card-status text-warning">
+                <i class="bi bi-chat-left-text-fill me-1"></i>
+                Resident complaints
+              </span>
+            </div>
+
+            <div class="stat-icon">
+              <i class="bi bi-chat-left-text-fill"></i>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+
+    <!-- Emergencies -->
+    <div class="col-12 col-sm-6 col-xl-3">
+      <div class="dashboard-card emergency-card card border-0 shadow-sm h-100">
+
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between align-items-start">
+
+            <div>
+              <p class="card-label mb-2">
+                Emergencies
+              </p>
+
+              <h2 class="card-number mb-2">
+                {{ totalEmergencies }}
+              </h2>
+
+              <span class="card-status text-danger">
+                <i class="bi bi-shield-exclamation me-1"></i>
+                Emergency requests
+              </span>
+            </div>
+
+            <div class="stat-icon">
+              <i class="bi bi-shield-exclamation"></i>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- Overview Section -->
+  <div class="row g-4">
+
+    <!-- Management Overview -->
+    <div class="col-12 col-lg-8">
+
+      <div class="card border-0 shadow-sm h-100">
+
+        <div class="card-header bg-white border-0 pt-4 px-4">
+
+          <div class="d-flex justify-content-between align-items-center">
+
+            <div>
+              <h5 class="fw-bold mb-1">
+                Management Overview
+              </h5>
+
+              <p class="text-muted small mb-0">
+                Current apartment management statistics
+              </p>
+            </div>
+
+            <i class="bi bi-bar-chart-line text-primary fs-4"></i>
+
+          </div>
+
+        </div>
+
+        <div class="card-body px-4">
+
+          <div class="overview-item">
+
+            <div class="d-flex justify-content-between mb-2">
+              <span>
+                <i class="bi bi-people text-primary me-2"></i>
+                Residents
+              </span>
+
+              <strong>{{ totalResidents }}</strong>
+            </div>
+
+            <div class="progress" style="height: 8px;">
+              <div
+                class="progress-bar bg-primary"
+                style="width: 75%;">
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="overview-item">
+
+            <div class="d-flex justify-content-between mb-2">
+              <span>
+                <i class="bi bi-credit-card text-success me-2"></i>
+                Payments
+              </span>
+
+              <strong>{{ totalPayments }}</strong>
+            </div>
+
+            <div class="progress" style="height: 8px;">
+              <div
+                class="progress-bar bg-success"
+                style="width: 65%;">
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="overview-item">
+
+            <div class="d-flex justify-content-between mb-2">
+              <span>
+                <i class="bi bi-chat-left-text text-warning me-2"></i>
+                Complaints
+              </span>
+
+              <strong>{{ totalComplaints }}</strong>
+            </div>
+
+            <div class="progress" style="height: 8px;">
+              <div
+                class="progress-bar bg-warning"
+                style="width: 45%;">
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="overview-item mb-0">
+
+            <div class="d-flex justify-content-between mb-2">
+              <span>
+                <i class="bi bi-shield-exclamation text-danger me-2"></i>
+                Emergencies
+              </span>
+
+              <strong>{{ totalEmergencies }}</strong>
+            </div>
+
+            <div class="progress" style="height: 8px;">
+              <div
+                class="progress-bar bg-danger"
+                style="width: 25%;">
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+    <div class="col-12 col-lg-4">
+
+      <div class="card border-0 shadow-sm h-100">
+
+        <div class="card-header bg-white border-0 pt-4 px-4">
+
+          <h5 class="fw-bold mb-1">
+            Quick Actions
+          </h5>
+
+          <p class="text-muted small mb-0">
+            Frequently used management actions
+          </p>
+
+        </div>
+
+        <div class="card-body px-4">
+
+          <button class="quick-action">
+            <span class="quick-icon resident-icon">
+              <i class="bi bi-person-plus-fill"></i>
+            </span>
+
+            <span>
+              <strong>Add Resident</strong>
+              <small>Register a new resident</small>
+            </span>
+
+            <i class="bi bi-chevron-right ms-auto"></i>
+          </button>
+
+
+          <button class="quick-action">
+            <span class="quick-icon payment-icon">
+              <i class="bi bi-credit-card-fill"></i>
+            </span>
+
+            <span>
+              <strong>Record Payment</strong>
+              <small>Add a new payment</small>
+            </span>
+
+            <i class="bi bi-chevron-right ms-auto"></i>
+          </button>
+
+
+          <button class="quick-action">
+            <span class="quick-icon complaint-icon">
+              <i class="bi bi-chat-left-text-fill"></i>
+            </span>
+
+            <span>
+              <strong>Raise Complaint</strong>
+              <small>Create a complaint</small>
+            </span>
+
+            <i class="bi bi-chevron-right ms-auto"></i>
+          </button>
+
+
+          <button class="quick-action mb-0">
+            <span class="quick-icon emergency-icon">
+              <i class="bi bi-shield-exclamation"></i>
+            </span>
+
+            <span>
+              <strong>Report Emergency</strong>
+              <small>Create emergency request</small>
+            </span>
+
+            <i class="bi bi-chevron-right ms-auto"></i>
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
