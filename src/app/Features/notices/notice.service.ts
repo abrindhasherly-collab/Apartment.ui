@@ -60,7 +60,7 @@ export interface UpdateNotice {
 export class NoticeService {
 
   private apiUrl =
-    'https://localhost:xxxx/api/Notices';
+    'https://localhost:7202/api/Notices';
 
   notices = signal<Notice[]>([]);
 

@@ -2,26 +2,26 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
 
-  // {
-  //   path: '',
-  //   redirectTo: 'login',
-  //   pathMatch: 'full'
-  // },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
 
-  // // AUTH
-  // {
-  //   path: 'login',
-  //   loadComponent: () =>
-  //     import('./Features/auth/login/login')
-  //       .then(m => m.Login)
-  // },
+  // AUTH
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./Features/auth/login/login')
+        .then(m => m.Login)
+  },
 
-  // {
-  //   path: 'register',
-  //   loadComponent: () =>
-  //     import('./Features/auth/register/register')
-  //       .then(m => m.Register)
-  // },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./Features/auth/register/register')
+        .then(m => m.Register)
+  },
 
   // USERS
   {
@@ -287,9 +287,9 @@ export const routes: Routes = [
 
 
 
-  // // INVALID URL
-  // {
-  //   path: '**',
-  //   redirectTo: 'login'
-  // }
+  // INVALID URL
+  {
+    path: '**',
+    redirectTo: 'login'
+  }
 ];
