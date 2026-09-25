@@ -14,6 +14,7 @@ import {
   Router,
   RouterLink
 } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { AuthService } from '../auth.service';
 
@@ -40,7 +41,8 @@ export class Register {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
 
     this.registerForm = this.fb.group({
@@ -96,6 +98,10 @@ export class Register {
         next: () => {
 
           this.loading.set(false);
+          this.toastr.success(
+  'Registration successful.',
+  'Success'
+);
 
           alert('Registration successful.');
 
@@ -107,6 +113,10 @@ export class Register {
           console.error(error);
 
           this.loading.set(false);
+          this.toastr.error(
+  'Registration failed.',
+  'Error'
+);
 
           this.errorMessage.set(
             'Registration failed.'

@@ -1,3 +1,4 @@
+
 import {
   Component,
   OnInit,
@@ -19,6 +20,8 @@ import {
 import {
   DocumentService
 } from '../document.service';
+
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -60,7 +63,9 @@ export class DocumentForm implements OnInit {
 
     private route: ActivatedRoute,
 
-    private router: Router
+    private router: Router,
+
+    private toastr: ToastrService
   ) {
 
 
@@ -149,6 +154,11 @@ export class DocumentForm implements OnInit {
 
           this.loading.set(false);
 
+          this.toastr.error(
+            'Unable to load document.',
+            'Error'
+          );
+
         }
 
       });
@@ -190,6 +200,11 @@ export class DocumentForm implements OnInit {
 
       this.errorMessage.set(
         'Please select a PDF file.'
+      );
+
+      this.toastr.error(
+        'Please select a PDF file.',
+        'Invalid File'
       );
 
       this.selectedFile = null;
@@ -240,6 +255,11 @@ export class DocumentForm implements OnInit {
           'Please select a PDF file.'
         );
 
+        this.toastr.error(
+          'Please select a PDF file.',
+          'File Required'
+        );
+
         return;
 
       }
@@ -273,6 +293,11 @@ export class DocumentForm implements OnInit {
 
           next: () => {
 
+            this.toastr.success(
+              'Document uploaded successfully.',
+              'Success'
+            );
+
             this.router.navigate([
               '/documents'
             ]);
@@ -289,6 +314,11 @@ export class DocumentForm implements OnInit {
             );
 
             this.loading.set(false);
+
+            this.toastr.error(
+              'Unable to upload document.',
+              'Error'
+            );
 
           }
 
@@ -331,6 +361,11 @@ export class DocumentForm implements OnInit {
 
           next: () => {
 
+            this.toastr.success(
+              'Document updated successfully.',
+              'Success'
+            );
+
             this.router.navigate([
               '/documents'
             ]);
@@ -347,6 +382,11 @@ export class DocumentForm implements OnInit {
             );
 
             this.loading.set(false);
+
+            this.toastr.error(
+              'Unable to update document.',
+              'Error'
+            );
 
           }
 
@@ -368,3 +408,4 @@ export class DocumentForm implements OnInit {
   }
 
 }
+

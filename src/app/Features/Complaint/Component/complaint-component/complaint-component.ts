@@ -41,6 +41,15 @@ export class ComplaintComponent implements OnInit {
 
 
   // =========================
+  // Toast Signals
+  // =========================
+
+  toastMessage = signal('');
+  toastType = signal<'success' | 'error'>('success');
+  showToast = signal(false);
+
+
+  // =========================
   // Form
   // =========================
 
@@ -52,9 +61,13 @@ export class ComplaintComponent implements OnInit {
   };
 
 
+  // =========================
+  // Constructor
+  // =========================
+
   constructor(
     private complaintService: ComplaintService
-  ) { }
+  ) {}
 
 
   // =========================
@@ -76,14 +89,14 @@ export class ComplaintComponent implements OnInit {
 
     this.complaintService.getAll().subscribe({
 
-      next: data => {
+      next: (data) => {
 
         this.complaints.set(data);
 
         this.loading.set(false);
       },
 
-      error: error => {
+      error: (error) => {
 
         console.error(error);
 
@@ -92,6 +105,11 @@ export class ComplaintComponent implements OnInit {
         );
 
         this.loading.set(false);
+
+        this.showToastMessage(
+          'Unable to load complaints.',
+          'error'
+        );
       }
 
     });
@@ -138,8 +156,32 @@ export class ComplaintComponent implements OnInit {
 
 
       return matchesSearch && matchesStatus;
+
     });
+
   });
+
+
+  // =========================
+  // Search
+  // =========================
+
+  onSearchChange(value: string): void {
+
+    this.searchText.set(value);
+
+  }
+
+
+  // =========================
+  // Status Filter
+  // =========================
+
+  onStatusChange(value: string): void {
+
+    this.statusFilter.set(value);
+
+  }
 
 
   // =========================
@@ -155,10 +197,15 @@ export class ComplaintComponent implements OnInit {
     this.selectedComplaintId.set(null);
 
     this.complaintForm = {
+
       residentId: 0,
+
       flatId: 0,
+
       title: '',
+
       description: ''
+
     };
   }
 
@@ -184,6 +231,7 @@ export class ComplaintComponent implements OnInit {
       title: complaint.title,
 
       description: complaint.description
+
     };
   }
 
@@ -194,12 +242,20 @@ export class ComplaintComponent implements OnInit {
 
   saveComplaint(): void {
 
+    // Validation
+
     if (
       this.complaintForm.residentId <= 0 ||
       this.complaintForm.flatId <= 0 ||
-      !this.complaintForm.title ||
-      !this.complaintForm.description
+      !this.complaintForm.title.trim() ||
+      !this.complaintForm.description.trim()
     ) {
+
+      this.showToastMessage(
+        'Please fill all required fields.',
+        'error'
+      );
+
       return;
     }
 
@@ -219,6 +275,12 @@ export class ComplaintComponent implements OnInit {
 
 
       if (!existing) {
+
+        this.showToastMessage(
+          'Complaint not found.',
+          'error'
+        );
+
         return;
       }
 
@@ -228,6 +290,7 @@ export class ComplaintComponent implements OnInit {
         ...this.complaintForm,
 
         status: existing.status
+
       };
 
 
@@ -242,17 +305,30 @@ export class ComplaintComponent implements OnInit {
 
             this.closeForm();
 
+            this.showToastMessage(
+              'Complaint updated successfully.',
+              'success'
+            );
+
             this.loadComplaints();
+
           },
 
-          error: error => {
+          error: (error) => {
 
             console.error(error);
+
+            this.showToastMessage(
+              'Unable to update complaint.',
+              'error'
+            );
+
           }
 
         });
 
     }
+
 
     // =========================
     // CREATE
@@ -268,16 +344,30 @@ export class ComplaintComponent implements OnInit {
 
             this.closeForm();
 
+            this.showToastMessage(
+              'Complaint created successfully.',
+              'success'
+            );
+
             this.loadComplaints();
+
           },
 
-          error: error => {
+          error: (error) => {
 
             console.error(error);
+
+            this.showToastMessage(
+              'Unable to create complaint.',
+              'error'
+            );
+
           }
 
         });
+
     }
+
   }
 
 
@@ -292,6 +382,7 @@ export class ComplaintComponent implements OnInit {
         'Are you sure you want to delete this complaint?'
       )
     ) {
+
       return;
     }
 
@@ -302,15 +393,28 @@ export class ComplaintComponent implements OnInit {
 
         next: () => {
 
+          this.showToastMessage(
+            'Complaint deleted successfully.',
+            'success'
+          );
+
           this.loadComplaints();
+
         },
 
-        error: error => {
+        error: (error) => {
 
           console.error(error);
+
+          this.showToastMessage(
+            'Unable to delete complaint.',
+            'error'
+          );
+
         }
 
       });
+
   }
 
 
@@ -321,6 +425,32 @@ export class ComplaintComponent implements OnInit {
   closeForm(): void {
 
     this.showForm.set(false);
+
+  }
+
+
+  // =========================
+  // Toast
+  // =========================
+
+  showToastMessage(
+    message: string,
+    type: 'success' | 'error'
+  ): void {
+
+    this.toastMessage.set(message);
+
+    this.toastType.set(type);
+
+    this.showToast.set(true);
+
+
+    setTimeout(() => {
+
+      this.showToast.set(false);
+
+    }, 3000);
+
   }
 
 
@@ -346,6 +476,9 @@ export class ComplaintComponent implements OnInit {
 
       default:
         return 'Unknown';
+
     }
+
   }
+
 }

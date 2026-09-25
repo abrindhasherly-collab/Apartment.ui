@@ -1,4 +1,3 @@
-
 import { Component, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -41,6 +40,19 @@ export class EmergencyComponent implements OnInit {
 
   selectedEmergencyId = signal<number | null>(null);
 
+
+  // ==============================
+  // Toast Signals
+  // ==============================
+
+  toastMessage = signal('');
+  toastType = signal<'success' | 'error'>('success');
+  showToast = signal(false);
+
+
+  // ==============================
+  // Emergency Form
+  // ==============================
 
   emergencyForm = signal<CreateEmergency>({
     residentId: 0,
@@ -95,6 +107,10 @@ export class EmergencyComponent implements OnInit {
   });
 
 
+  // ==============================
+  // Constructor
+  // ==============================
+
   constructor(
     private emergencyService: EmergencyService
   ) {}
@@ -105,7 +121,9 @@ export class EmergencyComponent implements OnInit {
   // ==============================
 
   ngOnInit(): void {
+
     this.loadEmergencies();
+
   }
 
 
@@ -124,6 +142,7 @@ export class EmergencyComponent implements OnInit {
         this.emergencies.set(data);
 
         this.loading.set(false);
+
       },
 
       error: error => {
@@ -135,9 +154,16 @@ export class EmergencyComponent implements OnInit {
         );
 
         this.loading.set(false);
+
+        this.showToastMessage(
+          'Unable to load emergency records.',
+          'error'
+        );
+
       }
 
     });
+
   }
 
 
@@ -154,12 +180,19 @@ export class EmergencyComponent implements OnInit {
     this.selectedEmergencyId.set(null);
 
     this.emergencyForm.set({
+
       residentId: 0,
+
       flatId: 0,
+
       emergencyType: '',
+
       description: '',
+
       priority: 1
+
     });
+
   }
 
 
@@ -176,12 +209,19 @@ export class EmergencyComponent implements OnInit {
     this.selectedEmergencyId.set(emergency.id);
 
     this.emergencyForm.set({
+
       residentId: emergency.residentId,
+
       flatId: emergency.flatId,
+
       emergencyType: emergency.emergencyType,
+
       description: emergency.description,
+
       priority: emergency.priority
+
     });
+
   }
 
 
@@ -193,13 +233,25 @@ export class EmergencyComponent implements OnInit {
 
     const form = this.emergencyForm();
 
+
+    // ==========================
+    // Validation
+    // ==========================
+
     if (
       form.residentId <= 0 ||
       form.flatId <= 0 ||
-      !form.emergencyType ||
-      !form.description
+      !form.emergencyType.trim() ||
+      !form.description.trim()
     ) {
+
+      this.showToastMessage(
+        'Please fill all required fields.',
+        'error'
+      );
+
       return;
+
     }
 
 
@@ -218,14 +270,25 @@ export class EmergencyComponent implements OnInit {
         x => x.id === id
       );
 
+
       if (!existing) {
+
+        this.showToastMessage(
+          'Emergency record not found.',
+          'error'
+        );
+
         return;
+
       }
 
 
       const updateData: UpdateEmergency = {
+
         ...form,
+
         status: existing.status
+
       };
 
 
@@ -237,17 +300,30 @@ export class EmergencyComponent implements OnInit {
 
             this.closeForm();
 
+            this.showToastMessage(
+              'Emergency updated successfully.',
+              'success'
+            );
+
             this.loadEmergencies();
+
           },
 
           error: error => {
 
             console.error(error);
+
+            this.showToastMessage(
+              'Unable to update emergency.',
+              'error'
+            );
+
           }
 
         });
 
     }
+
 
     // ==========================
     // CREATE
@@ -263,16 +339,30 @@ export class EmergencyComponent implements OnInit {
 
             this.closeForm();
 
+            this.showToastMessage(
+              'Emergency created successfully.',
+              'success'
+            );
+
             this.loadEmergencies();
+
           },
 
           error: error => {
 
             console.error(error);
+
+            this.showToastMessage(
+              'Unable to create emergency.',
+              'error'
+            );
+
           }
 
         });
+
     }
+
   }
 
 
@@ -287,7 +377,9 @@ export class EmergencyComponent implements OnInit {
         'Are you sure you want to delete this emergency?'
       )
     ) {
+
       return;
+
     }
 
 
@@ -297,15 +389,28 @@ export class EmergencyComponent implements OnInit {
 
         next: () => {
 
+          this.showToastMessage(
+            'Emergency deleted successfully.',
+            'success'
+          );
+
           this.loadEmergencies();
+
         },
 
         error: error => {
 
           console.error(error);
+
+          this.showToastMessage(
+            'Unable to delete emergency.',
+            'error'
+          );
+
         }
 
       });
+
   }
 
 
@@ -316,6 +421,32 @@ export class EmergencyComponent implements OnInit {
   closeForm(): void {
 
     this.showForm.set(false);
+
+  }
+
+
+  // ==============================
+  // Toast
+  // ==============================
+
+  showToastMessage(
+    message: string,
+    type: 'success' | 'error'
+  ): void {
+
+    this.toastMessage.set(message);
+
+    this.toastType.set(type);
+
+    this.showToast.set(true);
+
+
+    setTimeout(() => {
+
+      this.showToast.set(false);
+
+    }, 3000);
+
   }
 
 
@@ -341,7 +472,9 @@ export class EmergencyComponent implements OnInit {
 
       default:
         return 'Unknown';
+
     }
+
   }
 
 
@@ -364,6 +497,9 @@ export class EmergencyComponent implements OnInit {
 
       default:
         return 'Unknown';
+
     }
+
   }
+
 }

@@ -1,3 +1,4 @@
+
 import {
   Component,
   OnInit,
@@ -10,13 +11,11 @@ import {
   RouterLink
 } from '@angular/router';
 
-// import {
-//   Building
-// } from '../building.model';
-
 import {
   BuildingService
 } from '../building.service';
+
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-building-details',
@@ -38,7 +37,8 @@ export class BuildingDetails implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private buildingService: BuildingService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +74,11 @@ export class BuildingDetails implements OnInit {
           );
 
           this.loading.set(false);
+
+          this.toastr.error(
+            'Building not found.',
+            'Error'
+          );
         }
 
       });
@@ -97,6 +102,11 @@ export class BuildingDetails implements OnInit {
 
         next: () => {
 
+          this.toastr.success(
+            'Building deleted successfully.',
+            'Success'
+          );
+
           this.router.navigate(['/buildings']);
         },
 
@@ -107,8 +117,14 @@ export class BuildingDetails implements OnInit {
           this.errorMessage.set(
             'Unable to delete building.'
           );
+
+          this.toastr.error(
+            'Unable to delete building.',
+            'Error'
+          );
         }
 
       });
   }
 }
+

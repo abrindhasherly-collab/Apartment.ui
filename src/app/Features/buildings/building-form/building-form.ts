@@ -22,6 +22,8 @@ import {
   UpdateBuilding
 } from '../building.service';
 
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-building-form',
   standalone: true,
@@ -47,57 +49,34 @@ export class BuildingForm implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private buildingService: BuildingService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private buildingService: BuildingService,
+    private toastr: ToastrService
   ) {
 
     this.buildingForm = this.fb.group({
-
-      name: [
-        '',
-        Validators.required
-      ],
-
-      address: [
-        '',
-        Validators.required
-      ],
-
-      totalFloors: [
-        1,
-        [
-          Validators.required,
-          Validators.min(1)
-        ]
-      ],
-
-      totalFlats: [
-        1,
-        [
-          Validators.required,
-          Validators.min(1)
-        ]
-      ],
-
-      isActive: [
-        true
-      ]
-
+      name: ['', Validators.required],
+      address: ['', Validators.required],
+      totalFloors: [0, [Validators.required, Validators.min(1)]],
+      totalFlats: [0, [Validators.required, Validators.min(1)]],
+      isActive: [true]
     });
   }
 
   ngOnInit(): void {
 
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = Number(
+      this.route.snapshot.paramMap.get('id')
+    );
 
     if (id) {
 
-      this.buildingId = Number(id);
-
       this.isEdit.set(true);
 
-      this.loadBuilding(this.buildingId);
+      this.buildingId = id;
+
+      this.loadBuilding(id);
     }
   }
 
@@ -109,9 +88,15 @@ export class BuildingForm implements OnInit {
       .getById(id)
       .subscribe({
 
-        next: building => {
+        next: data => {
 
-          this.buildingForm.patchValue(building);
+          this.buildingForm.patchValue({
+            name: data.name,
+            address: data.address,
+            totalFloors: data.totalFloors,
+            totalFlats: data.totalFlats,
+            isActive: data.isActive
+          });
 
           this.loading.set(false);
         },
@@ -125,6 +110,11 @@ export class BuildingForm implements OnInit {
           );
 
           this.loading.set(false);
+
+          this.toastr.error(
+            'Unable to load building.',
+            'Error'
+          );
         }
 
       });
@@ -145,33 +135,28 @@ export class BuildingForm implements OnInit {
 
     if (this.isEdit()) {
 
-      const updateData: UpdateBuilding = {
-
+      const building: UpdateBuilding = {
         name: this.buildingForm.value.name,
-
         address: this.buildingForm.value.address,
-
         totalFloors: this.buildingForm.value.totalFloors,
-
         totalFlats: this.buildingForm.value.totalFlats,
-
         isActive: this.buildingForm.value.isActive
-
       };
 
       this.buildingService
-        .update(
-          this.buildingId,
-          updateData
-        )
+        .update(this.buildingId, building)
         .subscribe({
 
           next: () => {
 
-            this.router.navigate([
-              '/buildings'
-            ]);
+            this.loading.set(false);
 
+            this.toastr.success(
+              'Building updated successfully.',
+              'Success'
+            );
+
+            this.router.navigate(['/buildings']);
           },
 
           error: error => {
@@ -183,34 +168,38 @@ export class BuildingForm implements OnInit {
             );
 
             this.loading.set(false);
+
+            this.toastr.error(
+              'Unable to update building.',
+              'Error'
+            );
           }
 
         });
 
     } else {
 
-      const createData: CreateBuilding = {
-
+      const building: CreateBuilding = {
         name: this.buildingForm.value.name,
-
         address: this.buildingForm.value.address,
-
         totalFloors: this.buildingForm.value.totalFloors,
-
         totalFlats: this.buildingForm.value.totalFlats
-
       };
 
       this.buildingService
-        .create(createData)
+        .create(building)
         .subscribe({
 
           next: () => {
 
-            this.router.navigate([
-              '/buildings'
-            ]);
+            this.loading.set(false);
 
+            this.toastr.success(
+              'Building created successfully.',
+              'Success'
+            );
+
+            this.router.navigate(['/buildings']);
           },
 
           error: error => {
@@ -222,6 +211,11 @@ export class BuildingForm implements OnInit {
             );
 
             this.loading.set(false);
+
+            this.toastr.error(
+              'Unable to create building.',
+              'Error'
+            );
           }
 
         });
@@ -230,8 +224,6 @@ export class BuildingForm implements OnInit {
 
   cancel(): void {
 
-    this.router.navigate([
-      '/buildings'
-    ]);
+    this.router.navigate(['/buildings']);
   }
 }

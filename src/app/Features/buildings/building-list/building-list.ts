@@ -1,3 +1,4 @@
+
 import {
   Component,
   OnInit,
@@ -12,6 +13,8 @@ import {
   BuildingService,
   Building
 } from '../building.service';
+
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-building-list',
@@ -31,7 +34,8 @@ export class BuildingList implements OnInit {
   loading = signal(false);
 
   constructor(
-    private buildingService: BuildingService
+    private buildingService: BuildingService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +63,11 @@ export class BuildingList implements OnInit {
           console.error(error);
 
           this.loading.set(false);
+
+          this.toastr.error(
+            'Unable to load buildings.',
+            'Error'
+          );
         }
 
       });
@@ -76,6 +85,11 @@ export class BuildingList implements OnInit {
 
         next: () => {
 
+          this.toastr.success(
+            'Building deleted successfully.',
+            'Success'
+          );
+
           this.loadBuildings();
         },
 
@@ -83,9 +97,13 @@ export class BuildingList implements OnInit {
 
           console.error(error);
 
-          alert('Delete failed.');
+          this.toastr.error(
+            'Delete failed.',
+            'Error'
+          );
         }
 
       });
   }
 }
+

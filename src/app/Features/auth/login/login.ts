@@ -14,6 +14,7 @@ import {
   Router,
   RouterLink
 } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 import { AuthService } from '../auth.service';
 
@@ -40,7 +41,8 @@ export class Login {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {
 
     this.loginForm = this.fb.group({
@@ -83,9 +85,11 @@ export class Login {
           localStorage.setItem(
             'token',
             response.token
+            
           );
 
           this.loading.set(false);
+          this.toastr.success('Login successful!', 'Success');
 
           this.router.navigate(['/users']);
         },

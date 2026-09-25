@@ -1,3 +1,4 @@
+
 import {
   DatePipe
 } from '@angular/common';
@@ -16,6 +17,8 @@ import {
   DocumentService,
   ApartmentDocument
 } from '../document.service';
+
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-document-list',
@@ -38,7 +41,8 @@ export class DocumentList implements OnInit {
   errorMessage = signal('');
 
   constructor(
-    private documentService: DocumentService
+    private documentService: DocumentService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -71,6 +75,11 @@ export class DocumentList implements OnInit {
           );
 
           this.loading.set(false);
+
+          this.toastr.error(
+            'Unable to load documents.',
+            'Error'
+          );
         }
 
       });
@@ -92,6 +101,11 @@ export class DocumentList implements OnInit {
 
         next: () => {
 
+          this.toastr.success(
+            'Document deleted successfully.',
+            'Success'
+          );
+
           this.loadDocuments();
         },
 
@@ -99,9 +113,13 @@ export class DocumentList implements OnInit {
 
           console.error(error);
 
-          alert('Delete failed.');
+          this.toastr.error(
+            'Delete failed.',
+            'Error'
+          );
         }
 
       });
   }
 }
+

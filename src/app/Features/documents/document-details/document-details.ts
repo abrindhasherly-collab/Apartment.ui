@@ -1,6 +1,8 @@
+
 import {
   DatePipe
 } from '@angular/common';
+
 import {
   Component,
   OnInit,
@@ -18,12 +20,17 @@ import {
   ApartmentDocument
 } from '../document.service';
 
+import { ToastrService } from 'ngx-toastr';
+
 @Component({
   selector: 'app-document-details',
   standalone: true,
+
   imports: [
-    RouterLink,DatePipe
+    RouterLink,
+    DatePipe
   ],
+
   templateUrl: './document-details.html',
   styleUrl: './document-details.css'
 })
@@ -38,7 +45,8 @@ export class DocumentDetails implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private documentService: DocumentService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -76,6 +84,11 @@ export class DocumentDetails implements OnInit {
 
           this.loading.set(false);
 
+          this.toastr.error(
+            'Document not found.',
+            'Error'
+          );
+
         }
 
       });
@@ -103,6 +116,11 @@ export class DocumentDetails implements OnInit {
 
         next: () => {
 
+          this.toastr.success(
+            'Document deleted successfully.',
+            'Success'
+          );
+
           this.router.navigate([
             '/documents'
           ]);
@@ -117,8 +135,14 @@ export class DocumentDetails implements OnInit {
             'Unable to delete document.'
           );
 
+          this.toastr.error(
+            'Unable to delete document.',
+            'Error'
+          );
+
         }
 
       });
   }
 }
+
