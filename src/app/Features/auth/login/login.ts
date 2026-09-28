@@ -87,7 +87,7 @@ export class Login {
 
           this.loading.set(false);
 
-          this.router.navigate(['/users']);
+          this.router.navigate(['/dashboard']);
         },
 
         error: (error:any) => {

@@ -1,94 +1,86 @@
-<nav class="navbar">
+<nav class="sidebar">
 
-  <!-- Logo / Brand -->
-  <div class="navbar-brand" routerLink="/dashboard">
+  <div class="logo">
     <span class="logo-icon">🏢</span>
-    <span>Apartment Management</span>
+    <span>Apartment<br>Management</span>
   </div>
 
-  <!-- Mobile Menu Button -->
-  <button class="menu-btn" (click)="toggleMenu()">
-    ☰
-  </button>
+  <div class="menu">
 
-  <!-- Navigation Links -->
-  <div class="nav-links" [class.active]="menuOpen">
-
-    <a routerLink="/buildings"
+    <a routerLink="/dashboard"
        routerLinkActive="active"
-       (click)="closeMenu()">
-      🏢 Buildings
+       [routerLinkActiveOptions]="{ exact: true }">
+      <span class="icon">📊</span>
+      <span>Dashboard</span>
     </a>
 
-    <a routerLink="/complaint"
-       routerLinkActive="active"
-       (click)="closeMenu()">
-      📢 Complaint
+    <a routerLink="/buildings" routerLinkActive="active">
+      <span class="icon">🏢</span>
+      <span>Buildings</span>
     </a>
 
-    <a routerLink="/documents"
-       routerLinkActive="active"
-       (click)="closeMenu()">
-      📄 Documents
+    <a routerLink="/complaint" routerLinkActive="active">
+      <span class="icon">📢</span>
+      <span>Complaint</span>
     </a>
 
-    <a routerLink="/emergency"
-       routerLinkActive="active"
-       (click)="closeMenu()">
-      🚨 Emergency
+    <a routerLink="/documents" routerLinkActive="active">
+      <span class="icon">📄</span>
+      <span>Documents</span>
     </a>
 
-    <a routerLink="/flats"
-       routerLinkActive="active"
-       (click)="closeMenu()">
-      🏠 Flats
+    <a routerLink="/emergency" routerLinkActive="active">
+      <span class="icon">🚨</span>
+      <span>Emergency</span>
     </a>
 
-    <a routerLink="/maintenance"
-       routerLinkActive="active"
-       (click)="closeMenu()">
-      🔧 Maintenance
+    <a routerLink="/flats" routerLinkActive="active">
+      <span class="icon">🏠</span>
+      <span>Flats</span>
     </a>
 
-    <a routerLink="/notices"
-       routerLinkActive="active"
-       (click)="closeMenu()">
-      📢 Notices
+    <a routerLink="/maintenance" routerLinkActive="active">
+      <span class="icon">🔧</span>
+      <span>Maintenance</span>
     </a>
 
-    <a routerLink="/parking"
-       routerLinkActive="active"
-       (click)="closeMenu()">
-      🚗 Parking
+    <a routerLink="/notices" routerLinkActive="active">
+      <span class="icon">📢</span>
+      <span>Notices</span>
     </a>
 
-    <a routerLink="/payment"
-       routerLinkActive="active"
-       (click)="closeMenu()">
-      💳 Payment
+    <a routerLink="/parking" routerLinkActive="active">
+      <span class="icon">🚗</span>
+      <span>Parking</span>
     </a>
 
-    <a routerLink="/resident"
-       routerLinkActive="active"
-       (click)="closeMenu()">
-      👤 Resident
+    <a routerLink="/payment" routerLinkActive="active">
+      <span class="icon">💳</span>
+      <span>Payment</span>
     </a>
 
-    <a routerLink="/staff"
-       routerLinkActive="active"
-       (click)="closeMenu()">
-      👨‍💼 Staff
+    <a routerLink="/resident" routerLinkActive="active">
+      <span class="icon">👤</span>
+      <span>Resident</span>
     </a>
 
-    <a routerLink="/users"
-       routerLinkActive="active"
-       (click)="closeMenu()">
-      👥 Users
+    <a routerLink="/staff" routerLinkActive="active">
+      <span class="icon">👨‍💼</span>
+      <span>Staff</span>
     </a>
 
-    <!-- Logout -->
-    <button class="logout-btn" (click)="logout()">
-      🚪 Logout
+    <a routerLink="/users" routerLinkActive="active">
+      <span class="icon">👥</span>
+      <span>Users</span>
+    </a>
+
+  </div>
+
+  <div class="logout-section">
+
+    <button (click)="logout()" class="logout-btn">
+      <span class="icon">🚪</span>
+      <span>Logout</span>
     </button>
 
   </div>

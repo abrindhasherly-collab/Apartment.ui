@@ -1,0 +1,212 @@
+<div class="dashboard-container">
+
+  <!-- Dashboard Header -->
+  <div class="dashboard-header">
+    <div class="welcome-section">
+      <span class="welcome-label">APARTMENT MANAGEMENT</span>
+      <h1>Welcome back, Admin 👋</h1>
+      <p>Here's what's happening in your apartment today.</p>
+    </div>
+
+    <div class="dashboard-date">
+      <span class="date-icon">📅</span>
+      <div>
+        <small>Dashboard</small>
+        <strong>Overview</strong>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Dashboard Cards -->
+  <div class="dashboard-grid">
+
+    <!-- Residents -->
+    <div class="dashboard-card residents-card"
+         routerLink="/resident">
+
+      <div class="card-icon">
+        👥
+      </div>
+
+      <div class="card-content">
+        <span class="card-label">Residents</span>
+        <h2>{{ residentsCount() }}</h2>
+        <small>Registered residents</small>
+      </div>
+
+    </div>
+
+
+    <!-- Flats -->
+    <div class="dashboard-card flats-card"
+         routerLink="/flats">
+
+      <div class="card-icon">
+        🏠
+      </div>
+
+      <div class="card-content">
+        <span class="card-label">Flats</span>
+        <h2>{{ flatsCount() }}</h2>
+        <small>Total apartments</small>
+      </div>
+
+    </div>
+
+
+    <!-- Maintenance -->
+    <div class="dashboard-card maintenance-card"
+         routerLink="/maintenance">
+
+      <div class="card-icon">
+        🔧
+      </div>
+
+      <div class="card-content">
+        <span class="card-label">Maintenance</span>
+        <h2>{{ maintenanceCount() }}</h2>
+        <small>Maintenance requests</small>
+      </div>
+
+    </div>
+
+
+    <!-- Payments -->
+    <div class="dashboard-card payments-card"
+         routerLink="/payment">
+
+      <div class="card-icon">
+        💰
+      </div>
+
+      <div class="card-content">
+        <span class="card-label">Payments</span>
+        <h2>{{ paymentsCount() }}</h2>
+        <small>Payment records</small>
+      </div>
+
+    </div>
+
+
+    <!-- Complaints -->
+    <div class="dashboard-card complaints-card"
+         routerLink="/complaint">
+
+      <div class="card-icon">
+        📢
+      </div>
+
+      <div class="card-content">
+        <span class="card-label">Complaints</span>
+        <h2>{{ complaintsCount() }}</h2>
+        <small>Active complaints</small>
+      </div>
+
+    </div>
+
+
+    <!-- Emergency -->
+    <div class="dashboard-card emergency-card"
+         routerLink="/emergency">
+
+      <div class="card-icon">
+        🚨
+      </div>
+
+      <div class="card-content">
+        <span class="card-label">Emergencies</span>
+        <h2>{{ emergencyCount() }}</h2>
+        <small>Emergency reports</small>
+      </div>
+
+    </div>
+
+
+    <!-- Parking -->
+    <div class="dashboard-card parking-card"
+         routerLink="/parking">
+
+      <div class="card-icon">
+        🚗
+      </div>
+
+      <div class="card-content">
+        <span class="card-label">Parking</span>
+        <h2>{{ parkingCount() }}</h2>
+        <small>Parking spaces</small>
+      </div>
+
+    </div>
+
+
+    <!-- Staff -->
+    <div class="dashboard-card staff-card"
+         routerLink="/staff">
+
+      <div class="card-icon">
+        👨‍💼
+      </div>
+
+      <div class="card-content">
+        <span class="card-label">Staff</span>
+        <h2>{{ staffCount() }}</h2>
+        <small>Active staff</small>
+      </div>
+
+    </div>
+
+
+    <!-- Notices -->
+    <div class="dashboard-card notices-card"
+         routerLink="/notices">
+
+      <div class="card-icon">
+        📋
+      </div>
+
+      <div class="card-content">
+        <span class="card-label">Notices</span>
+        <h2>{{ noticesCount() }}</h2>
+        <small>Published notices</small>
+      </div>
+
+    </div>
+
+
+    <!-- Documents -->
+    <div class="dashboard-card documents-card"
+         routerLink="/documents">
+
+      <div class="card-icon">
+        📄
+      </div>
+
+      <div class="card-content">
+        <span class="card-label">Documents</span>
+        <h2>{{ documentsCount() }}</h2>
+        <small>Available documents</small>
+      </div>
+
+    </div>
+
+
+    <!-- Users -->
+    <div class="dashboard-card users-card"
+         routerLink="/users">
+
+      <div class="card-icon">
+        👤
+      </div>
+
+      <div class="card-content">
+        <span class="card-label">Users</span>
+        <h2>{{ usersCount() }}</h2>
+        <small>System users</small>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
