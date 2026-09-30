@@ -1,0 +1,541 @@
+/* =========================================
+   DASHBOARD CONTAINER
+========================================= */
+
+.dashboard-container {
+  min-height: calc(100vh - 70px);
+  padding: 30px;
+  position: relative;
+
+  background:
+    linear-gradient(
+      rgba(241, 245, 249, 0.94),
+      rgba(241, 245, 249, 0.97)
+    ),
+    url('/assets/images/apartment-bg.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  overflow-x: hidden;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 30px;
+}
+
+
+.welcome-section {
+  padding-left: 5px;
+}
+
+
+.welcome-label {
+  display: inline-block;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+
+  color: #64748b;
+
+  margin-bottom: 8px;
+}
+
+
+.welcome-section h1 {
+  margin: 0;
+
+  font-size: 30px;
+  font-weight: 700;
+
+  color: #172033;
+}
+
+
+.welcome-section p {
+  margin: 8px 0 0;
+
+  font-size: 15px;
+  color: #64748b;
+}
+
+
+/* =========================================
+   DATE / OVERVIEW BOX
+========================================= */
+
+.dashboard-date {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 13px 18px;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+
+  border-radius: 14px;
+
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+
+  backdrop-filter: blur(10px);
+}
+
+
+.date-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #eef2ff;
+
+  border-radius: 10px;
+
+  font-size: 20px;
+}
+
+
+.dashboard-date small {
+  display: block;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+
+.dashboard-date strong {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #334155;
+
+  font-size: 14px;
+}
+
+
+/* =========================================
+   DASHBOARD GRID
+========================================= */
+
+.dashboard-grid {
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  gap: 20px;
+}
+
+
+/* =========================================
+   DASHBOARD CARD
+========================================= */
+
+.dashboard-card {
+  position: relative;
+
+  min-height: 145px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 22px;
+
+  background: rgba(255, 255, 255, 0.92);
+
+  border-radius: 16px;
+
+  border: 1px solid rgba(255, 255, 255, 0.8);
+
+  box-shadow:
+    0 6px 20px rgba(15, 23, 42, 0.07);
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+
+/* Decorative line */
+
+.dashboard-card::before {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  top: 0;
+  bottom: 0;
+
+  width: 4px;
+
+  background: #6366f1;
+
+  border-radius: 16px 0 0 16px;
+}
+
+
+/* Hover */
+
+.dashboard-card:hover {
+  transform: translateY(-6px);
+
+  background: #ffffff;
+
+  box-shadow:
+    0 15px 35px rgba(15, 23, 42, 0.13);
+}
+
+
+/* =========================================
+   CARD ICON
+========================================= */
+
+.card-icon {
+  width: 58px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 14px;
+
+  margin-right: 17px;
+
+  font-size: 26px;
+
+  background: #f1f5f9;
+
+  transition: transform 0.25s ease;
+}
+
+
+.dashboard-card:hover .card-icon {
+  transform: scale(1.08);
+}
+
+
+/* =========================================
+   CARD CONTENT
+========================================= */
+
+.card-content {
+  min-width: 0;
+}
+
+
+.card-label {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #64748b;
+
+  font-size: 14px;
+
+  font-weight: 600;
+}
+
+
+.card-content h2 {
+  margin: 0;
+
+  color: #172033;
+
+  font-size: 30px;
+
+  line-height: 1;
+
+  font-weight: 700;
+}
+
+
+.card-content small {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   CARD COLORS
+========================================= */
+
+
+/* Residents */
+
+.residents-card::before {
+  background: #6366f1;
+}
+
+.residents-card .card-icon {
+  background: #eef2ff;
+}
+
+
+/* Flats */
+
+.flats-card::before {
+  background: #10b981;
+}
+
+.flats-card .card-icon {
+  background: #ecfdf5;
+}
+
+
+/* Maintenance */
+
+.maintenance-card::before {
+  background: #f59e0b;
+}
+
+.maintenance-card .card-icon {
+  background: #fffbeb;
+}
+
+
+/* Payments */
+
+.payments-card::before {
+  background: #22c55e;
+}
+
+.payments-card .card-icon {
+  background: #f0fdf4;
+}
+
+
+/* Complaints */
+
+.complaints-card::before {
+  background: #ef4444;
+}
+
+.complaints-card .card-icon {
+  background: #fef2f2;
+}
+
+
+/* Emergency */
+
+.emergency-card::before {
+  background: #dc2626;
+}
+
+.emergency-card .card-icon {
+  background: #fef2f2;
+}
+
+
+/* Parking */
+
+.parking-card::before {
+  background: #3b82f6;
+}
+
+.parking-card .card-icon {
+  background: #eff6ff;
+}
+
+
+/* Staff */
+
+.staff-card::before {
+  background: #8b5cf6;
+}
+
+.staff-card .card-icon {
+  background: #f5f3ff;
+}
+
+
+/* Notices */
+
+.notices-card::before {
+  background: #f97316;
+}
+
+.notices-card .card-icon {
+  background: #fff7ed;
+}
+
+
+/* Documents */
+
+.documents-card::before {
+  background: #64748b;
+}
+
+.documents-card .card-icon {
+  background: #f8fafc;
+}
+
+
+/* Users */
+
+.users-card::before {
+  background: #06b6d4;
+}
+
+.users-card .card-icon {
+  background: #ecfeff;
+}
+
+
+/* =========================================
+   LOADING
+========================================= */
+
+.loading {
+  text-align: center;
+
+  padding: 50px;
+
+  font-size: 18px;
+
+  color: #64748b;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.error-message {
+  padding: 14px 18px;
+
+  margin-bottom: 20px;
+
+  border-radius: 10px;
+
+  background: #fef2f2;
+
+  color: #dc2626;
+
+  border: 1px solid #fecaca;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1200px) {
+
+  .dashboard-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================
+   SMALL TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+  .dashboard-container {
+    padding: 25px;
+  }
+
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+
+  .dashboard-header {
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .dashboard-container {
+    padding: 18px;
+  }
+
+
+  .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+
+    margin-bottom: 22px;
+  }
+
+
+  .welcome-section h1 {
+    font-size: 24px;
+  }
+
+
+  .dashboard-date {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+
+    gap: 15px;
+  }
+
+
+  .dashboard-card {
+    min-height: 125px;
+
+    padding: 18px;
+  }
+
+
+  .card-icon {
+    width: 52px;
+    height: 52px;
+
+    font-size: 23px;
+  }
+
+
+  .card-content h2 {
+    font-size: 27px;
+  }
+
+}

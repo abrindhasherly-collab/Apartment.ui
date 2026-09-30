@@ -91,7 +91,7 @@ export class Login {
           this.loading.set(false);
           this.toastr.success('Login successful!', 'Success');
 
-          this.router.navigate(['/users']);
+          this.router.navigate(['/dashboard']);
         },
 
         error: (error:any) => {

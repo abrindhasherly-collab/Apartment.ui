@@ -1,217 +1,187 @@
-/* ================================
-   NAVBAR
-================================ */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
 
-.navbar {
-  width: 100%;
-  min-height: 65px;
-  background: #1e293b;
+  width: 240px;
+  height: 100vh;
+
+  background: #1f2a3d;
   color: white;
 
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
 
-  padding: 0 25px;
-  box-sizing: border-box;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
 
-  position: sticky;
-  top: 0;
   z-index: 1000;
-
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 }
 
 
-/* ================================
-   BRAND
-================================ */
+/* Logo */
 
-.navbar-brand {
+.logo {
+  height: 90px;
+
   display: flex;
   align-items: center;
-  gap: 10px;
 
-  font-size: 20px;
+  padding: 0 20px;
+
+  font-size: 17px;
   font-weight: 600;
 
-  cursor: pointer;
-  white-space: nowrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .logo-icon {
-  font-size: 25px;
+  font-size: 28px;
+  margin-right: 10px;
 }
 
 
-/* ================================
-   NAVIGATION
-================================ */
+/* Menu */
 
-.nav-links {
+.menu {
+  flex: 1;
+
+  padding: 15px 10px;
+
+  overflow-y: auto;
+}
+
+
+/* Menu links */
+
+.menu a {
   display: flex;
   align-items: center;
-  gap: 5px;
 
-  height: 100%;
-}
+  height: 46px;
 
-.nav-links a {
-  color: #e2e8f0;
+  padding: 0 15px;
+
+  margin-bottom: 5px;
+
+  color: #e4e8ef;
+
   text-decoration: none;
 
-  padding: 10px 12px;
-
-  border-radius: 6px;
+  border-radius: 7px;
 
   font-size: 14px;
-  font-weight: 500;
 
-  transition: all 0.2s ease;
+  transition: 0.2s;
 }
 
-.nav-links a:hover {
-  background: #334155;
+.menu a:hover {
+  background: #2d3a50;
   color: white;
 }
 
-
-/* Active route */
-
-.nav-links a.active {
-  background: #2563eb;
+.menu a.active {
+  background: #3b4d68;
   color: white;
+  font-weight: 600;
 }
 
 
-/* ================================
-   LOGOUT
-================================ */
+/* Icons */
+
+.icon {
+  width: 30px;
+
+  font-size: 17px;
+
+  display: inline-flex;
+  align-items: center;
+}
+
+
+/* Logout */
+
+.logout-section {
+  padding: 15px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
 
 .logout-btn {
+  width: 100%;
+
+  height: 45px;
+
   border: none;
 
-  background: #dc2626;
+  border-radius: 7px;
+
+  background: #ef4444;
+
   color: white;
 
-  padding: 10px 15px;
-
-  border-radius: 6px;
-
   font-size: 14px;
-  font-weight: 600;
 
   cursor: pointer;
 
-  margin-left: 8px;
+  display: flex;
+  align-items: center;
 
-  transition: background 0.2s ease;
+  padding: 0 15px;
 }
 
 .logout-btn:hover {
-  background: #b91c1c;
+  background: #dc2626;
 }
 
 
-/* ================================
-   MOBILE MENU BUTTON
-================================ */
+/* Scrollbar */
 
-.menu-btn {
-  display: none;
+.menu::-webkit-scrollbar {
+  width: 5px;
+}
 
-  background: transparent;
-  border: none;
-
-  color: white;
-
-  font-size: 28px;
-
-  cursor: pointer;
+.menu::-webkit-scrollbar-thumb {
+  background: #4b5870;
+  border-radius: 5px;
 }
 
 
-/* ================================
-   TABLET
-================================ */
+/* Responsive */
 
-@media (max-width: 1200px) {
+@media (max-width: 768px) {
 
-  .navbar {
-    padding: 0 15px;
+  .sidebar {
+    width: 70px;
   }
 
-  .navbar-brand {
-    font-size: 17px;
+  .logo {
+    justify-content: center;
+    padding: 0;
   }
 
-  .nav-links a {
-    padding: 8px 8px;
-    font-size: 13px;
-  }
-
-  .logout-btn {
-    padding: 8px 10px;
-  }
-}
-
-
-/* ================================
-   MOBILE
-================================ */
-
-@media (max-width: 900px) {
-
-  .navbar {
-    min-height: 60px;
-    position: relative;
-  }
-
-  .menu-btn {
-    display: block;
-  }
-
-  .nav-links {
+  .logo span:last-child {
     display: none;
-
-    position: absolute;
-
-    top: 60px;
-    left: 0;
-
-    width: 100%;
-
-    background: #1e293b;
-
-    flex-direction: column;
-
-    align-items: stretch;
-
-    padding: 10px;
-
-    box-sizing: border-box;
-
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   }
 
-  .nav-links.active {
-    display: flex;
+  .menu a {
+    justify-content: center;
+    padding: 0;
   }
 
-  .nav-links a {
-    width: 100%;
-    box-sizing: border-box;
+  .menu a span:last-child {
+    display: none;
+  }
 
-    padding: 12px 15px;
-
-    border-radius: 5px;
+  .icon {
+    width: auto;
   }
 
   .logout-btn {
-    width: 100%;
+    justify-content: center;
+    padding: 0;
+  }
 
-    margin: 5px 0 0;
-
-    padding: 12px;
+  .logout-btn span:last-child {
+    display: none;
   }
 }

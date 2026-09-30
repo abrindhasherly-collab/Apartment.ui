@@ -1,7 +1,13 @@
 import { Routes } from '@angular/router';
+import { AuthLayoutComponent } from './Shared/AuthLayout/authlayout/authlayout';
+import { MainLayoutComponent } from './Shared/MainLayout/main-layout/main-layout';
 
 export const routes: Routes = [
 
+  {
+    path: '',
+    component: AuthLayoutComponent,
+    children: [
   {
     path: '',
     redirectTo: 'login',
@@ -23,6 +29,20 @@ export const routes: Routes = [
         .then(m => m.Register)
   },
 
+  ]
+  },
+
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+
+  {
+  path: 'dashboard',
+  loadComponent: () =>
+    import('./Features/dashboard/dashboard')
+      .then(m => m.DashboardComponent)
+},
   // USERS
   {
     path: 'users',
@@ -284,7 +304,8 @@ export const routes: Routes = [
       import('./Features/Emergency/Component/emergency-component/emergency-component')
         .then(m => m.EmergencyComponent)
   },
-
+]
+},
 
 
   // INVALID URL

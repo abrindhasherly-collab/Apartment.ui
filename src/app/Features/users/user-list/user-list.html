@@ -1,134 +1,363 @@
-
 <div class="page">
+
+  <!-- =========================================
+       PAGE HEADER
+  ========================================== -->
 
   <div class="page-header">
 
-    <h2>Users</h2>
+    <div class="header-content">
+
+      <span class="page-label">
+        USER MANAGEMENT
+      </span>
+
+      <h2>Users</h2>
+
+      <p>
+        Manage residents, staff and system users.
+      </p>
+
+    </div>
 
     <a
       routerLink="/users/add"
       class="add-button">
 
-      + Add User
+      <span>+</span>
+      Add User
 
     </a>
 
   </div>
 
-  @if (loading()) {
 
-    <p>Loading users...</p>
+  <!-- =========================================
+       USER SUMMARY
+  ========================================== -->
 
-  } @else {
+  @if (!loading()) {
 
-    <div class="table-container">
+    <div class="summary-grid">
 
-      <table>
+      <!-- Total Users -->
 
-        <thead>
+      <div class="summary-card total">
 
-          <tr>
+        <div class="summary-icon">
+          👥
+        </div>
 
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Role</th>
-            <th>Status</th>
-            <th>Actions</th>
+        <div>
+          <span>Total Users</span>
+          <strong>{{ users().length }}</strong>
+          <small>Registered users</small>
+        </div>
 
-          </tr>
+      </div>
 
-        </thead>
 
-        <tbody>
+      <!-- Active Users -->
 
-          @for (user of users(); track user.id) {
+      <div class="summary-card active">
 
-            <tr>
+        <div class="summary-icon">
+          ✓
+        </div>
 
-              <td>{{ user.id }}</td>
+        <div>
+          <span>Active Users</span>
+          <strong>
+            {{ getActiveUsersCount() }}
+          </strong>
+          <small>Currently active</small>
+        </div>
 
-              <td>{{ user.name }}</td>
+      </div>
 
-              <td>{{ user.email }}</td>
 
-              <td>{{ user.phoneNumber }}</td>
+      <!-- Inactive Users -->
 
-              <td>
+      <div class="summary-card inactive">
 
-                @switch (user.role) {
+        <div class="summary-icon">
+          !
+        </div>
 
-                  @case (1) {
-                    Secretary
-                  }
+        <div>
+          <span>Inactive Users</span>
+          <strong>
+            {{ getInactiveUsersCount() }}
+          </strong>
+          <small>Currently inactive</small>
+        </div>
 
-                  @case (2) {
-                    Resident
-                  }
-
-                  @case (3) {
-                    Watchman
-                  }
-
-                  @case (4) {
-                    Owner
-                  }
-
-                }
-
-              </td>
-
-              <td>
-
-                @if (user.status === 1) {
-                  Active
-                } @else {
-                  Inactive
-                }
-
-              </td>
-
-              <td>
-
-                <a
-                  [routerLink]="['/users', user.id]"
-                  class="view">
-
-                  View
-
-                </a>
-
-                <a
-                  [routerLink]="[
-                    '/users/edit',
-                    user.id
-                  ]"
-                  class="edit">
-
-                  Edit
-
-                </a>
-
-                <button
-                  (click)="deleteUser(user.id)"
-                  class="delete">
-
-                  Delete
-
-                </button>
-
-              </td>
-
-            </tr>
-
-          }
-
-        </tbody>
-
-      </table>
+      </div>
 
     </div>
+
+
+    <!-- =========================================
+         SEARCH / FILTER BAR
+    ========================================== -->
+
+    <div class="toolbar">
+
+      <div class="search-box">
+
+        <span class="search-icon">
+          🔍
+        </span>
+
+        <input
+          type="text"
+          placeholder="Search users by name or email..."
+          [(ngModel)]="searchText"
+        />
+
+      </div>
+
+
+      <select
+        class="filter-select"
+        [(ngModel)]="selectedStatus">
+
+        <option value="all">
+          All Users
+        </option>
+
+        <option value="active">
+          Active
+        </option>
+
+        <option value="inactive">
+          Inactive
+        </option>
+
+      </select>
+
+
+      <a
+        routerLink="/users/add"
+        class="mobile-add-button">
+
+        + Add User
+
+      </a>
+
+    </div>
+
+  }
+
+
+  <!-- =========================================
+       LOADING
+  ========================================== -->
+
+  @if (loading()) {
+
+    <div class="loading-container">
+
+      <div class="loader"></div>
+
+      <p>Loading users...</p>
+
+    </div>
+
+  }
+
+
+  <!-- =========================================
+       USER CARDS
+  ========================================== -->
+
+  @else {
+
+    <div class="users-grid">
+
+      @for (
+        user of filteredUsers();
+        track user.id
+      ) {
+
+        <div class="user-card">
+
+
+          <!-- Card Top -->
+
+          <div class="user-card-top">
+
+            <div class="user-avatar">
+              {{ getInitials(user.name) }}
+            </div>
+
+
+            <div class="user-status">
+
+              @if (user.status === 1) {
+
+                <span class="status active-status">
+                  <span class="status-dot"></span>
+                  Active
+                </span>
+
+              } @else {
+
+                <span class="status inactive-status">
+                  <span class="status-dot"></span>
+                  Inactive
+                </span>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- User Information -->
+
+          <div class="user-info">
+
+            <h3>
+              {{ user.name }}
+            </h3>
+
+            <p class="user-role">
+
+              @switch (user.role) {
+
+                @case (1) {
+                  Secretary
+                }
+
+                @case (2) {
+                  Resident
+                }
+
+                @case (3) {
+                  Watchman
+                }
+
+                @case (4) {
+                  Owner
+                }
+
+                @default {
+                  User
+                }
+
+              }
+
+            </p>
+
+
+            <div class="user-details">
+
+              <div class="detail-row">
+
+                <span class="detail-icon">
+                  ✉
+                </span>
+
+                <span>
+                  {{ user.email }}
+                </span>
+
+              </div>
+
+
+              <div class="detail-row">
+
+                <span class="detail-icon">
+                  ☎
+                </span>
+
+                <span>
+                  {{ user.phoneNumber }}
+                </span>
+
+              </div>
+
+
+              <div class="detail-row">
+
+                <span class="detail-icon">
+                  #
+                </span>
+
+                <span>
+                  User ID: {{ user.id }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Actions -->
+
+          <div class="user-actions">
+
+            <a
+              [routerLink]="['/users', user.id]"
+              class="view-button">
+
+              View
+
+            </a>
+
+
+            <a
+              [routerLink]="[
+                '/users/edit',
+                user.id
+              ]"
+              class="edit-button">
+
+              Edit
+
+            </a>
+
+
+            <button
+              (click)="deleteUser(user.id)"
+              class="delete-button">
+
+              Delete
+
+            </button>
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+
+    <!-- Empty State -->
+
+    @if (filteredUsers().length === 0) {
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          👥
+        </div>
+
+        <h3>No users found</h3>
+
+        <p>
+          Try changing your search or filter.
+        </p>
+
+      </div>
+
+    }
 
   }
 
