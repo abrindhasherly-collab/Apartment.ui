@@ -11,15 +11,13 @@ import {
 
 import { filter } from 'rxjs';
 
-import { NavbarComponent } from './Shared/Navbar/navbar/navbar';
 
 @Component({
   selector: 'app-root',
   standalone: true,
 
   imports: [
-    RouterOutlet,
-    NavbarComponent
+    RouterOutlet
   ],
 
   templateUrl: './app.html',
