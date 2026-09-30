@@ -69,7 +69,7 @@ export interface UpdateUser {
 export class UserService {
 
   private apiUrl =
-    'https://localhost:xxxx/api/Users';
+    'https://localhost:7202/api/Users';
 
   users = signal<User[]>([]);
 
