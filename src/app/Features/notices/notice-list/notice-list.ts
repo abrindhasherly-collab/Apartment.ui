@@ -1,6 +1,4 @@
-import {
-  DatePipe
-} from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 import {
   Component,
@@ -17,6 +15,8 @@ import {
   NoticeService,
   Notice
 } from '../notice.service';
+import 
+{ CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-notice-list',
@@ -24,7 +24,8 @@ import {
 
   imports: [
     RouterLink,
-    DatePipe
+    DatePipe,
+    CommonModule,
   ],
 
   templateUrl: './notice-list.html',
@@ -38,20 +39,34 @@ export class NoticeList implements OnInit {
 
   errorMessage = signal('');
 
+
+  // Toast Signals
+  toastMessage = signal('');
+
+  toastType = signal<'success' | 'error'>('success');
+
+  showToast = signal(false);
+
+
   constructor(
     private noticeService: NoticeService,
     private router: Router
   ) {}
 
+
   ngOnInit(): void {
+
     this.loadNotices();
+
   }
+
 
   loadNotices(): void {
 
     this.loading.set(true);
 
     this.errorMessage.set('');
+
 
     this.noticeService
       .getAll()
@@ -62,6 +77,7 @@ export class NoticeList implements OnInit {
           this.notices.set(notices);
 
           this.loading.set(false);
+
         },
 
         error: error => {
@@ -73,10 +89,19 @@ export class NoticeList implements OnInit {
           );
 
           this.loading.set(false);
+
+
+          this.showToastMessage(
+            'Unable to load notices.',
+            'error'
+          );
+
         }
 
       });
+
   }
+
 
   deleteNotice(id: number): void {
 
@@ -85,8 +110,11 @@ export class NoticeList implements OnInit {
         'Are you sure you want to delete this notice?'
       )
     ) {
+
       return;
+
     }
+
 
     this.noticeService
       .delete(id)
@@ -94,16 +122,50 @@ export class NoticeList implements OnInit {
 
         next: () => {
 
+          this.showToastMessage(
+            'Notice deleted successfully.',
+            'success'
+          );
+
           this.loadNotices();
+
         },
 
         error: error => {
 
           console.error(error);
 
-          alert('Delete failed.');
+          this.showToastMessage(
+            'Delete failed.',
+            'error'
+          );
+
         }
 
       });
+
   }
+
+
+  // Toast
+  showToastMessage(
+    message: string,
+    type: 'success' | 'error'
+  ): void {
+
+    this.toastMessage.set(message);
+
+    this.toastType.set(type);
+
+    this.showToast.set(true);
+
+
+    setTimeout(() => {
+
+      this.showToast.set(false);
+
+    }, 3000);
+
+  }
+
 }

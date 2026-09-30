@@ -1,6 +1,4 @@
 import { Component, OnInit, signal, computed } from '@angular/core';
-//                                  🔴 ADDED: signal, computed
-
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -21,30 +19,41 @@ import { ResidentService } from '../../Service/resident-service';
 })
 export class ResidentComponent implements OnInit {
 
-  // 🔴 SIGNAL ADDED
+  // =========================
+  // Signals
+  // =========================
+
   residents = signal<Resident[]>([]);
 
-  // 🔴 SIGNAL ADDED
   searchText = signal('');
 
-  // 🔴 SIGNAL ADDED
   selectedFlat = signal('All Flats');
 
-  // 🔴 SIGNAL ADDED
   loading = signal(false);
 
-  // 🔴 SIGNAL ADDED
   errorMessage = signal('');
 
-  // 🔴 SIGNAL ADDED
   showForm = signal(false);
 
-  // 🔴 SIGNAL ADDED
   editMode = signal(false);
 
-  // 🔴 SIGNAL ADDED
   selectedResidentId = signal<number | null>(null);
 
+
+  // =========================
+  // Toast Signals
+  // =========================
+
+  toastMessage = signal('');
+
+  toastType = signal<'success' | 'error'>('success');
+
+  showToast = signal(false);
+
+
+  // =========================
+  // Resident Form
+  // =========================
 
   residentForm: CreateResident = {
     userId: 0,
@@ -55,47 +64,73 @@ export class ResidentComponent implements OnInit {
   };
 
 
+  // =========================
+  // Selected Resident
+  // =========================
+
+  selectedResident = signal<Resident | null>(null);
+
+
   constructor(
     private residentService: ResidentService
   ) {}
 
 
+  // =========================
+  // On Init
+  // =========================
+
   ngOnInit(): void {
+
     this.loadResidents();
+
   }
 
 
+  // =========================
+  // Load Residents
+  // =========================
+
   loadResidents(): void {
 
-    // 🔴 SIGNAL SET
     this.loading.set(true);
 
     this.residentService.getAll().subscribe({
 
       next: (data) => {
 
-        // 🔴 SIGNAL SET
         this.residents.set(data);
 
-        // 🔴 SIGNAL SET
         this.loading.set(false);
+
       },
 
       error: (error) => {
 
         console.error(error);
 
-        // 🔴 SIGNAL SET
-        this.errorMessage.set('Unable to load residents.');
+        this.errorMessage.set(
+          'Unable to load residents.'
+        );
 
-        // 🔴 SIGNAL SET
         this.loading.set(false);
+
+        this.showToastMessage(
+          'Unable to load residents.',
+          'error'
+        );
+
       }
+
     });
+
   }
 
 
-  // 🔴 SIGNAL + COMPUTED ADDED
+  // =========================
+  // Filtered Residents
+  // =========================
+
   filteredResidents = computed(() => {
 
     const residents = this.residents();
@@ -109,167 +144,346 @@ export class ResidentComponent implements OnInit {
     return residents.filter(resident => {
 
       const matchesSearch =
-        resident.name.toLowerCase().includes(search) ||
-        resident.phone.includes(search) ||
-        resident.email.toLowerCase().includes(search) ||
-        resident.flatId.toString().includes(search);
+        resident.name
+          .toLowerCase()
+          .includes(search) ||
+
+        resident.phone
+          .includes(search) ||
+
+        resident.email
+          .toLowerCase()
+          .includes(search) ||
+
+        resident.flatId
+          .toString()
+          .includes(search);
+
 
       const matchesFlat =
         selectedFlat === 'All Flats' ||
         resident.flatId.toString() === selectedFlat;
 
+
       return matchesSearch && matchesFlat;
+
     });
+
   });
 
 
+  // =========================
+  // Open Add Form
+  // =========================
+
   openAddForm(): void {
 
-    // 🔴 SIGNAL SET
     this.editMode.set(false);
 
-    // 🔴 SIGNAL SET
     this.showForm.set(true);
 
-    // 🔴 SIGNAL SET
     this.selectedResidentId.set(null);
 
     this.residentForm = {
+
       userId: 0,
+
       flatId: 0,
+
       name: '',
+
       phone: '',
+
       email: ''
+
     };
+
   }
 
+
+  // =========================
+  // Open Edit Form
+  // =========================
 
   openEditForm(resident: Resident): void {
 
-    // 🔴 SIGNAL SET
     this.editMode.set(true);
 
-    // 🔴 SIGNAL SET
     this.showForm.set(true);
 
-    // 🔴 SIGNAL SET
     this.selectedResidentId.set(resident.id);
 
     this.residentForm = {
+
       userId: resident.userId,
+
       flatId: resident.flatId,
+
       name: resident.name,
+
       phone: resident.phone,
+
       email: resident.email
+
     };
+
   }
 
 
+  // =========================
+  // Save Resident
+  // =========================
+
   saveResident(): void {
 
+    // =========================
+    // Validation
+    // =========================
+
     if (
-      !this.residentForm.name ||
-      !this.residentForm.phone ||
-      !this.residentForm.email
+      !this.residentForm.name.trim() ||
+      !this.residentForm.phone.trim() ||
+      !this.residentForm.email.trim()
     ) {
+
+      this.showToastMessage(
+        'Please fill all required fields.',
+        'error'
+      );
+
       return;
+
     }
 
 
-    // 🔴 SIGNAL READ
+    // =========================
+    // UPDATE
+    // =========================
+
     if (
       this.editMode() &&
       this.selectedResidentId() !== null
     ) {
 
-      // 🔴 SIGNAL READ
       const resident = this.residents().find(
         x => x.id === this.selectedResidentId()
       );
 
+
       if (!resident) {
+
+        this.showToastMessage(
+          'Resident not found.',
+          'error'
+        );
+
         return;
+
       }
 
 
       const updateData: UpdateResident = {
+
         ...this.residentForm,
+
         dateOfJoining: resident.dateOfJoining,
+
         status: resident.status
+
       };
 
 
       this.residentService
-        // 🔴 SIGNAL READ
-        .update(this.selectedResidentId()!, updateData)
+        .update(
+          this.selectedResidentId()!,
+          updateData
+        )
         .subscribe({
 
           next: () => {
+
             this.closeForm();
+
+            this.showToastMessage(
+              'Resident updated successfully.',
+              'success'
+            );
+
             this.loadResidents();
+
           },
 
-          error: error => {
+          error: (error) => {
+
             console.error(error);
+
+            this.showToastMessage(
+              'Unable to update resident.',
+              'error'
+            );
+
           }
+
         });
 
-    } else {
+    }
+
+
+    // =========================
+    // CREATE
+    // =========================
+
+    else {
 
       this.residentService
         .create(this.residentForm)
         .subscribe({
 
           next: () => {
+
             this.closeForm();
+
+            this.showToastMessage(
+              'Resident created successfully.',
+              'success'
+            );
+
             this.loadResidents();
+
           },
 
-          error: error => {
+          error: (error) => {
+
             console.error(error);
+
+            this.showToastMessage(
+              'Unable to create resident.',
+              'error'
+            );
+
           }
+
         });
+
     }
+
   }
 
+
+  // =========================
+  // Delete Resident
+  // =========================
 
   deleteResident(id: number): void {
 
-    if (!confirm('Are you sure you want to delete this resident?')) {
+    if (
+      !confirm(
+        'Are you sure you want to delete this resident?'
+      )
+    ) {
+
       return;
+
     }
 
-    this.residentService.delete(id).subscribe({
 
-      next: () => {
-        this.loadResidents();
-      },
+    this.residentService
+      .delete(id)
+      .subscribe({
 
-      error: error => {
-        console.error(error);
-      }
-    });
+        next: () => {
+
+          this.showToastMessage(
+            'Resident deleted successfully.',
+            'success'
+          );
+
+          this.loadResidents();
+
+        },
+
+        error: (error) => {
+
+          console.error(error);
+
+          this.showToastMessage(
+            'Unable to delete resident.',
+            'error'
+          );
+
+        }
+
+      });
+
   }
 
-  selectedResident = signal<Resident | null>(null);
-  
+
+  // =========================
+  // View Resident
+  // =========================
+
   viewResident(resident: Resident): void {
-  console.log('Resident details:', resident);
 
-  this.selectedResident.set(resident);
-}
+    console.log(
+      'Resident details:',
+      resident
+    );
 
-closeView(): void {
-  this.selectedResident.set(null);
-}
+    this.selectedResident.set(resident);
 
+  }
+
+
+  // =========================
+  // Close View
+  // =========================
+
+  closeView(): void {
+
+    this.selectedResident.set(null);
+
+  }
+
+
+  // =========================
+  // Close Form
+  // =========================
 
   closeForm(): void {
 
-    // 🔴 SIGNAL SET
     this.showForm.set(false);
+
   }
 
+
+  // =========================
+  // Toast
+  // =========================
+
+  showToastMessage(
+    message: string,
+    type: 'success' | 'error'
+  ): void {
+
+    this.toastMessage.set(message);
+
+    this.toastType.set(type);
+
+    this.showToast.set(true);
+
+
+    setTimeout(() => {
+
+      this.showToast.set(false);
+
+    }, 3000);
+
+  }
+
+
+  // =========================
+  // Status
+  // =========================
 
   getStatus(status: number): string {
 
@@ -283,6 +497,9 @@ closeView(): void {
 
       default:
         return 'Unknown';
+
     }
+
   }
+
 }

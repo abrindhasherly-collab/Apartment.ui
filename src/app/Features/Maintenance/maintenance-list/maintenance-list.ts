@@ -21,6 +21,11 @@ export class MaintenanceList implements OnInit {
   loading = signal(false);
   errorMessage = signal('');
 
+  // Toast Signals
+  toastMessage = signal('');
+  toastType = signal<'success' | 'error'>('success');
+  showToast = signal(false);
+
   constructor(
     private maintenanceService: MaintenanceService,
     private router: Router
@@ -53,6 +58,11 @@ export class MaintenanceList implements OnInit {
         );
 
         this.loading.set(false);
+
+        this.showToastMessage(
+          'Unable to load maintenance records.',
+          'error'
+        );
 
       }
 
@@ -91,6 +101,11 @@ export class MaintenanceList implements OnInit {
 
       next: () => {
 
+        this.showToastMessage(
+          'Maintenance record deleted successfully.',
+          'success'
+        );
+
         this.loadMaintenances();
 
       },
@@ -99,12 +114,29 @@ export class MaintenanceList implements OnInit {
 
         console.error(error);
 
-        alert(
-          'Unable to delete maintenance record.'
+        this.showToastMessage(
+          'Unable to delete maintenance record.',
+          'error'
         );
 
       }
 
     });
+  }
+
+  // Toast
+  showToastMessage(
+    message: string,
+    type: 'success' | 'error'
+  ): void {
+
+    this.toastMessage.set(message);
+    this.toastType.set(type);
+    this.showToast.set(true);
+
+    setTimeout(() => {
+      this.showToast.set(false);
+    }, 3000);
+
   }
 }

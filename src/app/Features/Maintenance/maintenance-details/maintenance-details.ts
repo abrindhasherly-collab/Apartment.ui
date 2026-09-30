@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import {
   ActivatedRoute,
   Router
 } from '@angular/router';
 
-// import { Maintenance } from '../../models/maintenance.model';
-import { Maintenance, MaintenanceService } from '../Service/maintenance-service';
+import {
+  Maintenance,
+  MaintenanceService
+} from '../Service/maintenance-service';
 
 @Component({
   selector: 'app-maintenance-details',
@@ -22,11 +25,21 @@ export class MaintenanceDetails implements OnInit {
   loading = false;
   errorMessage = '';
 
+
+  // Toast Signals
+  toastMessage = signal('');
+
+  toastType = signal<'success' | 'error'>('success');
+
+  showToast = signal(false);
+
+
   constructor(
     private maintenanceService: MaintenanceService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
+
 
   ngOnInit(): void {
 
@@ -35,10 +48,13 @@ export class MaintenanceDetails implements OnInit {
     );
 
     if (id) {
+
       this.loadMaintenance(id);
+
     }
 
   }
+
 
   loadMaintenance(id: number): void {
 
@@ -51,6 +67,7 @@ export class MaintenanceDetails implements OnInit {
         next: (data) => {
 
           this.maintenance = data;
+
           this.loading = false;
 
         },
@@ -64,11 +81,18 @@ export class MaintenanceDetails implements OnInit {
 
           this.loading = false;
 
+
+          this.showToastMessage(
+            'Unable to load maintenance record.',
+            'error'
+          );
+
         }
 
       });
 
   }
+
 
   editMaintenance(): void {
 
@@ -83,6 +107,7 @@ export class MaintenanceDetails implements OnInit {
 
   }
 
+
   goBack(): void {
 
     this.router.navigate([
@@ -90,4 +115,27 @@ export class MaintenanceDetails implements OnInit {
     ]);
 
   }
+
+
+  // Toast
+  showToastMessage(
+    message: string,
+    type: 'success' | 'error'
+  ): void {
+
+    this.toastMessage.set(message);
+
+    this.toastType.set(type);
+
+    this.showToast.set(true);
+
+
+    setTimeout(() => {
+
+      this.showToast.set(false);
+
+    }, 3000);
+
+  }
+
 }

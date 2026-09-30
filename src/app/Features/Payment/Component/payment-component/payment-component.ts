@@ -41,6 +41,15 @@ export class PaymentComponent implements OnInit {
 
 
   // =========================
+  // Toast Signals
+  // =========================
+
+  toastMessage = signal('');
+  toastType = signal<'success' | 'error'>('success');
+  showToast = signal(false);
+
+
+  // =========================
   // Computed filtered payments
   // =========================
 
@@ -94,7 +103,9 @@ export class PaymentComponent implements OnInit {
   // =========================
 
   ngOnInit(): void {
+
     this.loadPayments();
+
   }
 
 
@@ -113,18 +124,28 @@ export class PaymentComponent implements OnInit {
         this.payments.set(data);
 
         this.loading.set(false);
+
       },
 
       error: (error) => {
 
         console.error(error);
 
-        this.errorMessage.set('Unable to load payments.');
+        this.errorMessage.set(
+          'Unable to load payments.'
+        );
 
         this.loading.set(false);
+
+        this.showToastMessage(
+          'Unable to load payments.',
+          'error'
+        );
+
       }
 
     });
+
   }
 
 
@@ -177,6 +198,7 @@ export class PaymentComponent implements OnInit {
       paymentType: 1
 
     };
+
   }
 
 
@@ -207,6 +229,7 @@ export class PaymentComponent implements OnInit {
       paymentType: payment.paymentType
 
     };
+
   }
 
 
@@ -216,30 +239,46 @@ export class PaymentComponent implements OnInit {
 
   savePayment(): void {
 
+    // =========================
+    // Basic Validation
+    // =========================
+
     if (
       this.paymentForm.flatId <= 0 ||
       this.paymentForm.amount <= 0 ||
       !this.paymentForm.paymentDate
     ) {
 
+      this.showToastMessage(
+        'Please fill all required fields.',
+        'error'
+      );
+
       return;
     }
 
 
-    // Maintenance payment
+    // =========================
+    // Maintenance Payment
+    // =========================
 
     if (
       this.paymentForm.paymentType === 1 &&
       !this.paymentForm.maintenanceId
     ) {
 
-      alert('Maintenance ID is required for maintenance payment.');
+      this.showToastMessage(
+        'Maintenance ID is required for maintenance payment.',
+        'error'
+      );
 
       return;
     }
 
 
-    // Rent payment
+    // =========================
+    // Rent Payment
+    // =========================
 
     if (this.paymentForm.paymentType === 2) {
 
@@ -264,6 +303,11 @@ export class PaymentComponent implements OnInit {
 
       if (!existing) {
 
+        this.showToastMessage(
+          'Payment not found.',
+          'error'
+        );
+
         return;
       }
 
@@ -278,20 +322,33 @@ export class PaymentComponent implements OnInit {
 
 
       this.paymentService
-        .update(this.selectedPaymentId()!, updateData)
+        .update(
+          this.selectedPaymentId()!,
+          updateData
+        )
         .subscribe({
 
           next: () => {
 
             this.closeForm();
 
+            this.showToastMessage(
+              'Payment updated successfully.',
+              'success'
+            );
+
             this.loadPayments();
 
           },
 
-          error: error => {
+          error: (error) => {
 
             console.error(error);
+
+            this.showToastMessage(
+              'Unable to update payment.',
+              'error'
+            );
 
           }
 
@@ -314,18 +371,30 @@ export class PaymentComponent implements OnInit {
 
             this.closeForm();
 
+            this.showToastMessage(
+              'Payment created successfully.',
+              'success'
+            );
+
             this.loadPayments();
 
           },
 
-          error: error => {
+          error: (error) => {
 
             console.error(error);
+
+            this.showToastMessage(
+              'Unable to create payment.',
+              'error'
+            );
 
           }
 
         });
+
     }
+
   }
 
 
@@ -336,10 +405,13 @@ export class PaymentComponent implements OnInit {
   deletePayment(id: number): void {
 
     if (
-      !confirm('Are you sure you want to delete this payment?')
+      !confirm(
+        'Are you sure you want to delete this payment?'
+      )
     ) {
 
       return;
+
     }
 
 
@@ -349,17 +421,28 @@ export class PaymentComponent implements OnInit {
 
         next: () => {
 
+          this.showToastMessage(
+            'Payment deleted successfully.',
+            'success'
+          );
+
           this.loadPayments();
 
         },
 
-        error: error => {
+        error: (error) => {
 
           console.error(error);
+
+          this.showToastMessage(
+            'Unable to delete payment.',
+            'error'
+          );
 
         }
 
       });
+
   }
 
 
@@ -370,6 +453,31 @@ export class PaymentComponent implements OnInit {
   closeForm(): void {
 
     this.showForm.set(false);
+
+  }
+
+
+  // =========================
+  // Toast
+  // =========================
+
+  showToastMessage(
+    message: string,
+    type: 'success' | 'error'
+  ): void {
+
+    this.toastMessage.set(message);
+
+    this.toastType.set(type);
+
+    this.showToast.set(true);
+
+
+    setTimeout(() => {
+
+      this.showToast.set(false);
+
+    }, 3000);
 
   }
 
@@ -393,7 +501,9 @@ export class PaymentComponent implements OnInit {
 
       default:
         return 'Unknown';
+
     }
+
   }
 
 
@@ -406,6 +516,7 @@ export class PaymentComponent implements OnInit {
     return type === 1
       ? 'Maintenance'
       : 'Rent';
+
   }
 
 
@@ -431,6 +542,9 @@ export class PaymentComponent implements OnInit {
 
       default:
         return 'Unknown';
+
     }
+
   }
+
 }

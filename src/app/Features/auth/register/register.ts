@@ -14,6 +14,7 @@ import {
   Router,
   RouterLink
 } from '@angular/router';
+
 import { ToastrService } from 'ngx-toastr';
 
 import { AuthService } from '../auth.service';
@@ -65,17 +66,18 @@ export class Register {
         Validators.required
       ],
 
-      phoneNumber: [
+      confirmPassword: [
         '',
         Validators.required
       ],
 
-      role: [
-        2,
+      phoneNumber: [
+        '',
         Validators.required
       ]
 
     });
+
   }
 
   register(): void {
@@ -87,25 +89,61 @@ export class Register {
       return;
     }
 
+    const password =
+      this.registerForm.value.password;
+
+    const confirmPassword =
+      this.registerForm.value.confirmPassword;
+
+    if (password !== confirmPassword) {
+
+      this.toastr.error(
+        'Passwords do not match.',
+        'Error'
+      );
+
+      this.errorMessage.set(
+        'Passwords do not match.'
+      );
+
+      return;
+    }
+
     this.loading.set(true);
 
     this.errorMessage.set('');
 
+    const registerData = {
+
+      name:
+        this.registerForm.value.name,
+
+      email:
+        this.registerForm.value.email,
+
+      password:
+        this.registerForm.value.password,
+
+      phoneNumber:
+        this.registerForm.value.phoneNumber
+
+    };
+
     this.authService
-      .register(this.registerForm.value)
+      .register(registerData)
       .subscribe({
 
         next: () => {
 
           this.loading.set(false);
-          this.toastr.success(
-  'Registration successful.',
-  'Success'
-);
 
-          alert('Registration successful.');
+          this.toastr.success(
+            'Registration successful.',
+            'Success'
+          );
 
           this.router.navigate(['/login']);
+
         },
 
         error: (error) => {
@@ -113,16 +151,20 @@ export class Register {
           console.error(error);
 
           this.loading.set(false);
+
           this.toastr.error(
-  'Registration failed.',
-  'Error'
-);
+            'Registration failed.',
+            'Error'
+          );
 
           this.errorMessage.set(
             'Registration failed.'
           );
+
         }
 
       });
+
   }
+
 }

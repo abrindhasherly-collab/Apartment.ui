@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import {
   FormBuilder,
   FormGroup,
@@ -12,8 +13,10 @@ import {
   Router
 } from '@angular/router';
 
-import { MaintenanceCreate, MaintenanceService } from '../Service/maintenance-service';
-// import { MaintenanceCreate } from '../../models/maintenance.model';
+import {
+  MaintenanceCreate,
+  MaintenanceService
+} from '../Service/maintenance-service';
 
 @Component({
   selector: 'app-maintenance-form',
@@ -35,12 +38,25 @@ export class MaintenanceForm implements OnInit {
   loading = false;
   errorMessage = '';
 
+
+  // =========================
+  // Toast Signals
+  // =========================
+
+  toastMessage = signal('');
+
+  toastType = signal<'success' | 'error'>('success');
+
+  showToast = signal(false);
+
+
   constructor(
     private fb: FormBuilder,
     private maintenanceService: MaintenanceService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
+
 
   ngOnInit(): void {
 
@@ -61,6 +77,7 @@ export class MaintenanceForm implements OnInit {
     }
 
   }
+
 
   createForm(): void {
 
@@ -101,6 +118,7 @@ export class MaintenanceForm implements OnInit {
       });
 
   }
+
 
   loadMaintenance(id: number): void {
 
@@ -143,11 +161,17 @@ export class MaintenanceForm implements OnInit {
 
           this.loading = false;
 
+          this.showToastMessage(
+            'Unable to load maintenance record.',
+            'error'
+          );
+
         }
 
       });
 
   }
+
 
   formatDate(date: string): string {
 
@@ -157,6 +181,7 @@ export class MaintenanceForm implements OnInit {
 
   }
 
+
   saveMaintenance(): void {
 
     if (this.maintenanceForm.invalid) {
@@ -164,17 +189,28 @@ export class MaintenanceForm implements OnInit {
       this.maintenanceForm
         .markAllAsTouched();
 
+      this.showToastMessage(
+        'Please fill all required fields.',
+        'error'
+      );
+
       return;
 
     }
 
+
     this.loading = true;
     this.errorMessage = '';
+
 
     const maintenance:
       MaintenanceCreate =
       this.maintenanceForm.value;
 
+
+    // =========================
+    // Update
+    // =========================
 
     if (
       this.isEditMode &&
@@ -190,9 +226,18 @@ export class MaintenanceForm implements OnInit {
 
           next: () => {
 
-            this.router.navigate([
-              '/maintenance'
-            ]);
+            this.showToastMessage(
+              'Maintenance record updated successfully.',
+              'success'
+            );
+
+            setTimeout(() => {
+
+              this.router.navigate([
+                '/maintenance'
+              ]);
+
+            }, 1500);
 
           },
 
@@ -205,11 +250,23 @@ export class MaintenanceForm implements OnInit {
 
             this.loading = false;
 
+            this.showToastMessage(
+              'Unable to update maintenance record.',
+              'error'
+            );
+
           }
 
         });
 
-    } else {
+    }
+
+
+    // =========================
+    // Create
+    // =========================
+
+    else {
 
       this.maintenanceService
         .create(maintenance)
@@ -217,9 +274,18 @@ export class MaintenanceForm implements OnInit {
 
           next: () => {
 
-            this.router.navigate([
-              '/maintenance'
-            ]);
+            this.showToastMessage(
+              'Maintenance record created successfully.',
+              'success'
+            );
+
+            setTimeout(() => {
+
+              this.router.navigate([
+                '/maintenance'
+              ]);
+
+            }, 1500);
 
           },
 
@@ -232,6 +298,11 @@ export class MaintenanceForm implements OnInit {
 
             this.loading = false;
 
+            this.showToastMessage(
+              'Unable to create maintenance record.',
+              'error'
+            );
+
           }
 
         });
@@ -240,6 +311,7 @@ export class MaintenanceForm implements OnInit {
 
   }
 
+
   cancel(): void {
 
     this.router.navigate([
@@ -247,4 +319,30 @@ export class MaintenanceForm implements OnInit {
     ]);
 
   }
+
+
+  // =========================
+  // Toast
+  // =========================
+
+  showToastMessage(
+    message: string,
+    type: 'success' | 'error'
+  ): void {
+
+    this.toastMessage.set(message);
+
+    this.toastType.set(type);
+
+    this.showToast.set(true);
+
+
+    setTimeout(() => {
+
+      this.showToast.set(false);
+
+    }, 3000);
+
+  }
+
 }

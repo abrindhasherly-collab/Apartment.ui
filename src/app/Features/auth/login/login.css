@@ -1,40 +1,117 @@
 .login-container {
   min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+
+  background: linear-gradient(
+    -45deg,
+    #0f172a,
+    #1e3a5f,
+    #2563a8,
+    #0f766e
+  );
+
+  background-size: 400% 400%;
+  animation: backgroundAnimation 12s ease infinite;
+}
+
+/* Animated background */
+.login-container::before,
+.login-container::after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.25;
+  animation: floatingCircle 8s ease-in-out infinite;
+}
+
+.login-container::before {
+  width: 300px;
+  height: 300px;
+  background: #60a5fa;
+  top: -100px;
+  left: -80px;
+}
+
+.login-container::after {
+  width: 350px;
+  height: 350px;
+  background: #facc15;
+  bottom: -150px;
+  right: -100px;
+  animation-delay: 2s;
+}
+
+/* Login card */
+.login-card {
+  width: 400px;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 35px;
+  border-radius: 16px;
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.25);
+
+  position: relative;
+  z-index: 2;
+
+  animation: cardAppear 0.8s ease;
+}
+
+/* Logo */
+.apartment-logo {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 15px;
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  background-color: #f3f4f6;
-}
+  border-radius: 50%;
 
-.login-card {
-  width: 400px;
+  background: linear-gradient(
+    135deg,
+    #1e3a5f,
+    #2563eb
+  );
 
-  background: white;
-
-  padding: 35px;
-
-  border-radius: 10px;
+  color: white;
+  font-size: 34px;
 
   box-shadow:
-    0 4px 15px rgba(0, 0, 0, 0.12);
+    0 8px 20px rgba(37, 99, 235, 0.4);
+
+  animation: logoFloat 3s ease-in-out infinite;
 }
 
-.login-card h1,
+/* Apartment name */
+.login-card h1 {
+  text-align: center;
+  color: #1e3a5f;
+  font-size: 25px;
+  margin: 0;
+}
+
+.welcome-text {
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  margin: 8px 0 22px;
+}
+
 .login-card h2 {
   text-align: center;
-}
-
-.login-card h1 {
-  font-size: 22px;
-}
-
-.login-card h2 {
-  color: #555;
+  color: #444;
   margin-bottom: 25px;
 }
 
+/* Form */
 .form-group {
   margin-bottom: 18px;
 }
@@ -43,46 +120,89 @@
   display: block;
   margin-bottom: 7px;
   font-weight: bold;
+  color: #333;
 }
 
 .form-group input {
   width: 100%;
-
-  padding: 11px;
-
-  border: 1px solid #ccc;
-
-  border-radius: 5px;
-}
-
-.form-group small {
-  color: #dc2626;
-}
-
-button {
-  width: 100%;
+  box-sizing: border-box;
 
   padding: 12px;
 
+  border: 1px solid #d1d5db;
+  border-radius: 7px;
+
+  font-size: 15px;
+  outline: none;
+
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.12);
+
+  transform: translateY(-1px);
+}
+
+.form-group small {
+  display: block;
+  margin-top: 5px;
+  color: #dc2626;
+}
+
+/* Login button */
+button {
+  width: 100%;
+  padding: 13px;
+
   border: none;
+  border-radius: 7px;
 
-  border-radius: 5px;
-
-  background-color: #2563eb;
+  background: linear-gradient(
+    135deg,
+    #1e3a5f,
+    #2563eb
+  );
 
   color: white;
-
   font-size: 16px;
+  font-weight: 600;
 
   cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 18px rgba(37, 99, 235, 0.35);
+}
+
+button:active {
+  transform: translateY(0);
 }
 
 button:disabled {
   opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.login-card p {
+/* Error */
+.error {
+  color: #dc2626;
   text-align: center;
+  font-size: 14px;
+}
+
+/* Register */
+.register-text {
+  text-align: center;
+  margin-top: 20px;
 }
 
 .login-card a {
@@ -91,6 +211,86 @@ button:disabled {
   font-weight: bold;
 }
 
-.error {
-  color: #dc2626;
+.login-card a:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+.login-footer {
+  text-align: center;
+
+  margin-top: 20px;
+  padding-top: 15px;
+
+  border-top: 1px solid #eee;
+
+  color: #999;
+  font-size: 12px;
+}
+
+
+/* =========================
+   ANIMATIONS
+   ========================= */
+
+@keyframes backgroundAnimation {
+
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+
+}
+
+@keyframes floatingCircle {
+
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate(40px, 30px) scale(1.1);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+}
+
+@keyframes logoFloat {
+
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+
+}
+
+@keyframes cardAppear {
+
+  from {
+    opacity: 0;
+    transform: translateY(25px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
@@ -7,8 +7,11 @@ import {
   RouterLink
 } from '@angular/router';
 
-import { Staff, StaffService } from '../Service/staff-service';
-// import { Staff } from '../../models/staff.model';
+import {
+  Staff,
+  StaffService
+} from '../Service/staff-service';
+
 
 @Component({
   selector: 'app-staff-details',
@@ -22,9 +25,24 @@ import { Staff, StaffService } from '../Service/staff-service';
 })
 export class StaffDetails implements OnInit {
 
+  // =========================
+  // Staff
+  // =========================
+
   staff?: Staff;
 
   loading = false;
+
+
+  // =========================
+  // Toast Signals
+  // =========================
+
+  toastMessage = signal('');
+
+  toastType = signal<'success' | 'error'>('success');
+
+  showToast = signal(false);
 
 
   constructor(
@@ -33,6 +51,10 @@ export class StaffDetails implements OnInit {
     private router: Router
   ) {}
 
+
+  // =========================
+  // On Init
+  // =========================
 
   ngOnInit(): void {
 
@@ -44,6 +66,10 @@ export class StaffDetails implements OnInit {
 
   }
 
+
+  // =========================
+  // Load Staff
+  // =========================
 
   loadStaff(id: number): void {
 
@@ -70,13 +96,20 @@ export class StaffDetails implements OnInit {
 
           this.loading = false;
 
-          alert(
-            'Staff details not found.'
+
+          this.showToastMessage(
+            'Staff details not found.',
+            'error'
           );
 
-          this.router.navigate([
-            '/staff'
-          ]);
+
+          setTimeout(() => {
+
+            this.router.navigate([
+              '/staff'
+            ]);
+
+          }, 2000);
 
         }
 
@@ -84,6 +117,10 @@ export class StaffDetails implements OnInit {
 
   }
 
+
+  // =========================
+  // Edit Staff
+  // =========================
 
   editStaff(): void {
 
@@ -95,6 +132,31 @@ export class StaffDetails implements OnInit {
       ]);
 
     }
+
+  }
+
+
+  // =========================
+  // Toast
+  // =========================
+
+  showToastMessage(
+    message: string,
+    type: 'success' | 'error'
+  ): void {
+
+    this.toastMessage.set(message);
+
+    this.toastType.set(type);
+
+    this.showToast.set(true);
+
+
+    setTimeout(() => {
+
+      this.showToast.set(false);
+
+    }, 3000);
 
   }
 

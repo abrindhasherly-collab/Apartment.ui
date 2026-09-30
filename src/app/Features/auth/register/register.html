@@ -8,7 +8,8 @@
 
     <form
       [formGroup]="registerForm"
-      (ngSubmit)="register()">
+      (ngSubmit)="register()"
+      autocomplete="off">
 
       <div class="form-group">
 
@@ -17,7 +18,8 @@
         <input
           type="text"
           formControlName="name"
-          placeholder="Enter name">
+          placeholder="Enter name"
+          autocomplete="off">
 
       </div>
 
@@ -28,7 +30,8 @@
         <input
           type="email"
           formControlName="email"
-          placeholder="Enter email">
+          placeholder="Enter email"
+          autocomplete="off">
 
       </div>
 
@@ -39,7 +42,20 @@
         <input
           type="password"
           formControlName="password"
-          placeholder="Enter password">
+          placeholder="Enter password"
+          autocomplete="new-password">
+
+      </div>
+
+      <div class="form-group">
+
+        <label>Confirm Password</label>
+
+        <input
+          type="password"
+          formControlName="confirmPassword"
+          placeholder="Confirm password"
+          autocomplete="new-password">
 
       </div>
 
@@ -50,33 +66,12 @@
         <input
           type="text"
           formControlName="phoneNumber"
-          placeholder="Enter phone number">
+          placeholder="Enter phone number"
+          autocomplete="off">
 
       </div>
 
       <div class="form-group">
-
-        <label>Role</label>
-
-        <select formControlName="role">
-
-          <option [ngValue]="1">
-            Secretary
-          </option>
-
-          <option [ngValue]="2">
-            Resident
-          </option>
-
-          <option [ngValue]="3">
-            Watchman
-          </option>
-
-          <option [ngValue]="4">
-            Owner
-          </option>
-
-        </select>
 
       </div>
 
@@ -108,6 +103,7 @@
       <a routerLink="/login">
         Login
       </a>
+
     </p>
 
   </div>

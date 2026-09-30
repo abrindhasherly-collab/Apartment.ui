@@ -900,6 +900,15 @@
     </div>
 
   </div>
+  <div
+  class="toast"
+  *ngIf="showToast()"
+  [class.success]="toastType() === 'success'"
+  [class.error]="toastType() === 'error'">
+
+  {{ toastMessage() }}
+
+</div>
 
 </div>
 

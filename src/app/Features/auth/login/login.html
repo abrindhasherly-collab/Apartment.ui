@@ -1,15 +1,23 @@
-
 <div class="login-container">
 
   <div class="login-card">
 
-    <h1>Apartment Management</h1>
+    <div class="apartment-logo">
+      🏢
+    </div>
+
+    <h1>Qwin Elite Apartments</h1>
+
+    <p class="welcome-text">
+      Welcome back! Please login to continue.
+    </p>
 
     <h2>Login</h2>
 
     <form
       [formGroup]="loginForm"
-      (ngSubmit)="login()">
+      (ngSubmit)="login()"
+      autocomplete="off">
 
       <div class="form-group">
 
@@ -18,7 +26,8 @@
         <input
           type="email"
           formControlName="email"
-          placeholder="Enter email">
+          placeholder="Enter email"
+          autocomplete="off">
 
         @if (
           loginForm.get('email')?.touched &&
@@ -38,7 +47,8 @@
         <input
           type="password"
           formControlName="password"
-          placeholder="Enter password">
+          placeholder="Enter password"
+          autocomplete="new-password">
 
       </div>
 
@@ -64,13 +74,17 @@
 
     </form>
 
-    <p>
+    <p class="register-text">
       Don't have an account?
 
       <a routerLink="/register">
         Register
       </a>
     </p>
+
+    <div class="login-footer">
+      <span>Qwin Elite Apartments</span>
+    </div>
 
   </div>
 

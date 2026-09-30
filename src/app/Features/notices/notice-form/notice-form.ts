@@ -1,3 +1,6 @@
+import { NoticeService } from '../notice.service';
+import { CommonModule } from '@angular/common';
+
 import {
   Component,
   OnInit,
@@ -16,15 +19,12 @@ import {
   Router
 } from '@angular/router';
 
-import {
-  NoticeService
-} from '../notice.service';
-
 @Component({
   selector: 'app-notice-form',
   standalone: true,
 
   imports: [
+    CommonModule,
     ReactiveFormsModule
   ],
 
@@ -42,6 +42,15 @@ export class NoticeForm implements OnInit {
   errorMessage = signal('');
 
   noticeId = 0;
+
+
+  // Toast Signals
+  toastMessage = signal('');
+
+  toastType = signal<'success' | 'error'>('success');
+
+  showToast = signal(false);
+
 
   constructor(
     private fb: FormBuilder,
@@ -72,7 +81,9 @@ export class NoticeForm implements OnInit {
       ]
 
     });
+
   }
+
 
   ngOnInit(): void {
 
@@ -86,8 +97,11 @@ export class NoticeForm implements OnInit {
       this.isEdit.set(true);
 
       this.loadNotice(this.noticeId);
+
     }
+
   }
+
 
   loadNotice(id: number): void {
 
@@ -102,6 +116,7 @@ export class NoticeForm implements OnInit {
           this.noticeForm.patchValue(data);
 
           this.loading.set(false);
+
         },
 
         error: error => {
@@ -113,10 +128,18 @@ export class NoticeForm implements OnInit {
           );
 
           this.loading.set(false);
+
+          this.showToastMessage(
+            'Unable to load notice.',
+            'error'
+          );
+
         }
 
       });
+
   }
+
 
   saveNotice(): void {
 
@@ -124,16 +147,28 @@ export class NoticeForm implements OnInit {
 
       this.noticeForm.markAllAsTouched();
 
+      this.showToastMessage(
+        'Please fill all required fields.',
+        'error'
+      );
+
       return;
+
     }
 
     this.loading.set(true);
+
+
+    // =========================
+    // Update Notice
+    // =========================
 
     if (this.isEdit()) {
 
       const updateData = {
 
-        title: this.noticeForm.value.title,
+        title:
+          this.noticeForm.value.title,
 
         description:
           this.noticeForm.value.description,
@@ -142,6 +177,7 @@ export class NoticeForm implements OnInit {
           this.noticeForm.value.status
 
       };
+
 
       this.noticeService
         .update(
@@ -152,7 +188,19 @@ export class NoticeForm implements OnInit {
 
           next: () => {
 
-            this.router.navigate(['/notices']);
+            this.showToastMessage(
+              'Notice updated successfully.',
+              'success'
+            );
+
+            setTimeout(() => {
+
+              this.router.navigate([
+                '/notices'
+              ]);
+
+            }, 1500);
+
           },
 
           error: error => {
@@ -164,11 +212,24 @@ export class NoticeForm implements OnInit {
             );
 
             this.loading.set(false);
+
+            this.showToastMessage(
+              'Unable to update notice.',
+              'error'
+            );
+
           }
 
         });
 
-    } else {
+    }
+
+
+    // =========================
+    // Create Notice
+    // =========================
+
+    else {
 
       const createData = {
 
@@ -186,13 +247,26 @@ export class NoticeForm implements OnInit {
 
       };
 
+
       this.noticeService
         .create(createData)
         .subscribe({
 
           next: () => {
 
-            this.router.navigate(['/notices']);
+            this.showToastMessage(
+              'Notice created successfully.',
+              'success'
+            );
+
+            setTimeout(() => {
+
+              this.router.navigate([
+                '/notices'
+              ]);
+
+            }, 1500);
+
           },
 
           error: error => {
@@ -204,14 +278,52 @@ export class NoticeForm implements OnInit {
             );
 
             this.loading.set(false);
+
+            this.showToastMessage(
+              'Unable to create notice.',
+              'error'
+            );
+
           }
 
         });
+
     }
+
   }
+
 
   cancel(): void {
 
-    this.router.navigate(['/notices']);
+    this.router.navigate([
+      '/notices'
+    ]);
+
   }
+
+
+  // =========================
+  // Toast
+  // =========================
+
+  showToastMessage(
+    message: string,
+    type: 'success' | 'error'
+  ): void {
+
+    this.toastMessage.set(message);
+
+    this.toastType.set(type);
+
+    this.showToast.set(true);
+
+
+    setTimeout(() => {
+
+      this.showToast.set(false);
+
+    }, 3000);
+
+  }
+
 }
