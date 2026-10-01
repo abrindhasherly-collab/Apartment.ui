@@ -124,6 +124,24 @@ export class MaintenanceList implements OnInit {
     });
   }
 
+  getPaidCount(): number {
+  return this.maintenances()
+    .filter(m => m.status === 'Paid')
+    .length;
+}
+
+getPendingCount(): number {
+  return this.maintenances()
+    .filter(m => m.status === 'Pending')
+    .length;
+}
+
+getOverdueCount(): number {
+  return this.maintenances()
+    .filter(m => m.status === 'Overdue')
+    .length;
+}
+
   // Toast
   showToastMessage(
     message: string,

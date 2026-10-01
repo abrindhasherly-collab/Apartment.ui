@@ -1,137 +1,202 @@
-<div class="page bg-light min-vh-100 p-3 p-md-4">
+<div class="page">
 
-  <!-- ================= HEADER ================= -->
+  <!-- ==========================================
+       HEADER
+  =========================================== -->
 
-  <div class="container-fluid">
+  <div class="complaint-page-header">
 
+    <div class="header-left">
 
-<div class="card border-0 shadow-sm mb-4">
-
-  <div class="card-body p-4">
-
-    <div class="d-flex flex-column flex-md-row
-                justify-content-between
-                align-items-md-center gap-3">
-
-      <div class="d-flex align-items-center gap-3">
-
-        <div class="complaint-header-icon">
-          <i class="bi bi-chat-left-text"></i>
-        </div>
-
-        <div>
-
-          <h4 class="fw-bold mb-1 text-dark">
-            Resident Complaints
-          </h4>
-
-          <p class="text-muted mb-0 small">
-            Manage and track complaints from apartment residents.
-          </p>
-
-        </div>
-
+      <div class="complaint-header-icon">
+        📢
       </div>
 
+      <div>
+        <h1>Complaints</h1>
 
-      <button
-        type="button"
-        class="btn btn-primary px-4"
-        (click)="openAddForm()">
+        <p>
+          Manage apartment complaints and resident issues
+        </p>
+      </div>
 
-        <i class="bi bi-plus-lg me-2"></i>
+    </div>
 
-        Raise Complaint
 
-      </button>
+    <button
+      type="button"
+      class="add-complaint-btn"
+      (click)="openAddForm()">
+
+      + Add Complaint
+
+    </button>
+
+  </div>
+
+
+  <!-- ==========================================
+       SEARCH & FILTER
+  =========================================== -->
+
+  <div class="filter-card">
+
+    <!-- Search -->
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        🔍
+      </span>
+
+      <input
+        type="text"
+        placeholder="Search by title, description, resident ID or flat ID..."
+        [value]="searchText()"
+        (input)="onSearchChange($any($event.target).value)"
+      />
+
+    </div>
+
+
+    <!-- Status -->
+
+    <div class="status-filter">
+
+      <label>
+        Status
+      </label>
+
+      <select
+        [value]="statusFilter()"
+        (change)="onStatusChange($any($event.target).value)">
+
+        <option value="All Status">
+          All Status
+        </option>
+
+        <option value="Pending">
+          Pending
+        </option>
+
+        <option value="In Progress">
+          In Progress
+        </option>
+
+        <option value="Resolved">
+          Resolved
+        </option>
+
+        <option value="Rejected">
+          Rejected
+        </option>
+
+      </select>
 
     </div>
 
   </div>
 
-</div>
 
+  <!-- ==========================================
+       SUMMARY
+  =========================================== -->
 
-<!-- ================= TABLE CARD ================= -->
+  <div class="complaint-summary-grid">
 
-<div class="card border-0 shadow-sm">
+    <!-- Total -->
 
-  <!-- TOOLBAR -->
+    <div class="summary-card total-card">
 
-  <div class="card-body border-bottom">
-
-    <div class="row g-3 align-items-center">
-
-      <!-- SEARCH -->
-
-      <div class="col-12 col-md-7">
-
-        <div class="input-group">
-
-          <span class="input-group-text bg-white">
-
-            <i class="bi bi-search text-muted"></i>
-
-          </span>
-
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Search by issue, resident..."
-            [ngModel]="searchText()"
-            (ngModelChange)="searchText.set($event)"
-          />
-
-        </div>
-
+      <div class="summary-icon">
+        📢
       </div>
 
+      <div>
 
-      <!-- STATUS -->
-
-      <div class="col-12 col-md-3">
-
-        <select
-          class="form-select"
-          [ngModel]="statusFilter()"
-          (ngModelChange)="statusFilter.set($event)">
-
-          <option value="All Status">
-            All Status
-          </option>
-
-          <option value="Pending">
-            Pending
-          </option>
-
-          <option value="In Progress">
-            In Progress
-          </option>
-
-          <option value="Resolved">
-            Resolved
-          </option>
-
-          <option value="Rejected">
-            Rejected
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <!-- RESULT COUNT -->
-
-      <div class="col-12 col-md-2 text-md-end">
-
-        <span class="text-muted small">
-
-          {{ filteredComplaints().length }}
-          complaints
-
+        <span>
+          Total Complaints
         </span>
 
+        <strong>
+          {{ complaints().length }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- Pending -->
+
+    <div class="summary-card pending-card">
+
+      <div class="summary-icon">
+        ⏳
+      </div>
+
+      <div>
+
+        <span>
+          Pending
+        </span>
+
+        <strong>
+          {{
+            complaints().filter(c => c.status === 1).length
+          }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- In Progress -->
+
+    <div class="summary-card progress-card">
+
+      <div class="summary-icon">
+        🔄
+      </div>
+
+      <div>
+
+        <span>
+          In Progress
+        </span>
+
+        <strong>
+          {{
+            complaints().filter(c => c.status === 2).length
+          }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <!-- Resolved -->
+
+    <div class="summary-card resolved-card">
+
+      <div class="summary-icon">
+        ✓
+      </div>
+
+      <div>
+
+        <span>
+          Resolved
+        </span>
+
+        <strong>
+          {{
+            complaints().filter(c => c.status === 3).length
+          }}
+        </strong>
+
       </div>
 
     </div>
@@ -139,515 +204,533 @@
   </div>
 
 
-  <!-- ================= LOADING ================= -->
+  <!-- ==========================================
+       ERROR
+  =========================================== -->
 
-  <div
-    *ngIf="loading()"
-    class="text-center py-5">
+  @if (errorMessage()) {
 
-    <div
-      class="spinner-border text-primary mb-3">
+    <div class="error-message">
+
+      ⚠ {{ errorMessage() }}
+
     </div>
 
-    <div class="text-muted">
-      Loading complaints...
+  }
+
+
+  <!-- ==========================================
+       LOADING
+  =========================================== -->
+
+  @if (loading()) {
+
+    <div class="loading">
+
+      <div class="loading-spinner"></div>
+
+      <p>
+        Loading complaints...
+      </p>
+
     </div>
 
-  </div>
+  }
 
 
-  <!-- ================= TABLE ================= -->
+  <!-- ==========================================
+       COMPLAINT CARDS
+  =========================================== -->
 
-  <div
-    class="table-responsive"
-    *ngIf="!loading()">
+  @if (!loading()) {
 
-    <table class="table table-hover align-middle mb-0">
+    @if (filteredComplaints().length > 0) {
 
-      <thead class="table-light">
+      <div class="complaint-grid">
 
-        <tr>
+        @for (
+          complaint of filteredComplaints();
+          track complaint.id
+        ) {
 
-          <th class="px-4">
-            ID
-          </th>
+          <div class="complaint-card">
 
-          <th>
-            RESIDENT
-          </th>
+            <!-- ==================================
+                 CARD HEADER
+            =================================== -->
 
-          <th>
-            FLAT
-          </th>
+            <div class="complaint-card-header">
 
-          <th>
-            COMPLAINT
-          </th>
-
-          <th>
-            STATUS
-          </th>
-
-          <th>
-            DATE
-          </th>
-
-          <th class="text-center">
-            ACTION
-          </th>
-
-        </tr>
-
-      </thead>
+              <div class="complaint-icon">
+                📢
+              </div>
 
 
-      <tbody>
+              <div class="complaint-heading">
 
-        <!-- COMPLAINT ROW -->
+                <h3>
+                  {{ complaint.title }}
+                </h3>
 
-        <tr
-          *ngFor="let complaint of filteredComplaints()">
-
-          <!-- ID -->
-
-          <td class="px-4">
-
-            <span class="fw-semibold text-primary">
-
-              {{ complaint.id }}
-
-            </span>
-
-          </td>
-
-
-          <!-- RESIDENT -->
-
-          <td>
-
-            <div class="d-flex align-items-center gap-2">
-
-              <div class="resident-avatar">
-
-                {{ complaint.residentId }}
+                <span>
+                  Complaint #{{ complaint.id }}
+                </span>
 
               </div>
 
-              <div>
 
-                <div class="fw-semibold small">
+              <!-- STATUS -->
 
-                  Resident {{ complaint.residentId }}
+              @switch (complaint.status) {
 
-                </div>
+                @case (1) {
 
-                <div class="text-muted small">
+                  <span class="status pending">
+                    Pending
+                  </span>
 
-                  ID: {{ complaint.residentId }}
+                }
 
-                </div>
+                @case (2) {
 
-              </div>
+                  <span class="status progress">
+                    In Progress
+                  </span>
 
-            </div>
+                }
 
-          </td>
+                @case (3) {
 
+                  <span class="status resolved">
+                    Resolved
+                  </span>
 
-          <!-- FLAT -->
+                }
 
-          <td>
+                @case (4) {
 
-            <span class="badge bg-light text-dark border">
+                  <span class="status rejected">
+                    Rejected
+                  </span>
 
-              <i class="bi bi-house-door me-1"></i>
+                }
 
-              {{ complaint.flatId }}
+                @default {
 
-            </span>
+                  <span class="status unknown">
+                    Unknown
+                  </span>
 
-          </td>
+                }
 
-
-          <!-- COMPLAINT -->
-
-          <td>
-
-            <div
-              class="fw-semibold text-dark complaint-title">
-
-              {{ complaint.title }}
-
-            </div>
-
-            <div class="text-muted small">
-
-              Resident complaint
+              }
 
             </div>
 
-          </td>
 
+            <!-- ==================================
+                 DESCRIPTION
+            =================================== -->
 
-          <!-- STATUS -->
+            <div class="complaint-description">
 
-          <td>
+              <small>
+                Description
+              </small>
 
-            <span
-              class="badge rounded-pill px-3 py-2"
-              [class.bg-warning-subtle]="complaint.status === 1"
-              [class.text-warning-emphasis]="complaint.status === 1"
-              [class.bg-primary-subtle]="complaint.status === 2"
-              [class.text-primary-emphasis]="complaint.status === 2"
-              [class.bg-success-subtle]="complaint.status === 3"
-              [class.text-success-emphasis]="complaint.status === 3"
-              [class.bg-danger-subtle]="complaint.status === 4"
-              [class.text-danger-emphasis]="complaint.status === 4">
-
-              {{ getStatus(complaint.status) }}
-
-            </span>
-
-          </td>
-
-
-          <!-- DATE -->
-
-          <td>
-
-            <span class="text-muted small">
-
-              <i class="bi bi-calendar3 me-1"></i>
-
-              {{ complaint.complaintDate | date:'dd MMM yyyy' }}
-
-            </span>
-
-          </td>
-
-
-          <!-- ACTION -->
-
-          <td>
-
-            <div
-              class="d-flex justify-content-center gap-2">
-
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-primary"
-                title="Edit"
-                (click)="openEditForm(complaint)">
-
-                <i class="bi bi-pencil"></i>
-
-              </button>
-
-
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-danger"
-                title="Delete"
-                (click)="deleteComplaint(complaint.id)">
-
-                <i class="bi bi-trash"></i>
-
-              </button>
-
-            </div>
-
-          </td>
-
-        </tr>
-
-
-        <!-- ================= NO DATA ================= -->
-
-        <tr
-          *ngIf="filteredComplaints().length === 0">
-
-          <td
-            colspan="7"
-            class="text-center py-5">
-
-            <div class="text-muted">
-
-              <i class="bi bi-inbox fs-1 d-block mb-3"></i>
-
-              <h6 class="fw-semibold">
-                No complaints found
-              </h6>
-
-              <p class="small mb-3">
-                No complaints match your current search or filter.
+              <p>
+                {{ complaint.description }}
               </p>
 
+            </div>
+
+
+            <!-- ==================================
+                 DETAILS
+            =================================== -->
+
+            <div class="complaint-details">
+
+              <!-- Resident -->
+
+              <div class="detail-box">
+
+                <small>
+                  Resident ID
+                </small>
+
+                <strong>
+                  👤 Resident #{{ complaint.residentId }}
+                </strong>
+
+              </div>
+
+
+              <!-- Flat -->
+
+              <div class="detail-box">
+
+                <small>
+                  Flat ID
+                </small>
+
+                <strong>
+                  🏠 Flat #{{ complaint.flatId }}
+                </strong>
+
+              </div>
+
+
+              <!-- Date -->
+
+              <div class="detail-box full-width">
+
+                <small>
+                  Complaint Date
+                </small>
+
+                <strong>
+                  📅
+                  {{ complaint.complaintDate | date:'dd MMM yyyy' }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- ==================================
+                 ACTIONS
+            =================================== -->
+
+            <div class="complaint-actions">
+
               <button
                 type="button"
-                class="btn btn-primary btn-sm"
-                (click)="openAddForm()">
+                class="edit-btn"
+                (click)="openEditForm(complaint)">
 
-                <i class="bi bi-plus-lg me-1"></i>
+                ✏ Edit
 
-                Raise Complaint
+              </button>
+
+
+              <button
+                type="button"
+                class="delete-btn"
+                (click)="deleteComplaint(complaint.id)">
+
+                🗑 Delete
 
               </button>
 
             </div>
 
-          </td>
+          </div>
 
-        </tr>
+        }
 
-      </tbody>
+      </div>
 
-    </table>
-
-  </div>
-
-</div>
-```
-
-  </div>
-
-  <!-- ================================================= -->
-
-  <!-- ADD / EDIT COMPLAINT MODAL -->
-
-  <!-- ================================================= -->
-
-  <div
-    class="modal-backdrop-custom"
-    *ngIf="showForm()">
-
-```
-<div class="modal-dialog-custom">
-
-  <div class="card border-0 shadow-lg">
+    }
 
 
-    <!-- MODAL HEADER -->
+    <!-- ==========================================
+         EMPTY STATE
+    =========================================== -->
 
-    <div class="card-header bg-white border-bottom p-4">
+    @if (filteredComplaints().length === 0) {
 
-      <div
-        class="d-flex justify-content-between align-items-start">
+      <div class="empty-state">
 
-        <div>
+        <div class="empty-icon">
+          📢
+        </div>
 
-          <h5 class="fw-bold mb-1">
+        <h3>
+          No Complaints Found
+        </h3>
 
-            <i class="bi bi-chat-left-text text-primary me-2"></i>
+        @if (
+          searchText() ||
+          statusFilter() !== 'All Status'
+        ) {
 
-            {{ editMode()
-              ? 'Edit Complaint'
-              : 'Raise Complaint'
-            }}
-
-          </h5>
-
-          <p class="text-muted small mb-0">
-
-            {{ editMode()
-              ? 'Update complaint information'
-              : 'Submit a new resident complaint'
-            }}
-
+          <p>
+            No complaints match your search or filter.
           </p>
 
+          <button
+            type="button"
+            class="add-complaint-btn"
+            (click)="openAddForm()">
+
+            + Add Complaint
+
+          </button>
+
+        } @else {
+
+          <p>
+            There are currently no complaints.
+          </p>
+
+          <button
+            type="button"
+            class="add-complaint-btn"
+            (click)="openAddForm()">
+
+            + Add Complaint
+
+          </button>
+
+        }
+
+      </div>
+
+    }
+
+  }
+
+
+  <!-- ==========================================
+       ADD / EDIT FORM
+  =========================================== -->
+
+  @if (showForm()) {
+
+    <div class="complaint-form-section">
+
+      <div class="complaint-form-card">
+
+        <!-- FORM HEADER -->
+
+        <div class="form-header">
+
+          <div class="form-title-area">
+
+            <div class="form-icon">
+              📢
+            </div>
+
+            <div>
+
+              <h2>
+
+                @if (editMode()) {
+                  Edit Complaint
+                } @else {
+                  Add Complaint
+                }
+
+              </h2>
+
+              <p>
+
+                @if (editMode()) {
+                  Update complaint information
+                } @else {
+                  Enter the complaint details
+                }
+
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-form-btn"
+            (click)="closeForm()">
+
+            ✕
+
+          </button>
+
         </div>
 
 
-        <button
-          type="button"
-          class="btn-close"
-          (click)="closeForm()">
-        </button>
+        <!-- FORM -->
+
+        <form
+          #complaintFormElement="ngForm"
+          (ngSubmit)="saveComplaint()">
+
+          <div class="form-grid">
+
+
+            <!-- ==================================
+                 RESIDENT ID
+            =================================== -->
+
+            <div class="form-group">
+
+              <label for="residentId">
+                Resident ID
+                <span>*</span>
+              </label>
+
+              <input
+                id="residentId"
+                type="number"
+                name="residentId"
+                [(ngModel)]="complaintForm.residentId"
+                required
+                min="1"
+                placeholder="Enter resident ID"
+                class="form-control"
+              />
+
+            </div>
+
+
+            <!-- ==================================
+                 FLAT ID
+            =================================== -->
+
+            <div class="form-group">
+
+              <label for="flatId">
+                Flat ID
+                <span>*</span>
+              </label>
+
+              <input
+                id="flatId"
+                type="number"
+                name="flatId"
+                [(ngModel)]="complaintForm.flatId"
+                required
+                min="1"
+                placeholder="Enter flat ID"
+                class="form-control"
+              />
+
+            </div>
+
+
+            <!-- ==================================
+                 TITLE
+            =================================== -->
+
+            <div class="form-group full-width">
+
+              <label for="title">
+                Complaint Title
+                <span>*</span>
+              </label>
+
+              <input
+                id="title"
+                type="text"
+                name="title"
+                [(ngModel)]="complaintForm.title"
+                required
+                placeholder="Enter complaint title"
+                class="form-control"
+              />
+
+            </div>
+
+
+            <!-- ==================================
+                 DESCRIPTION
+            =================================== -->
+
+            <div class="form-group full-width">
+
+              <label for="description">
+                Description
+                <span>*</span>
+              </label>
+
+              <textarea
+                id="description"
+                name="description"
+                [(ngModel)]="complaintForm.description"
+                required
+                rows="5"
+                placeholder="Describe the complaint..."
+                class="form-control">
+              </textarea>
+
+            </div>
+
+          </div>
+
+
+          <!-- ==================================
+               FORM ACTIONS
+          =================================== -->
+
+          <div class="form-actions">
+
+            <button
+              type="button"
+              class="cancel-btn"
+              (click)="closeForm()">
+
+              Cancel
+
+            </button>
+
+
+            <button
+              type="submit"
+              class="save-btn">
+
+              @if (editMode()) {
+
+                ✏ Update Complaint
+
+              } @else {
+
+                + Save Complaint
+
+              }
+
+            </button>
+
+          </div>
+
+        </form>
 
       </div>
 
     </div>
 
-
-    <!-- MODAL BODY -->
-
-    <div class="card-body p-4">
-
-      <div class="row g-3">
+  }
 
 
-        <!-- RESIDENT ID -->
+  <!-- ==========================================
+       TOAST
+  =========================================== -->
 
-        <div class="col-md-6">
+  @if (showToast()) {
 
-          <label class="form-label fw-semibold">
+    <div
+      class="toast"
+      [class.success]="toastType() === 'success'"
+      [class.error]="toastType() === 'error'">
 
-            Resident ID
+      <span class="toast-icon">
 
-          </label>
+        @if (toastType() === 'success') {
+          ✓
+        } @else {
+          !
+        }
 
-          <div class="input-group">
+      </span>
 
-            <span class="input-group-text bg-white">
-
-              <i class="bi bi-person text-muted"></i>
-
-            </span>
-
-            <input
-              type="number"
-              class="form-control"
-              placeholder="Enter resident ID"
-              [(ngModel)]="complaintForm.residentId"
-            />
-
-          </div>
-
-        </div>
-
-
-        <!-- FLAT ID -->
-
-        <div class="col-md-6">
-
-          <label class="form-label fw-semibold">
-
-            Flat ID
-
-          </label>
-
-          <div class="input-group">
-
-            <span class="input-group-text bg-white">
-
-              <i class="bi bi-house text-muted"></i>
-
-            </span>
-
-            <input
-              type="number"
-              class="form-control"
-              placeholder="Enter flat ID"
-              [(ngModel)]="complaintForm.flatId"
-            />
-
-          </div>
-
-        </div>
-
-
-        <!-- TITLE -->
-
-        <div class="col-12">
-
-          <label class="form-label fw-semibold">
-
-            Complaint Title
-
-          </label>
-
-          <div class="input-group">
-
-            <span class="input-group-text bg-white">
-
-              <i class="bi bi-exclamation-circle text-muted"></i>
-
-            </span>
-
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Enter complaint title"
-              [(ngModel)]="complaintForm.title"
-            />
-
-          </div>
-
-        </div>
-
-
-        <!-- DESCRIPTION -->
-
-        <div class="col-12">
-
-          <label class="form-label fw-semibold">
-
-            Description
-
-          </label>
-
-          <textarea
-            class="form-control"
-            rows="5"
-            placeholder="Describe the complaint..."
-            [(ngModel)]="complaintForm.description">
-          </textarea>
-
-          <div class="form-text">
-
-            Provide detailed information about the issue.
-
-          </div>
-
-        </div>
-
-      </div>
+      <span>
+        {{ toastMessage() }}
+      </span>
 
     </div>
 
-
-    <!-- MODAL FOOTER -->
-
-    <div class="card-footer bg-light border-0 p-3">
-
-      <div class="d-flex justify-content-end gap-2">
-
-        <button
-          type="button"
-          class="btn btn-light border px-4"
-          (click)="closeForm()">
-
-          Cancel
-
-        </button>
-
-
-        <button
-          type="button"
-          class="btn btn-primary px-4"
-          (click)="saveComplaint()">
-
-          <i
-            class="bi"
-            [class.bi-check-lg]="editMode()"
-            [class.bi-send]="!editMode()">
-          </i>
-
-          {{ editMode()
-            ? 'Update Complaint'
-            : 'Submit Complaint'
-          }}
-
-        </button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-  </div>
-  <div
-  class="toast"
-  *ngIf="showToast()"
-  [class.success]="toastType() === 'success'"
-  [class.error]="toastType() === 'error'">
-
-  {{ toastMessage() }}
-
-</div>
+  }
 
 </div>

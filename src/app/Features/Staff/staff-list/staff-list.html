@@ -1,199 +1,559 @@
+
 <div class="staff-page">
 
-  <!-- HEADER -->
+  <!-- ================================
+       HEADER
+  ================================= -->
 
   <div class="page-header">
 
-    <div>
+    <div class="header-content">
 
-      <h1>Staff Management</h1>
+      <div class="staff-icon">
+        👨‍💼
+      </div>
 
-      <p>
-        Manage apartment staff members
-      </p>
+      <div>
+        <h1>Staff Management</h1>
+
+        <p>
+          Manage and monitor apartment staff members
+        </p>
+      </div>
 
     </div>
+
 
     <a
       routerLink="/staff/add"
       class="add-btn"
     >
-      + Add Staff
+      <span>＋</span>
+      Add Staff
     </a>
 
   </div>
 
 
-  <!-- ERROR -->
+  <!-- ================================
+       ERROR
+  ================================= -->
 
   @if (errorMessage()) {
 
     <div class="error-message">
-      {{ errorMessage() }}
+
+      <div class="error-icon">
+        ⚠️
+      </div>
+
+      <div>
+        <strong>Unable to load staff</strong>
+
+        <p>
+          {{ errorMessage() }}
+        </p>
+      </div>
+
     </div>
 
   }
 
 
-  <!-- LOADING -->
+  <!-- ================================
+       LOADING
+  ================================= -->
 
   @if (loading()) {
 
-    <div class="loading">
-      Loading staff details...
+    <div class="loading-card">
+
+      <div class="loading-icon">
+        👨‍💼
+      </div>
+
+      <h3>
+        Loading staff details...
+      </h3>
+
+      <p>
+        Please wait while we fetch the staff information.
+      </p>
+
     </div>
 
   }
 
 
-  <!-- TABLE -->
+  <!-- ================================
+       CONTENT
+  ================================= -->
 
   @if (!loading()) {
 
-    <div class="table-container">
 
-      <table>
+    <!-- ==============================
+         SUMMARY CARDS
+    =============================== -->
 
-        <thead>
-
-          <tr>
-
-            <th>ID</th>
-
-            <th>Name</th>
-
-            <th>Phone</th>
-
-            <th>Job Role</th>
-
-            <th>Joining Date</th>
-
-            <th>Status</th>
-
-            <th>Actions</th>
-
-          </tr>
-
-        </thead>
+    <div class="stats-grid">
 
 
-        <tbody>
+      <!-- TOTAL -->
 
-          <!-- STAFF RECORDS -->
+      <div class="stat-card">
 
-          @for (
-            staff of staffs();
-            track staff.id
-          ) {
+        <div class="stat-icon blue">
+          👥
+        </div>
+
+        <div class="stat-content">
+
+          <span>Total Staff</span>
+
+          <strong>
+            {{ staffs().length }}
+          </strong>
+
+          <small>
+            Registered members
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACTIVE -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon green">
+          ✓
+        </div>
+
+        <div class="stat-content">
+
+          <span>Active Staff</span>
+
+          <strong>
+            {{
+              staffs().filter(
+                s => s.status === 'Active'
+              ).length
+            }}
+          </strong>
+
+          <small>
+            Currently working
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- INACTIVE -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon red">
+          ⏸
+        </div>
+
+        <div class="stat-content">
+
+          <span>Inactive Staff</span>
+
+          <strong>
+            {{
+              staffs().filter(
+                s => s.status === 'Inactive'
+              ).length
+            }}
+          </strong>
+
+          <small>
+            Currently unavailable
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- ROLES -->
+
+      <div class="stat-card">
+
+        <div class="stat-icon purple">
+          💼
+        </div>
+
+        <div class="stat-content">
+
+          <span>Staff Roles</span>
+
+          <strong>
+            {{ staffs().length }}
+          </strong>
+
+          <small>
+            Assigned positions
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ==============================
+         TOOLBAR
+    =============================== -->
+
+    @if (staffs().length > 0) {
+
+      <div class="toolbar">
+
+        <div class="search-box">
+
+          <span>🔍</span>
+
+          <input
+            type="text"
+            placeholder="Search staff by name, phone or role..."
+          />
+
+        </div>
+
+
+        <select class="filter-select">
+
+          <option value="">
+            All Staff
+          </option>
+
+          <option value="Active">
+            Active
+          </option>
+
+          <option value="Inactive">
+            Inactive
+          </option>
+
+        </select>
+
+      </div>
+
+    }
+
+
+    <!-- ==============================
+         STAFF TABLE
+    =============================== -->
+
+    <div class="staff-card">
+
+
+      <!-- TABLE HEADER -->
+
+      <div class="table-header">
+
+        <div>
+
+          <h2>Staff Directory</h2>
+
+          <p>
+            View and manage apartment staff members
+          </p>
+
+        </div>
+
+
+        <div class="staff-count">
+
+          {{ staffs().length }} Members
+
+        </div>
+
+      </div>
+
+
+      <!-- TABLE -->
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
 
             <tr>
 
-              <td>
-                {{ staff.id }}
-              </td>
+              <th>Staff Member</th>
 
+              <th>Phone</th>
 
-              <td>
+              <th>Job Role</th>
 
-                <strong>
-                  {{ staff.name }}
-                </strong>
+              <th>Joining Date</th>
 
-              </td>
+              <th>Status</th>
 
-
-              <td>
-                {{ staff.phone }}
-              </td>
-
-
-              <td>
-                {{ staff.jobRole }}
-              </td>
-
-
-              <td>
-                {{ staff.joiningDate | date:'dd MMM yyyy' }}
-              </td>
-
-
-              <td>
-
-                <span
-                  class="status"
-                  [class.active]="staff.status === 'Active'"
-                  [class.inactive]="staff.status === 'Inactive'"
-                >
-                  {{ staff.status }}
-                </span>
-
-              </td>
-
-
-              <td class="actions">
-
-                <button
-                  class="view-btn"
-                  (click)="viewStaff(staff.id)"
-                >
-                  View
-                </button>
-
-
-                <button
-                  class="edit-btn"
-                  (click)="editStaff(staff.id)"
-                >
-                  Edit
-                </button>
-
-
-                <button
-                  class="delete-btn"
-                  (click)="deleteStaff(staff.id)"
-                >
-                  Delete
-                </button>
-
-              </td>
+              <th>Actions</th>
 
             </tr>
 
-          }
+          </thead>
 
 
-          <!-- EMPTY -->
+          <tbody>
 
-          @if (staffs().length === 0) {
+            <!-- ==========================
+                 STAFF RECORDS
+            =========================== -->
 
-            <tr>
+            @for (
+              staff of staffs();
+              track staff.id
+            ) {
 
-              <td
-                colspan="7"
-                class="empty"
-              >
-                No staff members found.
-              </td>
+              <tr>
 
-            </tr>
 
-          }
+                <!-- STAFF -->
 
-        </tbody>
+                <td>
 
-      </table>
+                  <div class="staff-info">
+
+                    <div class="avatar">
+
+                      {{
+                        staff.name
+                          ? staff.name.charAt(0).toUpperCase()
+                          : '?'
+                      }}
+
+                    </div>
+
+                    <div>
+
+                      <strong>
+                        {{ staff.name }}
+                      </strong>
+
+                      <small>
+                        Staff ID #{{ staff.id }}
+                      </small>
+
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <!-- PHONE -->
+
+                <td>
+
+                  <div class="phone-info">
+
+                    <span class="phone-icon">
+                      📞
+                    </span>
+
+                    <span>
+                      {{ staff.phone }}
+                    </span>
+
+                  </div>
+
+                </td>
+
+
+                <!-- ROLE -->
+
+                <td>
+
+                  <span class="role-badge">
+
+                    💼
+
+                    {{ staff.jobRole }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- JOINING DATE -->
+
+                <td>
+
+                  <div class="date-info">
+
+                    <strong>
+                      {{ staff.joiningDate | date:'dd MMM yyyy' }}
+                    </strong>
+
+                    <small>
+                      Joining date
+                    </small>
+
+                  </div>
+
+                </td>
+
+
+                <!-- STATUS -->
+
+                <td>
+
+                  <span
+                    class="status"
+                    [class.active]="
+                      staff.status === 'Active'
+                    "
+                    [class.inactive]="
+                      staff.status === 'Inactive'
+                    "
+                  >
+
+                    <span class="status-dot"></span>
+
+                    {{ staff.status }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- ACTIONS -->
+
+                <td>
+
+                  <div class="actions">
+
+                    <button
+                      class="action-btn view-btn"
+                      title="View Staff"
+                      (click)="viewStaff(staff.id)"
+                    >
+                      👁️
+                    </button>
+
+
+                    <button
+                      class="action-btn edit-btn"
+                      title="Edit Staff"
+                      (click)="editStaff(staff.id)"
+                    >
+                      ✏️
+                    </button>
+
+
+                    <button
+                      class="action-btn delete-btn"
+                      title="Delete Staff"
+                      (click)="deleteStaff(staff.id)"
+                    >
+                      🗑️
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+
+            <!-- ==========================
+                 EMPTY
+            =========================== -->
+
+            @if (staffs().length === 0) {
+
+              <tr>
+
+                <td
+                  colspan="6"
+                  class="empty-cell"
+                >
+
+                  <div class="empty-state">
+
+                    <div class="empty-icon">
+                      👨‍💼
+                    </div>
+
+                    <h3>
+                      No staff members found
+                    </h3>
+
+                    <p>
+                      Start by adding your first apartment staff member.
+                    </p>
+
+                    <a
+                      routerLink="/staff/add"
+                      class="empty-btn"
+                    >
+                      + Add Staff
+                    </a>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
 
     </div>
 
   }
-  <div
-  class="toast"
-  *ngIf="showToast()"
-  [class.success]="toastType() === 'success'"
-  [class.error]="toastType() === 'error'">
 
-  {{ toastMessage() }}
+
+  <!-- ================================
+       TOAST
+  ================================= -->
+
+  @if (showToast()) {
+
+    <div
+      class="toast"
+      [class.success]="toastType() === 'success'"
+      [class.error]="toastType() === 'error'"
+    >
+
+      <span class="toast-icon">
+
+        @if (toastType() === 'success') {
+          ✓
+        } @else {
+          !
+        }
+
+      </span>
+
+      <span>
+        {{ toastMessage() }}
+      </span>
+
+    </div>
+
+  }
 
 </div>
-
-</div>
+```

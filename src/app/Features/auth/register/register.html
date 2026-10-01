@@ -1,19 +1,46 @@
+
 <div class="register-container">
 
   <div class="register-card">
 
-    <h1>Apartment Management</h1>
+    <!-- APARTMENT LOGO -->
 
-    <h2>Register</h2>
+    <div class="apartment-logo">
+      🏢
+    </div>
+
+
+    <!-- APARTMENT NAME -->
+
+    <h1>
+      Apartment Management
+    </h1>
+
+    <p class="welcome-text">
+      Create your account to continue.
+    </p>
+
+
+    <h2>
+      Register
+    </h2>
+
+
+    <!-- REGISTER FORM -->
 
     <form
       [formGroup]="registerForm"
       (ngSubmit)="register()"
       autocomplete="off">
 
+
+      <!-- NAME -->
+
       <div class="form-group">
 
-        <label>Name</label>
+        <label>
+          Name
+        </label>
 
         <input
           type="text"
@@ -23,9 +50,14 @@
 
       </div>
 
+
+      <!-- EMAIL -->
+
       <div class="form-group">
 
-        <label>Email</label>
+        <label>
+          Email
+        </label>
 
         <input
           type="email"
@@ -35,9 +67,14 @@
 
       </div>
 
+
+      <!-- PASSWORD -->
+
       <div class="form-group">
 
-        <label>Password</label>
+        <label>
+          Password
+        </label>
 
         <input
           type="password"
@@ -47,9 +84,14 @@
 
       </div>
 
+
+      <!-- CONFIRM PASSWORD -->
+
       <div class="form-group">
 
-        <label>Confirm Password</label>
+        <label>
+          Confirm Password
+        </label>
 
         <input
           type="password"
@@ -59,9 +101,14 @@
 
       </div>
 
+
+      <!-- PHONE -->
+
       <div class="form-group">
 
-        <label>Phone Number</label>
+        <label>
+          Phone Number
+        </label>
 
         <input
           type="text"
@@ -71,9 +118,15 @@
 
       </div>
 
+
+      <!-- KEEPING YOUR ORIGINAL EMPTY FORM GROUP -->
+
       <div class="form-group">
 
       </div>
+
+
+      <!-- ERROR -->
 
       @if (errorMessage()) {
 
@@ -83,21 +136,32 @@
 
       }
 
+
+      <!-- REGISTER BUTTON -->
+
       <button
         type="submit"
         [disabled]="loading()">
 
         @if (loading()) {
+
           Registering...
+
         } @else {
+
           Register
+
         }
 
       </button>
 
     </form>
 
-    <p>
+
+    <!-- LOGIN LINK -->
+
+    <p class="login-text">
+
       Already have an account?
 
       <a routerLink="/login">
@@ -105,6 +169,17 @@
       </a>
 
     </p>
+
+
+    <!-- FOOTER -->
+
+    <div class="register-footer">
+
+      <span>
+        Qwin Elite Apartments
+      </span>
+
+    </div>
 
   </div>
 

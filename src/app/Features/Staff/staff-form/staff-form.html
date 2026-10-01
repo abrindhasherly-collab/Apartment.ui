@@ -1,212 +1,522 @@
-<div class="form-page">
 
-  <!-- HEADER -->
+<div class="staff-form-page">
 
-  <div class="form-header">
+  <!-- =====================================
+       BREADCRUMB
+  ====================================== -->
 
-    <div>
+  <div class="breadcrumb">
 
-      <h1>
-        {{ isEditMode ? 'Edit Staff' : 'Add Staff' }}
-      </h1>
+    <span>Dashboard</span>
 
-      <p>
-        {{
-          isEditMode
-            ? 'Update staff member details'
-            : 'Add a new staff member'
-        }}
-      </p>
+    <span>›</span>
+
+    <span>Staff</span>
+
+    <span>›</span>
+
+    <strong>
+      {{ isEditMode ? 'Edit Staff' : 'Add Staff' }}
+    </strong>
+
+  </div>
+
+
+  <!-- =====================================
+       MAIN FORM LAYOUT
+  ====================================== -->
+
+  <div class="staff-form-layout">
+
+
+    <!-- ===================================
+         LEFT PROFILE PANEL
+    ==================================== -->
+
+    <div class="staff-profile-panel">
+
+      <div class="profile-glow"></div>
+
+      <div class="profile-content">
+
+        <div class="staff-avatar">
+          👨‍💼
+        </div>
+
+        <span class="profile-label">
+          STAFF MANAGEMENT
+        </span>
+
+        <h1>
+          {{ isEditMode ? 'Edit Staff' : 'Add Staff' }}
+        </h1>
+
+        <p>
+          {{
+            isEditMode
+              ? 'Update staff member information and employment details.'
+              : 'Add a new staff member to your apartment community.'
+          }}
+        </p>
+
+
+        <!-- FEATURES -->
+
+        <div class="profile-features">
+
+          <div class="profile-feature">
+
+            <div class="feature-icon">
+              👤
+            </div>
+
+            <div>
+              <strong>Staff Profile</strong>
+              <small>Personal information</small>
+            </div>
+
+          </div>
+
+
+          <div class="profile-feature">
+
+            <div class="feature-icon">
+              💼
+            </div>
+
+            <div>
+              <strong>Job Assignment</strong>
+              <small>Define staff responsibility</small>
+            </div>
+
+          </div>
+
+
+          <div class="profile-feature">
+
+            <div class="feature-icon">
+              📅
+            </div>
+
+            <div>
+              <strong>Employment</strong>
+              <small>Track joining information</small>
+            </div>
+
+          </div>
+
+
+          <div class="profile-feature">
+
+            <div class="feature-icon">
+              ✓
+            </div>
+
+            <div>
+              <strong>Work Status</strong>
+              <small>Active or inactive</small>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- ===================================
+         RIGHT FORM
+    ==================================== -->
+
+    <div class="staff-form-card">
+
+
+      <!-- FORM HEADER -->
+
+      <div class="form-title">
+
+        <div>
+
+          <span>
+            STAFF PROFILE
+          </span>
+
+          <h2>
+            {{
+              isEditMode
+                ? 'Staff Details'
+                : 'New Staff Member'
+            }}
+          </h2>
+
+          <p>
+            Enter the staff member's information below.
+          </p>
+
+        </div>
+
+
+        <div class="title-icon">
+          👨‍💼
+        </div>
+
+      </div>
+
+
+      <!-- =================================
+           FORM
+      ================================== -->
+
+      <form
+        [formGroup]="staffForm"
+        (ngSubmit)="saveStaff()"
+      >
+
+
+        <!-- =================================
+             PERSONAL INFORMATION
+        ================================== -->
+
+        <div class="form-section">
+
+          <div class="section-heading">
+
+            <div class="section-number">
+              01
+            </div>
+
+            <div>
+
+              <h3>
+                Personal Information
+              </h3>
+
+              <p>
+                Basic details of the staff member
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+
+            <!-- NAME -->
+
+            <div class="form-group full">
+
+              <label for="name">
+                Full Name
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  👤
+                </span>
+
+                <input
+                  id="name"
+                  type="text"
+                  formControlName="name"
+                  placeholder="Enter staff name"
+                />
+
+              </div>
+
+              <small
+                class="error"
+                *ngIf="
+                  staffForm.get('name')?.touched &&
+                  staffForm.get('name')?.invalid
+                "
+              >
+                Name is required.
+              </small>
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="form-group full">
+
+              <label for="phone">
+                Phone Number
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  📱
+                </span>
+
+                <input
+                  id="phone"
+                  type="text"
+                  formControlName="phone"
+                  placeholder="Enter phone number"
+                />
+
+              </div>
+
+              <small
+                class="error"
+                *ngIf="
+                  staffForm.get('phone')?.touched &&
+                  staffForm.get('phone')?.invalid
+                "
+              >
+                Phone number is required.
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================
+             EMPLOYMENT INFORMATION
+        ================================== -->
+
+        <div class="form-section">
+
+          <div class="section-heading">
+
+            <div class="section-number">
+              02
+            </div>
+
+            <div>
+
+              <h3>
+                Employment Details
+              </h3>
+
+              <p>
+                Staff role and joining information
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+
+            <!-- JOB ROLE -->
+
+            <div class="form-group">
+
+              <label for="jobRole">
+                Job Role
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  💼
+                </span>
+
+                <input
+                  id="jobRole"
+                  type="text"
+                  formControlName="jobRole"
+                  placeholder="Example: Security Guard"
+                />
+
+              </div>
+
+              <small
+                class="error"
+                *ngIf="
+                  staffForm.get('jobRole')?.touched &&
+                  staffForm.get('jobRole')?.invalid
+                "
+              >
+                Job role is required.
+              </small>
+
+            </div>
+
+
+            <!-- JOINING DATE -->
+
+            <div class="form-group">
+
+              <label for="joiningDate">
+                Joining Date
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  📅
+                </span>
+
+                <input
+                  id="joiningDate"
+                  type="date"
+                  formControlName="joiningDate"
+                />
+
+              </div>
+
+              <small
+                class="error"
+                *ngIf="
+                  staffForm.get('joiningDate')?.touched &&
+                  staffForm.get('joiningDate')?.invalid
+                "
+              >
+                Joining date is required.
+              </small>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <div class="form-group full">
+
+              <label for="status">
+                Employment Status
+              </label>
+
+              <div class="input-wrapper select-wrapper">
+
+                <span class="input-icon">
+                  ●
+                </span>
+
+                <select
+                  id="status"
+                  formControlName="status"
+                >
+
+                  <option value="Active">
+                    Active
+                  </option>
+
+                  <option value="Inactive">
+                    Inactive
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================
+             ERROR MESSAGE
+        ================================== -->
+
+        <div
+          class="form-error"
+          *ngIf="showToast() && toastType() === 'error'"
+        >
+
+          <span>
+            ⚠️
+          </span>
+
+          <div>
+
+            <strong>
+              Something went wrong
+            </strong>
+
+            <p>
+              {{ toastMessage() }}
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================
+             ACTIONS
+        ================================== -->
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="cancel()"
+          >
+
+            <span>
+              ←
+            </span>
+
+            Cancel
+
+          </button>
+
+
+          <button
+            type="submit"
+            class="save-btn"
+          >
+
+            <span>
+              ✓
+            </span>
+
+            {{
+              isEditMode
+                ? 'Update Staff'
+                : 'Add Staff'
+            }}
+
+          </button>
+
+        </div>
+
+
+      </form>
 
     </div>
 
   </div>
 
 
-  <!-- FORM -->
+  <!-- =====================================
+       SUCCESS TOAST
+  ====================================== -->
 
-  <div class="form-card">
+  <div
+    class="toast"
+    *ngIf="
+      showToast() &&
+      toastType() === 'success'
+    "
+  >
 
-    <form
-      [formGroup]="staffForm"
-      (ngSubmit)="saveStaff()"
-    >
+    <span class="toast-icon">
+      ✓
+    </span>
 
-
-      <!-- NAME -->
-
-      <div class="form-group">
-
-        <label for="name">
-          Name
-        </label>
-
-        <input
-          id="name"
-          type="text"
-          formControlName="name"
-          placeholder="Enter staff name"
-        />
-
-        <small
-          class="error"
-          *ngIf="
-            staffForm.get('name')?.touched &&
-            staffForm.get('name')?.invalid
-          "
-        >
-          Name is required.
-        </small>
-
-      </div>
-
-
-      <!-- PHONE -->
-
-      <div class="form-group">
-
-        <label for="phone">
-          Phone
-        </label>
-
-        <input
-          id="phone"
-          type="text"
-          formControlName="phone"
-          placeholder="Enter phone number"
-        />
-
-        <small
-          class="error"
-          *ngIf="
-            staffForm.get('phone')?.touched &&
-            staffForm.get('phone')?.invalid
-          "
-        >
-          Phone number is required.
-        </small>
-
-      </div>
-
-
-      <!-- JOB ROLE -->
-
-      <div class="form-group">
-
-        <label for="jobRole">
-          Job Role
-        </label>
-
-        <input
-          id="jobRole"
-          type="text"
-          formControlName="jobRole"
-          placeholder="Example: Security Guard"
-        />
-
-        <small
-          class="error"
-          *ngIf="
-            staffForm.get('jobRole')?.touched &&
-            staffForm.get('jobRole')?.invalid
-          "
-        >
-          Job role is required.
-        </small>
-
-      </div>
-
-
-      <!-- JOINING DATE -->
-
-      <div class="form-group">
-
-        <label for="joiningDate">
-          Joining Date
-        </label>
-
-        <input
-          id="joiningDate"
-          type="date"
-          formControlName="joiningDate"
-        />
-
-        <small
-          class="error"
-          *ngIf="
-            staffForm.get('joiningDate')?.touched &&
-            staffForm.get('joiningDate')?.invalid
-          "
-        >
-          Joining date is required.
-        </small>
-
-      </div>
-
-
-      <!-- STATUS -->
-
-      <div class="form-group">
-
-        <label for="status">
-          Status
-        </label>
-
-        <select
-          id="status"
-          formControlName="status"
-        >
-
-          <option value="Active">
-            Active
-          </option>
-
-          <option value="Inactive">
-            Inactive
-          </option>
-
-        </select>
-
-      </div>
-
-
-      <!-- BUTTONS -->
-
-      <div class="form-actions">
-
-        <button
-          type="button"
-          class="cancel-btn"
-          (click)="cancel()"
-        >
-          Cancel
-        </button>
-
-        <button
-          type="submit"
-          class="save-btn"
-        >
-          {{
-            isEditMode
-              ? 'Update Staff'
-              : 'Add Staff'
-          }}
-        </button>
-
-      </div>
-
-
-    </form>
+    <span>
+      {{ toastMessage() }}
+    </span>
 
   </div>
-  <div
-  class="toast"
-  *ngIf="showToast()"
-  [class.success]="toastType() === 'success'"
-  [class.error]="toastType() === 'error'">
-
-  {{ toastMessage() }}
 
 </div>
 
-</div>

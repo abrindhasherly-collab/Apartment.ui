@@ -1,114 +1,262 @@
 <div class="page">
 
+  <!-- =========================================
+       PAGE HEADER
+  ========================================== -->
+
   <div class="page-header">
 
-    <h2>Buildings</h2>
+    <div class="header-content">
+
+      <span class="page-label">
+        PROPERTY MANAGEMENT
+      </span>
+
+      <h2>Buildings</h2>
+
+      <p>
+        Manage your apartment buildings and properties.
+      </p>
+
+    </div>
+
 
     <a
       routerLink="/buildings/add"
       class="add-button">
 
-      + Add Building
+      <span>+</span>
+      Add Building
 
     </a>
 
   </div>
 
+
+  <!-- =========================================
+       BUILDINGS
+  ========================================== -->
+
   @if (loading()) {
 
-    <p>Loading buildings...</p>
+    <div class="loading-container">
+
+      <div class="loader"></div>
+
+      <p>Loading buildings...</p>
+
+    </div>
 
   } @else {
 
-    <div class="table-container">
+    <div class="buildings-grid">
 
-      <table>
+      @for (
+        building of buildings();
+        track building.id
+      ) {
 
-        <thead>
+        <div class="building-card">
 
-          <tr>
 
-            <th>ID</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Floors</th>
-            <th>Flats</th>
-            <th>Status</th>
-            <th>Actions</th>
+          <!-- =================================
+               PROPERTY IMAGE / ICON
+          ================================== -->
 
-          </tr>
+          <div class="building-image">
 
-        </thead>
+            <div class="building-icon">
+              🏢
+            </div>
 
-        <tbody>
 
-          @for (
-            building of buildings();
-            track building.id
-          ) {
+            <!-- Status -->
 
-            <tr>
+            @if (building.isActive) {
 
-              <td>{{ building.id }}</td>
+              <span class="building-status active-status">
 
-              <td>{{ building.name }}</td>
+                <span class="status-dot"></span>
 
-              <td>{{ building.address }}</td>
+                Active
 
-              <td>{{ building.totalFloors }}</td>
+              </span>
 
-              <td>{{ building.totalFlats }}</td>
+            } @else {
 
-              <td>
+              <span class="building-status inactive-status">
 
-                @if (building.isActive) {
-                  Active
-                } @else {
-                  Inactive
-                }
+                <span class="status-dot"></span>
 
-              </td>
+                Inactive
 
-              <td>
+              </span>
 
-                <a
-                  [routerLink]="[
-                    '/buildings',
-                    building.id
-                  ]">
+            }
 
-                  View
+          </div>
 
-                </a>
 
-                <a
-                  [routerLink]="[
-                    '/buildings/edit',
-                    building.id
-                  ]">
+          <!-- =================================
+               BUILDING INFORMATION
+          ================================== -->
 
-                  Edit
+          <div class="building-content">
 
-                </a>
+            <div class="building-title">
 
-                <button
-                  (click)="deleteBuilding(building.id)">
+              <h3>
+                {{ building.name }}
+              </h3>
 
-                  Delete
+              <span class="building-id">
+                ID: {{ building.id }}
+              </span>
 
-                </button>
+            </div>
 
-              </td>
 
-            </tr>
+            <!-- Address -->
 
-          }
+            <div class="address">
 
-        </tbody>
+              <span class="info-icon">
+                📍
+              </span>
 
-      </table>
+              <span>
+                {{ building.address }}
+              </span>
+
+            </div>
+
+
+            <!-- =================================
+                 PROPERTY STATS
+            ================================== -->
+
+            <div class="property-stats">
+
+              <div class="property-stat">
+
+                <div class="stat-icon">
+                  🏢
+                </div>
+
+                <div>
+                  <strong>
+                    {{ building.totalFloors }}
+                  </strong>
+
+                  <small>
+                    Floors
+                  </small>
+                </div>
+
+              </div>
+
+
+              <div class="property-stat">
+
+                <div class="stat-icon">
+                  🏠
+                </div>
+
+                <div>
+                  <strong>
+                    {{ building.totalFlats }}
+                  </strong>
+
+                  <small>
+                    Flats
+                  </small>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- =================================
+                 ACTIONS
+            ================================== -->
+
+            <div class="building-actions">
+
+              <a
+                [routerLink]="[
+                  '/buildings',
+                  building.id
+                ]"
+                class="view-button">
+
+                View
+
+              </a>
+
+
+              <a
+                [routerLink]="[
+                  '/buildings/edit',
+                  building.id
+                ]"
+                class="edit-button">
+
+                Edit
+
+              </a>
+
+
+              <button
+                (click)="deleteBuilding(building.id)"
+                class="delete-button">
+
+                Delete
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      }
 
     </div>
+
+
+    <!-- =========================================
+         EMPTY STATE
+    ========================================== -->
+
+    @if (buildings().length === 0) {
+
+      <div class="empty-state">
+
+        <div class="empty-icon">
+          🏢
+        </div>
+
+        <h3>
+          No buildings found
+        </h3>
+
+        <p>
+          Add your first building to get started.
+        </p>
+
+        <a
+          routerLink="/buildings/add"
+          class="empty-add-button">
+
+          + Add Building
+
+        </a>
+
+      </div>
+
+    }
 
   }
 

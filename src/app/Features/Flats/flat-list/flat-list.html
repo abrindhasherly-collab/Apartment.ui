@@ -1,142 +1,387 @@
+
 <div class="flat-page">
 
-  <!-- HEADER -->
+  <!-- PAGE HEADER -->
   <div class="page-header">
 
-    <div>
-      <h1>Flats</h1>
-      <p>Manage apartment flats</p>
+    <div class="header-content">
+      <div class="header-icon">
+        🏢
+      </div>
+
+      <div>
+        <h1>Flats</h1>
+        <p>Manage and monitor all apartment flats</p>
+      </div>
     </div>
 
     <a routerLink="/flats/add" class="add-btn">
+      <span>＋</span>
       Add Flat
     </a>
 
   </div>
 
 
-  <!-- ERROR -->
+  <!-- ERROR MESSAGE -->
   @if (errorMessage()) {
     <div class="error-message">
-      {{ errorMessage() }}
+      <div class="error-icon">⚠</div>
+
+      <div>
+        <strong>Something went wrong</strong>
+        <p>{{ errorMessage() }}</p>
+      </div>
     </div>
+  }
+
+
+  <!-- SUMMARY CARDS -->
+  @if (!loading()) {
+
+    <div class="summary-grid">
+
+      <!-- TOTAL -->
+      <div class="summary-card total-card">
+
+        <div class="summary-icon">
+          🏠
+        </div>
+
+        <div class="summary-info">
+          <span>Total Flats</span>
+          <strong>{{ flats().length }}</strong>
+        </div>
+
+      </div>
+
+
+      <!-- OCCUPIED -->
+      <div class="summary-card occupied-card">
+
+        <div class="summary-icon">
+          👨‍👩‍👧
+        </div>
+
+        <div class="summary-info">
+          <span>Occupied</span>
+
+          <strong>
+            {{
+              flats().filter(f => f.status === 'Occupied').length
+            }}
+          </strong>
+        </div>
+
+      </div>
+
+
+      <!-- AVAILABLE -->
+      <div class="summary-card available-card">
+
+        <div class="summary-icon">
+          🔑
+        </div>
+
+        <div class="summary-info">
+          <span>Available</span>
+
+          <strong>
+            {{
+              flats().filter(f => f.status === 'Unoccupied').length
+            }}
+          </strong>
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- TOOLBAR -->
+  @if (!loading() && flats().length > 0) {
+
+    <div class="toolbar">
+
+      <div class="search-box">
+
+        <span class="search-icon">🔍</span>
+
+        <input
+          type="text"
+          placeholder="Search flat number, building..."
+        />
+
+      </div>
+
+
+      <select class="filter-select">
+
+        <option value="">All Status</option>
+        <option value="Occupied">Occupied</option>
+        <option value="Unoccupied">Available</option>
+
+      </select>
+
+    </div>
+
   }
 
 
   <!-- LOADING -->
   @if (loading()) {
-    <div class="loading">
-      Loading flats...
+
+    <div class="loading-card">
+
+      <div class="spinner"></div>
+
+      <h3>Loading flats...</h3>
+
+      <p>Please wait while we fetch the apartment details.</p>
+
     </div>
+
   }
 
 
-  <!-- TABLE -->
+  <!-- FLATS TABLE -->
   @if (!loading()) {
 
     <div class="table-card">
 
-      <table>
+      <!-- TABLE HEADER -->
+      <div class="table-header">
 
-        <thead>
-          <tr>
-            <th>Flat No</th>
-            <th>Floor</th>
-            <th>Building</th>
-            <th>Flat Type</th>
-            <th>Status</th>
-            <th>Resident ID</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
+        <div>
+          <h2>Apartment Flats</h2>
+          <p>List of all registered flats</p>
+        </div>
 
+        <span class="flat-count">
+          {{ flats().length }} Flats
+        </span>
 
-        <tbody>
-
-          <!-- FLATS -->
-          @for (flat of flats(); track flat.id) {
-
-            <tr>
-
-              <td>
-                {{ flat.flatNumber }}
-              </td>
-
-              <td>
-                {{ flat.floor }}
-              </td>
-
-              <td>
-                {{ flat.buildingId }}
-              </td>
-
-              <td>
-                {{ flat.flatType }}
-              </td>
-
-              <td>
-
-                <span
-                  class="status"
-                  [class.occupied]="flat.status === 'Occupied'"
-                  [class.unoccupied]="flat.status === 'Unoccupied'"
-                >
-                  {{ flat.status }}
-                </span>
-
-              </td>
-
-              <td>
-                {{ flat.residentId || '-' }}
-              </td>
-
-              <td class="actions">
-
-                <button
-                  class="view-btn"
-                  (click)="viewFlat(flat.id)">
-                  View
-                </button>
-
-                <button
-                  class="edit-btn"
-                  (click)="editFlat(flat.id)">
-                  Edit
-                </button>
-
-                <button
-                  class="delete-btn"
-                  (click)="deleteFlat(flat.id)">
-                  Delete
-                </button>
-
-              </td>
-
-            </tr>
-
-          }
+      </div>
 
 
-          <!-- EMPTY -->
-          @if (flats().length === 0) {
+      <!-- TABLE -->
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
 
             <tr>
 
-              <td colspan="7" class="empty">
-                No flats found.
-              </td>
+              <th>Flat</th>
+
+              <th>Floor</th>
+
+              <th>Building</th>
+
+              <th>Type</th>
+
+              <th>Status</th>
+
+              <th>Resident</th>
+
+              <th>Actions</th>
 
             </tr>
 
-          }
+          </thead>
 
-        </tbody>
 
-      </table>
+          <tbody>
+
+            @for (flat of flats(); track flat.id) {
+
+              <tr>
+
+                <!-- FLAT -->
+                <td>
+
+                  <div class="flat-info">
+
+                    <div class="flat-icon">
+                      🏠
+                    </div>
+
+                    <div>
+                      <strong>
+                        {{ flat.flatNumber }}
+                      </strong>
+
+                      <small>
+                        Flat ID #{{ flat.id }}
+                      </small>
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <!-- FLOOR -->
+                <td>
+
+                  <span class="floor-badge">
+                    Floor {{ flat.floor }}
+                  </span>
+
+                </td>
+
+
+                <!-- BUILDING -->
+                <td>
+
+                  <div class="building-info">
+                    <span class="building-icon">🏢</span>
+                    Building {{ flat.buildingId }}
+                  </div>
+
+                </td>
+
+
+                <!-- TYPE -->
+                <td>
+
+                  <span class="flat-type">
+                    {{ flat.flatType }}
+                  </span>
+
+                </td>
+
+
+                <!-- STATUS -->
+                <td>
+
+                  <span
+                    class="status"
+                    [class.occupied]="flat.status === 'Occupied'"
+                    [class.unoccupied]="flat.status === 'Unoccupied'"
+                  >
+
+                    <span class="status-dot"></span>
+
+                    {{ flat.status }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- RESIDENT -->
+                <td>
+
+                  @if (flat.residentId) {
+
+                    <div class="resident-info">
+
+                      <div class="resident-avatar">
+                        👤
+                      </div>
+
+                      <span>
+                        #{{ flat.residentId }}
+                      </span>
+
+                    </div>
+
+                  } @else {
+
+                    <span class="no-resident">
+                      No Resident
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- ACTIONS -->
+                <td>
+
+                  <div class="actions">
+
+                    <button
+                      class="action-btn view-btn"
+                      title="View Flat"
+                      (click)="viewFlat(flat.id)"
+                    >
+                      👁
+                    </button>
+
+                    <button
+                      class="action-btn edit-btn"
+                      title="Edit Flat"
+                      (click)="editFlat(flat.id)"
+                    >
+                      ✏
+                    </button>
+
+                    <button
+                      class="action-btn delete-btn"
+                      title="Delete Flat"
+                      (click)="deleteFlat(flat.id)"
+                    >
+                      🗑
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+
+            <!-- EMPTY -->
+            @if (flats().length === 0) {
+
+              <tr>
+
+                <td colspan="7">
+
+                  <div class="empty-state">
+
+                    <div class="empty-icon">
+                      🏠
+                    </div>
+
+                    <h3>No flats found</h3>
+
+                    <p>
+                      There are no flats available at the moment.
+                    </p>
+
+                    <a
+                      routerLink="/flats/add"
+                      class="empty-add-btn"
+                    >
+                      Add Your First Flat
+                    </a>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
 
     </div>
 
   }
 
 </div>
-
+```

@@ -1,179 +1,687 @@
+
 <div class="parking-page">
 
-  <!-- HEADER -->
+  <!-- =========================================
+       HEADER
+  ========================================== -->
 
   <div class="page-header">
 
-    <div>
-      <h1>Parking Management</h1>
-      <p>Manage apartment parking slots and vehicles</p>
+    <div class="header-left">
+
+      <div class="parking-logo">
+        🅿️
+      </div>
+
+      <div>
+        <h1>Parking Management</h1>
+        <p>Manage parking slots, vehicles and availability</p>
+      </div>
+
     </div>
+
 
     <a
       routerLink="/parking/add"
       class="add-btn">
 
-      + Add Parking
+      <span>＋</span>
+      Add Parking
 
     </a>
 
   </div>
 
 
-  <!-- ERROR -->
+  <!-- =========================================
+       ERROR
+  ========================================== -->
 
   @if (errorMessage()) {
 
     <div class="error-message">
 
-      {{ errorMessage() }}
+      <div class="error-icon">
+        ⚠
+      </div>
+
+      <div>
+        <strong>Unable to load parking details</strong>
+
+        <p>
+          {{ errorMessage() }}
+        </p>
+      </div>
 
     </div>
 
   }
 
 
-  <!-- LOADING -->
+  <!-- =========================================
+       LOADING
+  ========================================== -->
 
   @if (loading()) {
 
-    <div class="loading">
+    <div class="loading-card">
 
-      Loading parking details...
+      <div class="parking-spinner">
+        🅿️
+      </div>
+
+      <h3>Loading parking details...</h3>
+
+      <p>
+        Please wait while we fetch the parking information.
+      </p>
 
     </div>
 
   }
 
 
-  <!-- TABLE -->
+  <!-- =========================================
+       CONTENT
+  ========================================== -->
 
   @if (!loading()) {
 
-    <div class="table-container">
 
-      <table>
+    <!-- =====================================
+         PARKING STATISTICS
+    ====================================== -->
 
-        <thead>
-
-          <tr>
-
-            <th>ID</th>
-            <th>Slot Number</th>
-            <th>Vehicle Number</th>
-            <th>Flat ID</th>
-            <th>Vehicle Type</th>
-            <th>Status</th>
-            <th>Actions</th>
-
-          </tr>
-
-        </thead>
+    <div class="stats-grid">
 
 
-        <tbody>
+      <!-- TOTAL -->
 
-          <!-- PARKING RECORDS -->
+      <div class="stat-card total">
 
-          @for (
-            parking of parkings();
-            track parking.id
-          ) {
+        <div class="stat-icon">
+          🅿️
+        </div>
 
-            <tr>
+        <div class="stat-content">
 
-              <td>
-                {{ parking.id }}
-              </td>
+          <span>Total Slots</span>
 
-              <td>
-                <strong>
-                  {{ parking.slotNumber }}
-                </strong>
-              </td>
+          <strong>
+            {{ parkings().length }}
+          </strong>
 
-              <td>
-                {{ parking.vehicleNumber || '-' }}
-              </td>
+          <small>
+            Registered parking
+          </small>
 
-              <td>
-                {{ parking.flatId || '-' }}
-              </td>
+        </div>
 
-              <td>
-                {{ parking.vehicleType || '-' }}
-              </td>
+      </div>
 
-              <td>
 
-                <span
-                  class="status"
-                  [class.available]="parking.status === 'Available'"
-                  [class.occupied]="parking.status === 'Occupied'">
+      <!-- AVAILABLE -->
 
-                  {{ parking.status }}
+      <div class="stat-card available-card">
 
+        <div class="stat-icon">
+          🔓
+        </div>
+
+        <div class="stat-content">
+
+          <span>Available</span>
+
+          <strong>
+            {{
+              parkings().filter(
+                p => p.status === 'Available'
+              ).length
+            }}
+          </strong>
+
+          <small>
+            Slots available
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- OCCUPIED -->
+
+      <div class="stat-card occupied-card">
+
+        <div class="stat-icon">
+          🚗
+        </div>
+
+        <div class="stat-content">
+
+          <span>Occupied</span>
+
+          <strong>
+            {{
+              parkings().filter(
+                p => p.status === 'Occupied'
+              ).length
+            }}
+          </strong>
+
+          <small>
+            Currently occupied
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- OCCUPANCY -->
+
+      <div class="stat-card occupancy-card">
+
+        <div class="stat-icon">
+          📊
+        </div>
+
+        <div class="stat-content">
+
+          <span>Occupancy</span>
+
+          <strong>
+
+            {{
+              parkings().length > 0
+                ? (
+                    parkings().filter(
+                      p => p.status === 'Occupied'
+                    ).length
+                    / parkings().length
+                    * 100
+                  ).toFixed(0)
+                : 0
+            }}%
+
+          </strong>
+
+          <small>
+            Current utilization
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================
+         PARKING OVERVIEW
+    ====================================== -->
+
+    <div class="parking-overview">
+
+      <div class="overview-header">
+
+        <div>
+
+          <h2>Parking Overview</h2>
+
+          <p>
+            Current parking slot availability
+          </p>
+
+        </div>
+
+
+        <div class="legend">
+
+          <span>
+            <i class="available-dot"></i>
+            Available
+          </span>
+
+          <span>
+            <i class="occupied-dot"></i>
+            Occupied
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- SLOT VISUALIZATION -->
+
+      <div class="parking-slots">
+
+        @for (
+          parking of parkings();
+          track parking.id
+        ) {
+
+          <div
+            class="parking-slot"
+            [class.slot-available]="
+              parking.status === 'Available'
+            "
+            [class.slot-occupied]="
+              parking.status === 'Occupied'
+            ">
+
+            <div class="slot-number">
+
+              <span>🅿</span>
+
+              {{ parking.slotNumber }}
+
+            </div>
+
+            <div class="slot-status">
+
+              @if (parking.status === 'Available') {
+
+                <span>
+                  Available
                 </span>
 
-              </td>
+              } @else {
 
-              <td class="actions">
+                <span>
+                  Occupied
+                </span>
 
-                <button
-                  class="view-btn"
-                  (click)="viewParking(parking.id)">
+              }
 
-                  View
+            </div>
 
-                </button>
+            @if (parking.vehicleNumber) {
 
-                <button
-                  class="edit-btn"
-                  (click)="editParking(parking.id)">
+              <div class="slot-vehicle">
 
-                  Edit
+                🚗
+                {{ parking.vehicleNumber }}
 
-                </button>
+              </div>
 
-                <button
-                  class="delete-btn"
-                  (click)="deleteParking(parking.id)">
+            } @else {
 
-                  Delete
+              <div class="slot-empty">
 
-                </button>
+                Ready for parking
 
-              </td>
+              </div>
 
-            </tr>
+            }
 
-          }
+          </div>
+
+        }
+
+      </div>
+
+    </div>
 
 
-          <!-- EMPTY -->
+    <!-- =====================================
+         TOOLBAR
+    ====================================== -->
 
-          @if (parkings().length === 0) {
+    @if (parkings().length > 0) {
+
+      <div class="toolbar">
+
+        <div class="search-box">
+
+          <span>🔍</span>
+
+          <input
+            type="text"
+            placeholder="Search slot, vehicle or flat..."
+          />
+
+        </div>
+
+
+        <select class="filter-select">
+
+          <option value="">
+            All Parking
+          </option>
+
+          <option value="Available">
+            Available
+          </option>
+
+          <option value="Occupied">
+            Occupied
+          </option>
+
+        </select>
+
+      </div>
+
+    }
+
+
+    <!-- =====================================
+         PARKING TABLE
+    ====================================== -->
+
+    <div class="parking-card">
+
+      <div class="table-header">
+
+        <div>
+
+          <h2>Parking Records</h2>
+
+          <p>
+            Detailed parking slot information
+          </p>
+
+        </div>
+
+
+        <span class="record-count">
+
+          {{ parkings().length }} Slots
+
+        </span>
+
+      </div>
+
+
+      <div class="table-wrapper">
+
+        <table>
+
+          <thead>
 
             <tr>
 
-              <td
-                colspan="7"
-                class="empty">
+              <th>Slot</th>
 
-                No parking slots found.
+              <th>Vehicle</th>
 
-              </td>
+              <th>Flat</th>
+
+              <th>Vehicle Type</th>
+
+              <th>Status</th>
+
+              <th>Actions</th>
 
             </tr>
 
-          }
+          </thead>
 
-        </tbody>
 
-      </table>
+          <tbody>
+
+            @for (
+              parking of parkings();
+              track parking.id
+            ) {
+
+              <tr>
+
+
+                <!-- SLOT -->
+
+                <td>
+
+                  <div class="slot-info">
+
+                    <div
+                      class="slot-icon"
+                      [class.available-icon]="
+                        parking.status === 'Available'
+                      "
+                      [class.occupied-icon]="
+                        parking.status === 'Occupied'
+                      ">
+
+                      🅿️
+
+                    </div>
+
+                    <div>
+
+                      <strong>
+                        {{ parking.slotNumber }}
+                      </strong>
+
+                      <small>
+                        Slot #{{ parking.id }}
+                      </small>
+
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <!-- VEHICLE -->
+
+                <td>
+
+                  @if (parking.vehicleNumber) {
+
+                    <div class="vehicle-info">
+
+                      <div class="vehicle-icon">
+                        🚗
+                      </div>
+
+                      <div>
+
+                        <strong>
+                          {{ parking.vehicleNumber }}
+                        </strong>
+
+                        <small>
+                          Registered vehicle
+                        </small>
+
+                      </div>
+
+                    </div>
+
+                  } @else {
+
+                    <span class="not-assigned">
+                      No vehicle
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- FLAT -->
+
+                <td>
+
+                  @if (parking.flatId) {
+
+                    <span class="flat-badge">
+                      🏠 Flat #{{ parking.flatId }}
+                    </span>
+
+                  } @else {
+
+                    <span class="not-assigned">
+                      Not assigned
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- VEHICLE TYPE -->
+
+                <td>
+
+                  @if (parking.vehicleType) {
+
+                    <span class="vehicle-type">
+
+                      @if (
+                        parking.vehicleType
+                          .toLowerCase()
+                          .includes('bike')
+                      ) {
+
+                        🏍️
+
+                      } @else {
+
+                        🚗
+
+                      }
+
+                      {{ parking.vehicleType }}
+
+                    </span>
+
+                  } @else {
+
+                    <span class="not-assigned">
+                      -
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- STATUS -->
+
+                <td>
+
+                  <span
+                    class="status"
+                    [class.available]="
+                      parking.status === 'Available'
+                    "
+                    [class.occupied]="
+                      parking.status === 'Occupied'
+                    ">
+
+                    <span class="status-dot"></span>
+
+                    {{ parking.status }}
+
+                  </span>
+
+                </td>
+
+
+                <!-- ACTIONS -->
+
+                <td>
+
+                  <div class="actions">
+
+                    <button
+                      class="action-btn view-btn"
+                      title="View Parking"
+                      (click)="
+                        viewParking(parking.id)
+                      ">
+
+                      👁
+
+                    </button>
+
+
+                    <button
+                      class="action-btn edit-btn"
+                      title="Edit Parking"
+                      (click)="
+                        editParking(parking.id)
+                      ">
+
+                      ✏️
+
+                    </button>
+
+
+                    <button
+                      class="action-btn delete-btn"
+                      title="Delete Parking"
+                      (click)="
+                        deleteParking(parking.id)
+                      ">
+
+                      🗑️
+
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+
+            <!-- =================================
+                 EMPTY
+            ================================== -->
+
+            @if (parkings().length === 0) {
+
+              <tr>
+
+                <td colspan="6">
+
+                  <div class="empty-state">
+
+                    <div class="empty-icon">
+                      🅿️
+                    </div>
+
+                    <h3>
+                      No parking slots found
+                    </h3>
+
+                    <p>
+                      Start by adding a parking slot
+                      to your apartment.
+                    </p>
+
+                    <a
+                      routerLink="/parking/add"
+                      class="empty-add-btn">
+
+                      + Add Parking Slot
+
+                    </a>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
 
     </div>
 
   }
 
 </div>
+```

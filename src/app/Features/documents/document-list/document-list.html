@@ -1,10 +1,15 @@
 <div class="document-container">
 
+  <!-- Header -->
   <div class="page-header">
 
-    <div>
-      <h2>Documents</h2>
-      <p>View and manage apartment documents</p>
+    <div class="header-content">
+      <div class="header-icon">📄</div>
+
+      <div>
+        <h2>Documents</h2>
+        <p>View and manage apartment documents</p>
+      </div>
     </div>
 
     <a
@@ -16,138 +21,196 @@
   </div>
 
 
+  <!-- Loading -->
   @if (loading()) {
 
-    <div class="loading">
-      Loading documents...
+    <div class="loading-card">
+      <div class="loading-icon">📄</div>
+      <h3>Loading Documents</h3>
+      <p>Please wait while documents are being loaded...</p>
     </div>
 
   }
 
 
+  <!-- Error -->
   @if (errorMessage()) {
 
     <div class="error">
+      <span class="error-icon">⚠</span>
       {{ errorMessage() }}
     </div>
 
   }
 
 
+  <!-- Empty -->
   @if (!loading() && documents().length === 0) {
 
     <div class="empty">
-      No documents found.
+
+      <div class="empty-icon">📂</div>
+
+      <h3>No Documents Found</h3>
+
+      <p>
+        There are currently no documents available.
+      </p>
+
+      <a
+        routerLink="/documents/add"
+        class="empty-add-button">
+        + Add Document
+      </a>
+
     </div>
 
   }
 
 
+  <!-- Documents -->
   @if (!loading() && documents().length > 0) {
 
-    <div class="document-table-wrapper">
+    <div class="document-grid">
 
-      <table class="document-table">
+      @for (document of documents(); track document.id) {
 
-        <thead>
+        <div class="document-card">
 
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>File Name</th>
-            <th>Uploaded Date</th>
-            <th>Uploaded By</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
+          <!-- Card Header -->
+          <div class="document-card-header">
 
-        </thead>
+            <div class="document-icon">
+              📄
+            </div>
 
-        <tbody>
+            <div class="document-heading">
 
-          @for (document of documents(); track document.id) {
-
-            <tr>
-
-              <td>
-                {{ document.id }}
-              </td>
-
-              <td class="title">
+              <h3>
                 {{ document.title }}
-              </td>
+              </h3>
 
-              <td class="description">
-                {{ document.description }}
-              </td>
+              <span>
+                Document #{{ document.id }}
+              </span>
 
-              <td>
+            </div>
+
+            <div>
+
+              @if (document.status === 1) {
+
+                <span class="status active">
+                  Active
+                </span>
+
+              } @else {
+
+                <span class="status archived">
+                  Archived
+                </span>
+
+              }
+
+            </div>
+
+          </div>
+
+
+          <!-- Description -->
+          <div class="description-box">
+
+            <span>Description</span>
+
+            <p>
+              {{ document.description }}
+            </p>
+
+          </div>
+
+
+          <!-- Document Details -->
+          <div class="document-details">
+
+            <div class="detail-box">
+
+              <span>File Name</span>
+
+              <strong>
                 {{ document.fileName }}
-              </td>
+              </strong>
 
-              <td>
-                {{ document.uploadedDate | date }}
-              </td>
+            </div>
 
-              <td>
+
+            <div class="detail-box">
+
+              <span>Uploaded By</span>
+
+              <strong>
                 {{ document.uploadedBy }}
-              </td>
+              </strong>
 
-              <td>
+            </div>
 
-                @if (document.status === 1) {
 
-                  <span class="status active">
-                    Active
-                  </span>
+            <div class="detail-box">
 
-                } @else {
+              <span>Uploaded Date</span>
 
-                  <span class="status archived">
-                    Archived
-                  </span>
+              <strong>
+                {{ document.uploadedDate | date }}
+              </strong>
 
-                }
+            </div>
 
-              </td>
 
-              <td class="actions">
+            <div class="detail-box">
 
-                <a
-                  [routerLink]="[
-                    '/documents',
-                    document.id
-                  ]"
-                  class="view-button">
-                  View
-                </a>
+              <span>Document ID</span>
 
-                <a
-                  [routerLink]="[
-                    '/documents/edit',
-                    document.id
-                  ]"
-                  class="edit-button">
-                  Edit
-                </a>
+              <strong>
+                #{{ document.id }}
+              </strong>
 
-                <button
-                  type="button"
-                  class="delete-button"
-                  (click)="deleteDocument(document.id)">
-                  Delete
-                </button>
+            </div>
 
-              </td>
+          </div>
 
-            </tr>
 
-          }
+          <!-- Actions -->
+          <div class="document-actions">
 
-        </tbody>
+            <a
+              [routerLink]="[
+                '/documents',
+                document.id
+              ]"
+              class="view-button">
+              👁 View
+            </a>
 
-      </table>
+            <a
+              [routerLink]="[
+                '/documents/edit',
+                document.id
+              ]"
+              class="edit-button">
+              ✏ Edit
+            </a>
+
+            <button
+              type="button"
+              class="delete-button"
+              (click)="deleteDocument(document.id)">
+              🗑 Delete
+            </button>
+
+          </div>
+
+        </div>
+
+      }
 
     </div>
 

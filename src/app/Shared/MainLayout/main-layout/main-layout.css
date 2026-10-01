@@ -1,6 +1,32 @@
+:host {
+  display: block;
+  min-height: 100vh;
+
+  background:
+    linear-gradient(
+      rgba(226, 232, 240, 0.72),
+      rgba(226, 232, 240, 0.78)
+    ),
+    url('/assets/images/apartment-bg.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
 .main-content {
   margin-left: 240px;
-  min-height: 100vh;
+
+  min-height: calc(100vh - 70px);
+
+  position: relative;
+
+  background: transparent;
+
+  padding: 0;
+
+  transition: margin-left 0.3s ease;
 }
 
 @media (max-width: 768px) {

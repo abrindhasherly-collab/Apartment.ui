@@ -19,117 +19,11 @@ import { ResidentService } from '../../Service/resident-service';
 })
 export class ResidentComponent implements OnInit {
 
-  // =========================
-  // Signals
-  // =========================
+  // ========================================
+  // Residents
+  // ========================================
 
   residents = signal<Resident[]>([]);
-
-  searchText = signal('');
-
-  selectedFlat = signal('All Flats');
-
-  loading = signal(false);
-
-  errorMessage = signal('');
-
-  showForm = signal(false);
-
-  editMode = signal(false);
-
-  selectedResidentId = signal<number | null>(null);
-
-
-  // =========================
-  // Toast Signals
-  // =========================
-
-  toastMessage = signal('');
-
-  toastType = signal<'success' | 'error'>('success');
-
-  showToast = signal(false);
-
-
-  // =========================
-  // Resident Form
-  // =========================
-
-  residentForm: CreateResident = {
-    userId: 0,
-    flatId: 0,
-    name: '',
-    phone: '',
-    email: ''
-  };
-
-
-  // =========================
-  // Selected Resident
-  // =========================
-
-  selectedResident = signal<Resident | null>(null);
-
-
-  constructor(
-    private residentService: ResidentService
-  ) {}
-
-
-  // =========================
-  // On Init
-  // =========================
-
-  ngOnInit(): void {
-
-    this.loadResidents();
-
-  }
-
-
-  // =========================
-  // Load Residents
-  // =========================
-
-  loadResidents(): void {
-
-    this.loading.set(true);
-
-    this.residentService.getAll().subscribe({
-
-      next: (data) => {
-
-        this.residents.set(data);
-
-        this.loading.set(false);
-
-      },
-
-      error: (error) => {
-
-        console.error(error);
-
-        this.errorMessage.set(
-          'Unable to load residents.'
-        );
-
-        this.loading.set(false);
-
-        this.showToastMessage(
-          'Unable to load residents.',
-          'error'
-        );
-
-      }
-
-    });
-
-  }
-
-
-  // =========================
-  // Filtered Residents
-  // =========================
 
   filteredResidents = computed(() => {
 
@@ -172,9 +66,165 @@ export class ResidentComponent implements OnInit {
   });
 
 
-  // =========================
+  // ========================================
+  // Search / Filter
+  // ========================================
+
+  searchText = signal('');
+
+  selectedFlat = signal('All Flats');
+
+
+  // ========================================
+  // Loading / Error
+  // ========================================
+
+  loading = signal(false);
+
+  errorMessage = signal('');
+
+
+  // ========================================
+  // Resident Form
+  // ========================================
+
+  showForm = signal(false);
+
+  editMode = signal(false);
+
+  selectedResidentId = signal<number | null>(null);
+
+
+  residentForm: CreateResident = {
+
+    userId: 0,
+
+    flatId: 0,
+
+    name: '',
+
+    phone: '',
+
+    email: ''
+
+  };
+
+
+  // ========================================
+  // Selected Resident
+  // ========================================
+
+  selectedResident =
+    signal<Resident | null>(null);
+
+
+  // ========================================
+  // Toast
+  // ========================================
+
+  toastMessage = signal('');
+
+  toastType =
+    signal<'success' | 'error'>('success');
+
+  showToast = signal(false);
+
+
+  // ========================================
+  // Constructor
+  // ========================================
+
+  constructor(
+    private residentService: ResidentService
+  ) {}
+
+
+  // ========================================
+  // On Init
+  // ========================================
+
+  ngOnInit(): void {
+
+    this.loadResidents();
+
+  }
+
+
+  // ========================================
+  // Load Residents
+  // ========================================
+
+  loadResidents(): void {
+
+    this.loading.set(true);
+
+    this.errorMessage.set('');
+
+    this.residentService
+      .getAll()
+      .subscribe({
+
+        next: (data) => {
+
+          this.residents.set(data);
+
+          this.loading.set(false);
+
+        },
+
+        error: (error) => {
+
+          console.error(error);
+
+          this.errorMessage.set(
+            'Unable to load residents.'
+          );
+
+          this.loading.set(false);
+
+          this.showToastMessage(
+            'Unable to load residents.',
+            'error'
+          );
+
+        }
+
+      });
+
+  }
+
+
+  // ========================================
+  // Active Residents Count
+  // ResidentStatus.Active = 1
+  // ========================================
+
+  activeResidentsCount(): number {
+
+    return this.residents()
+      .filter(resident => resident.status === 1)
+      .length;
+
+  }
+
+
+  // ========================================
+  // Inactive Residents Count
+  // ResidentStatus.Inactive = 2
+  // ========================================
+
+  inactiveResidentsCount(): number {
+
+    return this.residents()
+      .filter(resident => resident.status === 2)
+      .length;
+
+  }
+
+
+  // ========================================
   // Open Add Form
-  // =========================
+  // ========================================
 
   openAddForm(): void {
 
@@ -201,9 +251,9 @@ export class ResidentComponent implements OnInit {
   }
 
 
-  // =========================
+  // ========================================
   // Open Edit Form
-  // =========================
+  // ========================================
 
   openEditForm(resident: Resident): void {
 
@@ -211,7 +261,9 @@ export class ResidentComponent implements OnInit {
 
     this.showForm.set(true);
 
-    this.selectedResidentId.set(resident.id);
+    this.selectedResidentId.set(
+      resident.id
+    );
 
     this.residentForm = {
 
@@ -230,20 +282,24 @@ export class ResidentComponent implements OnInit {
   }
 
 
-  // =========================
+  // ========================================
   // Save Resident
-  // =========================
+  // ========================================
 
   saveResident(): void {
 
-    // =========================
+    // ----------------------------------------
     // Validation
-    // =========================
+    // ----------------------------------------
 
     if (
+
       !this.residentForm.name.trim() ||
+
       !this.residentForm.phone.trim() ||
+
       !this.residentForm.email.trim()
+
     ) {
 
       this.showToastMessage(
@@ -256,18 +312,24 @@ export class ResidentComponent implements OnInit {
     }
 
 
-    // =========================
+    // ----------------------------------------
     // UPDATE
-    // =========================
+    // ----------------------------------------
 
     if (
+
       this.editMode() &&
+
       this.selectedResidentId() !== null
+
     ) {
 
-      const resident = this.residents().find(
-        x => x.id === this.selectedResidentId()
-      );
+      const resident =
+        this.residents().find(
+          x =>
+            x.id ===
+            this.selectedResidentId()
+        );
 
 
       if (!resident) {
@@ -284,11 +346,26 @@ export class ResidentComponent implements OnInit {
 
       const updateData: UpdateResident = {
 
-        ...this.residentForm,
+        userId:
+          this.residentForm.userId,
 
-        dateOfJoining: resident.dateOfJoining,
+        flatId:
+          this.residentForm.flatId,
 
-        status: resident.status
+        name:
+          this.residentForm.name,
+
+        phone:
+          this.residentForm.phone,
+
+        email:
+          this.residentForm.email,
+
+        dateOfJoining:
+          resident.dateOfJoining,
+
+        status:
+          resident.status
 
       };
 
@@ -329,9 +406,9 @@ export class ResidentComponent implements OnInit {
     }
 
 
-    // =========================
+    // ----------------------------------------
     // CREATE
-    // =========================
+    // ----------------------------------------
 
     else {
 
@@ -370,17 +447,19 @@ export class ResidentComponent implements OnInit {
   }
 
 
-  // =========================
+  // ========================================
   // Delete Resident
-  // =========================
+  // ========================================
 
   deleteResident(id: number): void {
 
-    if (
-      !confirm(
+    const confirmed =
+      confirm(
         'Are you sure you want to delete this resident?'
-      )
-    ) {
+      );
+
+
+    if (!confirmed) {
 
       return;
 
@@ -418,25 +497,29 @@ export class ResidentComponent implements OnInit {
   }
 
 
-  // =========================
+  // ========================================
   // View Resident
-  // =========================
+  // ========================================
 
-  viewResident(resident: Resident): void {
+  viewResident(
+    resident: Resident
+  ): void {
 
     console.log(
       'Resident details:',
       resident
     );
 
-    this.selectedResident.set(resident);
+    this.selectedResident.set(
+      resident
+    );
 
   }
 
 
-  // =========================
+  // ========================================
   // Close View
-  // =========================
+  // ========================================
 
   closeView(): void {
 
@@ -445,20 +528,51 @@ export class ResidentComponent implements OnInit {
   }
 
 
-  // =========================
+  // ========================================
   // Close Form
-  // =========================
+  // ========================================
 
   closeForm(): void {
 
     this.showForm.set(false);
 
+    this.editMode.set(false);
+
+    this.selectedResidentId.set(null);
+
   }
 
 
-  // =========================
+  // ========================================
+  // Status Text
+  // ========================================
+
+  getStatus(status: number): string {
+
+    switch (status) {
+
+      case 1:
+
+        return 'Active';
+
+
+      case 2:
+
+        return 'Inactive';
+
+
+      default:
+
+        return 'Unknown';
+
+    }
+
+  }
+
+
+  // ========================================
   // Toast
-  // =========================
+  // ========================================
 
   showToastMessage(
     message: string,
@@ -477,28 +591,6 @@ export class ResidentComponent implements OnInit {
       this.showToast.set(false);
 
     }, 3000);
-
-  }
-
-
-  // =========================
-  // Status
-  // =========================
-
-  getStatus(status: number): string {
-
-    switch (status) {
-
-      case 1:
-        return 'Active';
-
-      case 2:
-        return 'Inactive';
-
-      default:
-        return 'Unknown';
-
-    }
 
   }
 

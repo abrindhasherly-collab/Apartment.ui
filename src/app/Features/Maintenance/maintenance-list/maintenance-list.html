@@ -1,19 +1,28 @@
 <div class="maintenance-page">
 
   <!-- HEADER -->
-
   <div class="page-header">
 
-    <div>
+    <div class="header-content">
+
+      <span class="page-label">
+        MAINTENANCE MANAGEMENT
+      </span>
+
       <h1>Maintenance</h1>
-      <p>Manage apartment maintenance payments</p>
+
+      <p>
+        Manage apartment maintenance payments
+      </p>
+
     </div>
 
     <a
       routerLink="/maintenance/add"
       class="add-btn">
 
-      + Add Maintenance
+      <span>+</span>
+      Add Maintenance
 
     </a>
 
@@ -21,165 +30,353 @@
 
 
   <!-- ERROR -->
-
   @if (errorMessage()) {
 
     <div class="error-message">
-
       {{ errorMessage() }}
-
     </div>
 
   }
 
 
   <!-- LOADING -->
-
   @if (loading()) {
 
     <div class="loading">
 
-      Loading maintenance records...
+      <div class="loader"></div>
+
+      <p>
+        Loading maintenance records...
+      </p>
 
     </div>
 
   }
 
 
-  <!-- TABLE -->
-
+  <!-- CONTENT -->
   @if (!loading()) {
 
-    <div class="table-card">
 
-      <table>
+    <!-- =====================================
+         SUMMARY CARDS
+    ====================================== -->
 
-        <thead>
-
-          <tr>
-
-            <th>Flat ID</th>
-            <th>Amount</th>
-            <th>Month</th>
-            <th>Due Date</th>
-            <th>Status</th>
-            <th>Actions</th>
-
-          </tr>
-
-        </thead>
+    <div class="summary-grid">
 
 
-        <tbody>
+      <!-- TOTAL -->
+      <div class="summary-card total-card">
 
-          <!-- MAINTENANCE RECORDS -->
+        <div class="summary-icon">
+          📋
+        </div>
 
-          @for (
-            maintenance of maintenances();
-            track maintenance.id
-          ) {
+        <div class="summary-content">
 
-            <tr>
+          <span>Total Records</span>
 
-              <td>
-                {{ maintenance.flatId }}
-              </td>
+          <strong>
+            {{ maintenances().length }}
+          </strong>
 
-              <td>
-                ₹{{ maintenance.amount }}
-              </td>
+          <small>
+            All maintenance records
+          </small>
 
-              <td>
-                {{ maintenance.month | date:'MMM yyyy' }}
-              </td>
+        </div>
 
-              <td>
-                {{ maintenance.dueDate | date:'dd MMM yyyy' }}
-              </td>
+      </div>
 
-              <td>
 
-                <span
-                  class="status"
-                  [class.pending]="maintenance.status === 'Pending'"
-                  [class.paid]="maintenance.status === 'Paid'"
-                  [class.overdue]="maintenance.status === 'Overdue'">
+      <!-- PAID -->
+      <div class="summary-card paid-card">
 
-                  {{ maintenance.status }}
+        <div class="summary-icon">
+          ✓
+        </div>
 
+        <div class="summary-content">
+
+          <span>Paid</span>
+
+          <strong>
+            {{ getPaidCount() }}
+          </strong>
+
+          <small>
+            Completed payments
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- PENDING -->
+      <div class="summary-card pending-card">
+
+        <div class="summary-icon">
+          🕐
+        </div>
+
+        <div class="summary-content">
+
+          <span>Pending</span>
+
+          <strong>
+            {{ getPendingCount() }}
+          </strong>
+
+          <small>
+            Awaiting payment
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <!-- OVERDUE -->
+      <div class="summary-card overdue-card">
+
+        <div class="summary-icon">
+          !
+        </div>
+
+        <div class="summary-content">
+
+          <span>Overdue</span>
+
+          <strong>
+            {{ getOverdueCount() }}
+          </strong>
+
+          <small>
+            Past due date
+          </small>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================
+         MAINTENANCE CARDS
+    ====================================== -->
+
+    @if (maintenances().length > 0) {
+
+      <div class="maintenance-grid">
+
+        @for (
+          maintenance of maintenances();
+          track maintenance.id
+        ) {
+
+          <div class="maintenance-card">
+
+
+            <!-- CARD HEADER -->
+            <div class="card-header">
+
+              <div class="flat-info">
+
+                <div class="flat-icon">
+                  🏠
+                </div>
+
+                <div>
+
+                  <h3>
+                    Flat {{ maintenance.flatId }}
+                  </h3>
+
+                  <p>
+                    Monthly Maintenance
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <!-- STATUS -->
+
+              <span
+                class="status"
+                [class.pending]="
+                  maintenance.status === 'Pending'
+                "
+                [class.paid]="
+                  maintenance.status === 'Paid'
+                "
+                [class.overdue]="
+                  maintenance.status === 'Overdue'
+                ">
+
+                <span class="status-dot"></span>
+
+                {{ maintenance.status }}
+
+              </span>
+
+            </div>
+
+
+            <!-- =================================
+                 PAYMENT DETAILS
+            ================================== -->
+
+            <div class="maintenance-details">
+
+
+              <!-- AMOUNT -->
+
+              <div class="detail-box">
+
+                <span class="detail-label">
+                  Amount
                 </span>
 
-              </td>
+                <strong class="amount">
+                  ₹{{ maintenance.amount }}
+                </strong>
+
+              </div>
 
 
-              <td class="actions">
+              <!-- MONTH -->
 
-                <button
-                  class="view-btn"
-                  (click)="viewMaintenance(maintenance.id)">
+              <div class="detail-box">
 
-                  View
+                <span class="detail-label">
+                  Month
+                </span>
 
-                </button>
+                <strong>
+                  {{ maintenance.month | date:'MMM yyyy' }}
+                </strong>
 
-
-                <button
-                  class="edit-btn"
-                  (click)="editMaintenance(maintenance.id)">
-
-                  Edit
-
-                </button>
+              </div>
 
 
-                <button
-                  class="delete-btn"
-                  (click)="deleteMaintenance(maintenance.id)">
+              <!-- DUE DATE -->
 
-                  Delete
+              <div class="detail-box">
 
-                </button>
+                <span class="detail-label">
+                  Due Date
+                </span>
 
-              </td>
+                <strong>
+                  {{ maintenance.dueDate | date:'dd MMM yyyy' }}
+                </strong>
 
-            </tr>
+              </div>
 
-          }
+            </div>
 
 
-          <!-- EMPTY -->
+            <!-- =================================
+                 ACTIONS
+            ================================== -->
 
-          @if (maintenances().length === 0) {
+            <div class="actions">
 
-            <tr>
+              <button
+                class="view-btn"
+                (click)="viewMaintenance(maintenance.id)">
 
-              <td
-                colspan="6"
-                class="empty">
+                <span>👁</span>
+                View
 
-                No maintenance records found.
+              </button>
 
-              </td>
 
-            </tr>
+              <button
+                class="edit-btn"
+                (click)="editMaintenance(maintenance.id)">
 
-          }
+                <span>✎</span>
+                Edit
 
-        </tbody>
+              </button>
 
-      </table>
+
+              <button
+                class="delete-btn"
+                (click)="deleteMaintenance(maintenance.id)">
+
+                <span>🗑</span>
+                Delete
+
+              </button>
+
+            </div>
+
+          </div>
+
+        }
+
+      </div>
+
+    }
+
+
+    <!-- =====================================
+         EMPTY STATE
+    ====================================== -->
+
+    @if (maintenances().length === 0) {
+
+      <div class="empty">
+
+        <div class="empty-icon">
+          📋
+        </div>
+
+        <h3>
+          No maintenance records found
+        </h3>
+
+        <p>
+          Add a maintenance record to get started.
+        </p>
+
+        <a
+          routerLink="/maintenance/add"
+          class="empty-add-btn">
+
+          + Add Maintenance
+
+        </a>
+
+      </div>
+
+    }
+
+  }
+
+
+  <!-- =====================================
+       TOAST
+  ====================================== -->
+
+  @if (showToast()) {
+
+    <div
+      class="toast"
+      [class.success]="toastType() === 'success'"
+      [class.error]="toastType() === 'error'">
+
+      {{ toastMessage() }}
 
     </div>
 
   }
-  <div
-  class="toast"
-  *ngIf="showToast()"
-  [class.success]="toastType() === 'success'"
-  [class.error]="toastType() === 'error'">
-
-  {{ toastMessage() }}
-
-</div>
 
 </div>

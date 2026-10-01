@@ -1,98 +1,540 @@
-.form-page {
-  padding: 30px;
+/* =========================================
+   NOTICE FORM PAGE
+========================================= */
 
-  display: flex;
-  justify-content: center;
+.form-page {
+  min-height: 100vh;
+  padding: 35px;
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(37, 99, 235, 0.10),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(14, 165, 233, 0.08),
+      transparent 30%
+    ),
+    #f5f7fb;
 }
+
+
+/* =========================================
+   FORM CARD
+========================================= */
 
 .form-card {
-  width: 600px;
+  width: 100%;
+  max-width: 750px;
 
-  background: white;
+  margin: 20px auto;
 
-  padding: 30px;
+  padding: 35px;
 
-  border-radius: 10px;
+  box-sizing: border-box;
+
+  background: rgba(255, 255, 255, 0.97);
+
+  border: 1px solid #e7ebf2;
+
+  border-radius: 20px;
 
   box-shadow:
-    0 3px 12px rgba(0, 0, 0, 0.1);
+    0 18px 40px rgba(15, 23, 42, 0.08),
+    0 4px 12px rgba(15, 23, 42, 0.04);
+
+  position: relative;
+  overflow: hidden;
 }
 
-.form-group {
-  margin-bottom: 18px;
+
+/* Top gradient line */
+
+.form-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    #0ea5e9,
+    #14b8a6
+  );
 }
+
+
+/* =========================================
+   HEADING
+========================================= */
+
+.form-card h2 {
+  margin: 0 0 30px;
+
+  color: #172033;
+
+  font-size: 27px;
+
+  font-weight: 750;
+
+  letter-spacing: -0.5px;
+
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid #edf0f4;
+}
+
+
+/* =========================================
+   FORM GROUP
+========================================= */
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+
+/* =========================================
+   LABEL
+========================================= */
 
 .form-group label {
   display: block;
 
-  margin-bottom: 7px;
+  margin-bottom: 8px;
 
-  font-weight: bold;
+  color: #263248;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.2px;
 }
+
+
+/* =========================================
+   INPUT
+========================================= */
 
 .form-group input,
 .form-group textarea,
 .form-group select {
+
   width: 100%;
 
-  padding: 11px;
+  box-sizing: border-box;
 
-  border: 1px solid #ccc;
+  background: #f8fafc;
 
-  border-radius: 5px;
+  border: 1px solid #dce2ea;
+
+  border-radius: 10px;
+
+  color: #1f2937;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    transform 0.2s ease;
 }
+
+
+/* =========================================
+   INPUT + SELECT
+========================================= */
+
+.form-group input,
+.form-group select {
+
+  height: 48px;
+
+  padding: 0 14px;
+}
+
+
+/* =========================================
+   TEXTAREA
+========================================= */
 
 .form-group textarea {
-  min-height: 120px;
+
+  min-height: 150px;
+
+  padding: 14px;
 
   resize: vertical;
+
+  line-height: 1.6;
+
+  font-family: inherit;
 }
 
-.buttons {
-  display: flex;
 
-  gap: 10px;
+/* =========================================
+   PLACEHOLDER
+========================================= */
 
-  margin-top: 25px;
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+
+  color: #9ca6b5;
 }
 
-.buttons button {
-  padding: 10px 20px;
 
-  border: none;
+/* =========================================
+   FOCUS EFFECT
+========================================= */
 
-  border-radius: 5px;
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
 
-  background: #2563eb;
+  background: #ffffff;
 
-  color: white;
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.10);
+
+  transform: translateY(-1px);
+}
+
+
+/* =========================================
+   SELECT
+========================================= */
+
+.form-group select {
 
   cursor: pointer;
 }
 
-.buttons .cancel {
-  background: #6b7280;
-}
+
+/* =========================================
+   ERROR MESSAGE
+========================================= */
 
 .error {
+
+  margin: 5px 0 0;
+
+  padding: 11px 14px;
+
+  border-radius: 9px;
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+
   color: #dc2626;
+
+  font-size: 13px;
+
+  font-weight: 500;
 }
-.toast {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  padding: 14px 22px;
-  border-radius: 6px;
-  color: white;
+
+
+/* =========================================
+   BUTTON AREA
+========================================= */
+
+.buttons {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 28px;
+
+  padding-top: 24px;
+
+  border-top: 1px solid #edf0f4;
+}
+
+
+/* =========================================
+   COMMON BUTTON
+========================================= */
+
+.buttons button {
+
+  min-width: 115px;
+
+  height: 46px;
+
+  padding: 0 20px;
+
+  border: none;
+
+  border-radius: 10px;
+
   font-size: 14px;
-  z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
 }
+
+
+/* =========================================
+   SAVE / UPDATE
+========================================= */
+
+.buttons button[type="submit"] {
+
+  color: white;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
+
+  box-shadow:
+    0 7px 16px rgba(37, 99, 235, 0.25);
+}
+
+
+.buttons button[type="submit"]:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 22px rgba(37, 99, 235, 0.35);
+}
+
+
+/* =========================================
+   DISABLED BUTTON
+========================================= */
+
+.buttons button:disabled {
+
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================
+   CANCEL
+========================================= */
+
+.buttons .cancel {
+
+  background: #eef1f5;
+
+  color: #475569;
+
+  border: 1px solid #e0e5eb;
+}
+
+
+.buttons .cancel:hover {
+
+  background: #e2e7ee;
+
+  color: #1f2937;
+
+  transform: translateY(-2px);
+}
+
+
+/* =========================================
+   TOAST
+========================================= */
+
+.toast {
+
+  position: fixed;
+
+  top: 25px;
+
+  right: 25px;
+
+  min-width: 280px;
+
+  max-width: 400px;
+
+  padding: 15px 20px;
+
+  border-radius: 12px;
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  z-index: 1000;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.18);
+
+  animation: toastSlide 0.35s ease;
+}
+
+
+/* SUCCESS */
 
 .toast.success {
-  background: #28a745;
+
+  background: linear-gradient(
+    135deg,
+    #16a34a,
+    #15803d
+  );
 }
 
+
+/* ERROR */
+
 .toast.error {
-  background: #dc3545;
+
+  background: linear-gradient(
+    135deg,
+    #dc2626,
+    #b91c1c
+  );
+}
+
+
+/* =========================================
+   TOAST ANIMATION
+========================================= */
+
+@keyframes toastSlide {
+
+  from {
+
+    opacity: 0;
+
+    transform: translateX(40px);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform: translateX(0);
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .form-page {
+
+    padding: 22px 15px;
+  }
+
+  .form-card {
+
+    padding: 25px 20px;
+
+    margin: 10px auto;
+
+    border-radius: 16px;
+  }
+
+  .form-card h2 {
+
+    font-size: 24px;
+
+    margin-bottom: 25px;
+  }
+
+  .form-group {
+
+    margin-bottom: 19px;
+  }
+
+  .buttons {
+
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+  }
+
+  .buttons button {
+
+    width: 100%;
+  }
+
+  .toast {
+
+    left: 15px;
+
+    right: 15px;
+
+    top: 15px;
+
+    min-width: auto;
+
+    max-width: none;
+  }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  .form-page {
+
+    padding: 15px 10px;
+  }
+
+  .form-card {
+
+    padding: 22px 16px;
+  }
+
+  .form-card h2 {
+
+    font-size: 22px;
+  }
+
+  .form-group input,
+  .form-group select {
+
+    height: 46px;
+  }
+
+  .form-group textarea {
+
+    min-height: 130px;
+  }
 }

@@ -1,102 +1,418 @@
 .form-page {
-  padding: 30px;
+  min-height: 100vh;
+  padding: 40px 25px;
+  box-sizing: border-box;
 
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+
+  background:
+    radial-gradient(
+      circle at top right,
+      rgba(37, 99, 235, 0.12),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      rgba(20, 184, 166, 0.10),
+      transparent 32%
+    ),
+    #f5f7fb;
 }
+
+/* =========================
+   FORM CARD
+========================= */
 
 .form-card {
-  width: 600px;
+  width: 100%;
+  max-width: 850px;
 
-  background: white;
+  padding: 38px;
+  box-sizing: border-box;
 
-  padding: 30px;
+  position: relative;
+  overflow: hidden;
 
-  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid #e5eaf1;
+  border-radius: 20px;
 
   box-shadow:
-    0 3px 12px rgba(0, 0, 0, 0.1);
+    0 20px 45px rgba(15, 23, 42, 0.08),
+    0 5px 15px rgba(15, 23, 42, 0.04);
 }
+
+/* Gradient line on top */
+
+.form-card::before {
+  content: "";
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    #0ea5e9,
+    #14b8a6
+  );
+}
+
+/* =========================
+   HEADING
+========================= */
 
 .form-card h2 {
-  margin-bottom: 25px;
+  margin: 0 0 30px;
+
+  color: #172033;
+
+  font-size: 30px;
+  font-weight: 750;
+
+  letter-spacing: -0.6px;
 }
 
+/* =========================
+   FORM GROUP
+========================= */
+
 .form-group {
-  margin-bottom: 18px;
+  margin-bottom: 23px;
 }
 
 .form-group label {
   display: block;
 
-  margin-bottom: 7px;
+  margin-bottom: 8px;
 
-  font-weight: bold;
+  color: #263248;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 0.2px;
 }
+
+/* =========================
+   INPUTS
+========================= */
 
 .form-group input,
 .form-group textarea {
   width: 100%;
 
-  padding: 11px;
+  box-sizing: border-box;
 
-  border: 1px solid #ccc;
+  background: #f8fafc;
 
-  border-radius: 5px;
+  border: 1px solid #dce2ea;
+  border-radius: 10px;
+
+  color: #1f2937;
+
+  font-family: inherit;
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    transform 0.2s ease;
 }
+
+/* Text / Number inputs */
+
+.form-group input[type="text"],
+.form-group input[type="number"] {
+  height: 48px;
+  padding: 0 14px;
+}
+
+/* Textarea */
 
 .form-group textarea {
-  min-height: 90px;
+  min-height: 135px;
+
+  padding: 14px;
 
   resize: vertical;
+
+  line-height: 1.6;
 }
+
+/* Placeholder */
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #9ca6b5;
+}
+
+/* Focus */
+
+.form-group input:focus,
+.form-group textarea:focus {
+  background: #ffffff;
+
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.10);
+
+  transform: translateY(-1px);
+}
+
+/* =========================
+   VALIDATION
+========================= */
 
 .form-group small {
+  display: block;
+
+  margin-top: 6px;
+
   color: #dc2626;
+
+  font-size: 12px;
+  font-weight: 500;
 }
 
-.checkbox label {
+/* =========================
+   CHECKBOX
+========================= */
+
+.form-group.checkbox {
+  margin-top: 5px;
+  padding: 14px 16px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.form-group.checkbox label {
   display: flex;
 
   align-items: center;
 
-  gap: 8px;
-}
-
-.checkbox input {
-  width: auto;
-}
-
-.buttons {
-  display: flex;
-
   gap: 10px;
 
-  margin-top: 25px;
-}
+  margin: 0;
 
-.buttons button {
-  padding: 10px 20px;
+  color: #334155;
 
-  border: none;
-
-  border-radius: 5px;
-
-  background: #2563eb;
-
-  color: white;
+  font-size: 14px;
+  font-weight: 600;
 
   cursor: pointer;
 }
 
-.buttons button:disabled {
-  opacity: 0.6;
+.form-group.checkbox input {
+  width: 18px;
+  height: 18px;
+
+  margin: 0;
+
+  accent-color: #2563eb;
+
+  cursor: pointer;
 }
 
-.buttons .cancel {
-  background: #6b7280;
-}
+/* =========================
+   ERROR MESSAGE
+========================= */
 
 .error {
-  color: #dc2626;
+  margin: 8px 0 20px;
+
+  padding: 13px 16px;
+
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+  border-left: 4px solid #dc2626;
+
+  border-radius: 10px;
+
+  color: #991b1b;
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* =========================
+   BUTTON AREA
+========================= */
+
+.buttons {
+  display: flex;
+
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 30px;
+  padding-top: 25px;
+
+  border-top: 1px solid #edf0f4;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.buttons button {
+  min-width: 125px;
+  height: 46px;
+
+  padding: 0 20px;
+
+  border: none;
+  border-radius: 10px;
+
+  font-family: inherit;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+/* Save / Update */
+
+.buttons button[type="submit"] {
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
+
+  color: #ffffff;
+
+  box-shadow:
+    0 7px 16px rgba(37, 99, 235, 0.25);
+}
+
+.buttons button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 22px rgba(37, 99, 235, 0.35);
+}
+
+/* Cancel */
+
+.buttons .cancel {
+  background: #eef1f5;
+
+  border: 1px solid #e0e5eb;
+
+  color: #475569;
+}
+
+.buttons .cancel:hover {
+  background: #e2e7ee;
+
+  color: #1f2937;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 5px 12px rgba(15, 23, 42, 0.08);
+}
+
+/* Disabled */
+
+.buttons button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none !important;
+
+  box-shadow: none !important;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+  .form-page {
+    padding: 28px 18px;
+  }
+
+  .form-card {
+    padding: 30px 24px;
+
+    border-radius: 17px;
+  }
+
+  .form-card h2 {
+    font-size: 26px;
+
+    margin-bottom: 25px;
+  }
+}
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 520px) {
+
+  .form-page {
+    padding: 18px 12px;
+  }
+
+  .form-card {
+    padding: 25px 17px;
+
+    border-radius: 15px;
+  }
+
+  .form-card h2 {
+    font-size: 23px;
+  }
+
+  .form-group {
+    margin-bottom: 19px;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="number"] {
+    height: 46px;
+  }
+
+  .form-group textarea {
+    min-height: 120px;
+  }
+
+  .buttons {
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+
+    gap: 10px;
+  }
+
+  .buttons button {
+    width: 100%;
+  }
 }

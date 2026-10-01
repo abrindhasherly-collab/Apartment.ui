@@ -1,166 +1,538 @@
+
 <div class="notice-container">
+
+  <!-- =========================
+       PAGE HEADER
+  ========================== -->
 
   <div class="page-header">
 
-    <div>
-      <h2>Notices</h2>
-      <p>View and manage apartment notices</p>
+    <div class="header-content">
+
+      <div class="header-icon">
+        📢
+      </div>
+
+      <div>
+        <h1>Notices</h1>
+        <p>View and manage apartment announcements</p>
+      </div>
+
     </div>
+
 
     <a
       routerLink="/notices/add"
       class="add-button">
-      + Add Notice
+
+      <span>＋</span>
+      Add Notice
+
     </a>
 
   </div>
 
 
-  @if (loading()) {
-
-    <div class="loading">
-      Loading notices...
-    </div>
-
-  }
-
+  <!-- =========================
+       ERROR
+  ========================== -->
 
   @if (errorMessage()) {
 
-    <div class="error">
-      {{ errorMessage() }}
+    <div class="error-message">
+
+      <div class="error-icon">
+        ⚠
+      </div>
+
+      <div>
+        <strong>Unable to load notices</strong>
+
+        <p>
+          {{ errorMessage() }}
+        </p>
+      </div>
+
     </div>
 
   }
 
 
-  @if (!loading() && notices().length === 0) {
+  <!-- =========================
+       SUMMARY CARDS
+  ========================== -->
 
-    <div class="empty">
-      No notices found.
+  @if (!loading()) {
+
+    <div class="summary-grid">
+
+      <!-- TOTAL -->
+
+      <div class="summary-card">
+
+        <div class="summary-icon total-icon">
+          📋
+        </div>
+
+        <div class="summary-info">
+
+          <span>Total Notices</span>
+
+          <strong>
+            {{ notices().length }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- PUBLISHED -->
+
+      <div class="summary-card">
+
+        <div class="summary-icon published-icon">
+          📢
+        </div>
+
+        <div class="summary-info">
+
+          <span>Published</span>
+
+          <strong>
+            {{
+              notices().filter(n => n.status === 2).length
+            }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- DRAFT -->
+
+      <div class="summary-card">
+
+        <div class="summary-icon draft-icon">
+          📝
+        </div>
+
+        <div class="summary-info">
+
+          <span>Drafts</span>
+
+          <strong>
+            {{
+              notices().filter(n => n.status === 1).length
+            }}
+          </strong>
+
+        </div>
+
+      </div>
+
+
+      <!-- ARCHIVED -->
+
+      <div class="summary-card">
+
+        <div class="summary-icon archived-icon">
+          🗃️
+        </div>
+
+        <div class="summary-info">
+
+          <span>Archived</span>
+
+          <strong>
+            {{
+              notices().filter(n => n.status !== 1 && n.status !== 2).length
+            }}
+          </strong>
+
+        </div>
+
+      </div>
+
     </div>
 
   }
 
+
+  <!-- =========================
+       LOADING
+  ========================== -->
+
+  @if (loading()) {
+
+    <div class="loading-card">
+
+      <div class="spinner"></div>
+
+      <h3>Loading notices...</h3>
+
+      <p>
+        Please wait while we fetch the latest announcements.
+      </p>
+
+    </div>
+
+  }
+
+
+  <!-- =========================
+       TOOLBAR
+  ========================== -->
 
   @if (!loading() && notices().length > 0) {
 
-    <div class="notice-table-wrapper">
+    <div class="toolbar">
 
-      <table class="notice-table">
+      <div class="search-box">
 
-        <thead>
+        <span class="search-icon">
+          🔍
+        </span>
 
-          <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Posted Date</th>
-            <th>Posted By</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
+        <input
+          type="text"
+          placeholder="Search notices..."
+        />
 
-        </thead>
+      </div>
 
-        <tbody>
 
-          @for (notice of notices(); track notice.id) {
+      <select class="filter-select">
 
-            <tr>
+        <option value="">
+          All Status
+        </option>
 
-              <td>
-                {{ notice.id }}
-              </td>
+        <option value="1">
+          Draft
+        </option>
 
-              <td class="title">
-                {{ notice.title }}
-              </td>
+        <option value="2">
+          Published
+        </option>
 
-              <td class="description">
-                {{ notice.description }}
-              </td>
+        <option value="3">
+          Archived
+        </option>
 
-              <td>
-                {{ notice.postedDate | date }}
-              </td>
-
-              <td>
-                {{ notice.postedBy }}
-              </td>
-
-              <td>
-
-                @if (notice.status === 1) {
-
-                  <span class="status draft">
-                    Draft
-                  </span>
-
-                } @else if (notice.status === 2) {
-
-                  <span class="status published">
-                    Published
-                  </span>
-
-                } @else {
-
-                  <span class="status archived">
-                    Archived
-                  </span>
-
-                }
-
-              </td>
-
-              <td class="actions">
-
-                <a
-                  [routerLink]="[
-                    '/notices',
-                    notice.id
-                  ]"
-                  class="view-button">
-                  View
-                </a>
-
-                <a
-                  [routerLink]="[
-                    '/notices/edit',
-                    notice.id
-                  ]"
-                  class="edit-button">
-                  Edit
-                </a>
-
-                <button
-                  type="button"
-                  class="delete-button"
-                  (click)="deleteNotice(notice.id)">
-                  Delete
-                </button>
-
-              </td>
-
-            </tr>
-
-          }
-
-        </tbody>
-
-      </table>
+      </select>
 
     </div>
 
   }
-  <div
-  class="toast"
-  *ngIf="showToast()"
-  [class.success]="toastType() === 'success'"
-  [class.error]="toastType() === 'error'">
 
-  {{ toastMessage() }}
+
+  <!-- =========================
+       EMPTY STATE
+  ========================== -->
+
+  @if (!loading() && notices().length === 0) {
+
+    <div class="empty-card">
+
+      <div class="empty-icon">
+        📢
+      </div>
+
+      <h3>No notices found</h3>
+
+      <p>
+        There are no apartment notices available right now.
+      </p>
+
+      <a
+        routerLink="/notices/add"
+        class="empty-add-button">
+
+        + Create First Notice
+
+      </a>
+
+    </div>
+
+  }
+
+
+  <!-- =========================
+       NOTICE TABLE
+  ========================== -->
+
+  @if (!loading() && notices().length > 0) {
+
+    <div class="notice-card">
+
+
+      <!-- TABLE HEADER -->
+
+      <div class="table-header">
+
+        <div>
+
+          <h2>Apartment Notices</h2>
+
+          <p>
+            Manage all community announcements
+          </p>
+
+        </div>
+
+
+        <span class="notice-count">
+
+          {{ notices().length }} Notices
+
+        </span>
+
+      </div>
+
+
+      <!-- TABLE -->
+
+      <div class="table-wrapper">
+
+        <table class="notice-table">
+
+          <thead>
+
+            <tr>
+
+              <th>Notice</th>
+
+              <th>Description</th>
+
+              <th>Posted Date</th>
+
+              <th>Posted By</th>
+
+              <th>Status</th>
+
+              <th>Actions</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody>
+
+            @for (notice of notices(); track notice.id) {
+
+              <tr>
+
+
+                <!-- NOTICE -->
+
+                <td>
+
+                  <div class="notice-info">
+
+                    <div class="notice-icon">
+                      📢
+                    </div>
+
+                    <div>
+
+                      <strong>
+                        {{ notice.title }}
+                      </strong>
+
+                      <small>
+                        Notice #{{ notice.id }}
+                      </small>
+
+                    </div>
+
+                  </div>
+
+                </td>
+
+
+                <!-- DESCRIPTION -->
+
+                <td>
+
+                  <div class="description">
+
+                    {{ notice.description }}
+
+                  </div>
+
+                </td>
+
+
+                <!-- DATE -->
+
+                <td>
+
+                  <div class="date-info">
+
+                    <span class="calendar-icon">
+                      📅
+                    </span>
+
+                    <span>
+                      {{ notice.postedDate | date:'dd MMM yyyy' }}
+                    </span>
+
+                  </div>
+
+                </td>
+
+
+                <!-- POSTED BY -->
+
+                <td>
+
+                  <div class="posted-by">
+
+                    <div class="user-avatar">
+                      👤
+                    </div>
+
+                    <span>
+                      {{ notice.postedBy }}
+                    </span>
+
+                  </div>
+
+                </td>
+
+
+                <!-- STATUS -->
+
+                <td>
+
+                  @if (notice.status === 1) {
+
+                    <span class="status draft">
+
+                      <span class="status-dot"></span>
+
+                      Draft
+
+                    </span>
+
+                  }
+
+                  @else if (notice.status === 2) {
+
+                    <span class="status published">
+
+                      <span class="status-dot"></span>
+
+                      Published
+
+                    </span>
+
+                  }
+
+                  @else {
+
+                    <span class="status archived">
+
+                      <span class="status-dot"></span>
+
+                      Archived
+
+                    </span>
+
+                  }
+
+                </td>
+
+
+                <!-- ACTIONS -->
+
+                <td>
+
+                  <div class="actions">
+
+                    <a
+                      [routerLink]="['/notices', notice.id]"
+                      class="action-button view-button"
+                      title="View Notice">
+
+                      👁
+
+                    </a>
+
+
+                    <a
+                      [routerLink]="[
+                        '/notices/edit',
+                        notice.id
+                      ]"
+                      class="action-button edit-button"
+                      title="Edit Notice">
+
+                      ✏
+
+                    </a>
+
+
+                    <button
+                      type="button"
+                      class="action-button delete-button"
+                      title="Delete Notice"
+                      (click)="deleteNotice(notice.id)">
+
+                      🗑
+
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =========================
+       TOAST
+  ========================== -->
+
+  @if (showToast()) {
+
+    <div
+      class="toast"
+      [class.success]="toastType() === 'success'"
+      [class.error]="toastType() === 'error'">
+
+      <div class="toast-icon">
+
+        @if (toastType() === 'success') {
+          ✓
+        } @else {
+          !
+        }
+
+      </div>
+
+      <span>
+        {{ toastMessage() }}
+      </span>
+
+    </div>
+
+  }
 
 </div>
-
-</div>
+```

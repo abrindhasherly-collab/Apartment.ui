@@ -1,136 +1,725 @@
+<div class="emergency-page">
 
-<div class="page bg-light min-vh-100 p-3 p-md-4">
+  <!-- =====================================================
+       TOP HEADER
+  ====================================================== -->
 
-  <!-- ================= HEADER ================= -->
-  <div class="card border-0 shadow-sm mb-4">
-    <div class="card-body d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+  <div class="top-header">
 
-      <div class="d-flex align-items-center gap-3">
+    <div class="title-section">
 
-        <div class="emergency-header-icon">
-          <i class="bi bi-shield-exclamation"></i>
-        </div>
-
-        <div>
-          <h2 class="fw-bold mb-1">Emergency Management</h2>
-
-          <p class="text-muted mb-0">
-            Handle and manage emergency requests.
-          </p>
-        </div>
-
+      <div class="title-icon">
+        <i class="bi bi-shield-exclamation"></i>
       </div>
 
-      <button
-        class="btn btn-danger px-4 py-2 shadow-sm"
-        (click)="openAddForm()">
+      <div>
+        <div class="title-row">
+          <h1>Emergency Center</h1>
 
-        <i class="bi bi-plus-circle me-2"></i>
-        Report Emergency
-
-      </button>
-
-    </div>
-  </div>
-
-
-  <!-- ================= ALERT INFORMATION ================= -->
-  <div class="card border-0 shadow-sm mb-4 emergency-info-card">
-
-    <div class="card-body">
-
-      <div class="d-flex align-items-center gap-3">
-
-        <div class="emergency-alert-icon">
-          <i class="bi bi-exclamation-triangle-fill"></i>
+          <span class="live-indicator">
+            <span></span>
+            LIVE
+          </span>
         </div>
 
-        <div>
-          <h5 class="fw-bold mb-1">
-            Emergency Response Center
-          </h5>
-
-          <p class="text-muted mb-0">
-            Quickly monitor and respond to emergency reports from residents.
-          </p>
-        </div>
-
+        <p>
+          Monitor and manage emergency reports across the apartment.
+        </p>
       </div>
 
     </div>
 
+
+    <button
+      type="button"
+      class="report-button"
+      (click)="openAddForm()">
+
+      <i class="bi bi-plus-lg"></i>
+
+      Report Emergency
+
+    </button>
+
   </div>
 
 
-  <!-- ================= TABLE CARD ================= -->
-  <div class="card border-0 shadow-sm">
+  <!-- =====================================================
+       STAT CARDS
+  ====================================================== -->
 
-    <!-- TOOLBAR -->
-    <div class="card-body border-bottom">
+  <div class="stats-grid">
 
-      <div class="row g-3 align-items-center">
+    <div class="stat-card">
 
-        <!-- SEARCH -->
-        <div class="col-12 col-md-5">
+      <div class="stat-icon total">
+        <i class="bi bi-broadcast"></i>
+      </div>
 
-          <div class="input-group">
+      <div class="stat-content">
 
-            <span class="input-group-text bg-white">
-              <i class="bi bi-search"></i>
+        <span>Total Reports</span>
+
+        <strong>
+          {{ emergencies().length }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon critical">
+        <i class="bi bi-exclamation-octagon-fill"></i>
+      </div>
+
+      <div class="stat-content">
+
+        <span>Critical</span>
+
+        <strong>
+          {{ emergencies().filter(e => e.priority === 4).length }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon active">
+        <i class="bi bi-hourglass-split"></i>
+      </div>
+
+      <div class="stat-content">
+
+        <span>In Progress</span>
+
+        <strong>
+          {{ emergencies().filter(e => e.status === 2).length }}
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <div class="stat-icon resolved">
+        <i class="bi bi-check-circle-fill"></i>
+      </div>
+
+      <div class="stat-content">
+
+        <span>Resolved</span>
+
+        <strong>
+          {{ emergencies().filter(e => e.status === 3).length }}
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       FILTER BAR
+  ====================================================== -->
+
+  <div class="filter-panel">
+
+    <div class="filter-title">
+
+      <i class="bi bi-funnel"></i>
+
+      <span>Emergency Reports</span>
+
+    </div>
+
+
+    <div class="filter-controls">
+
+      <div class="search-field">
+
+        <i class="bi bi-search"></i>
+
+        <input
+          type="text"
+          placeholder="Search by emergency, resident or flat..."
+          [ngModel]="searchText()"
+          (ngModelChange)="searchText.set($event)"
+        />
+
+      </div>
+
+
+      <div class="select-field">
+
+        <i class="bi bi-flag"></i>
+
+        <select
+          [ngModel]="priorityFilter()"
+          (ngModelChange)="priorityFilter.set($event)">
+
+          <option>All Priority</option>
+          <option>Low</option>
+          <option>Medium</option>
+          <option>High</option>
+          <option>Critical</option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+
+    <div class="result-count">
+
+      {{ filteredEmergencies().length }}
+
+      <span>reports</span>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       ERROR
+  ====================================================== -->
+
+  @if (errorMessage()) {
+
+    <div class="error-alert">
+
+      <i class="bi bi-exclamation-circle-fill"></i>
+
+      <span>
+        {{ errorMessage() }}
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       LOADING
+  ====================================================== -->
+
+  @if (loading()) {
+
+    <div class="loading-section">
+
+      <div class="loader"></div>
+
+      <strong>
+        Loading emergency reports...
+      </strong>
+
+      <span>
+        Please wait a moment.
+      </span>
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       EMERGENCY CARDS
+  ====================================================== -->
+
+  @if (!loading()) {
+
+    <div class="emergency-list">
+
+      @for (
+        emergency of filteredEmergencies();
+        track emergency.id
+      ) {
+
+        <div class="emergency-item">
+
+          <!-- TOP ACCENT -->
+          <div
+            class="priority-accent"
+            [class.low]="emergency.priority === 1"
+            [class.medium]="emergency.priority === 2"
+            [class.high]="emergency.priority === 3"
+            [class.critical]="emergency.priority === 4">
+          </div>
+
+
+          <!-- CARD TOP -->
+          <div class="item-top">
+
+            <div class="emergency-main">
+
+              <div
+                class="emergency-icon"
+                [class.critical]="emergency.priority === 4"
+                [class.high]="emergency.priority === 3">
+
+                <i class="bi bi-shield-exclamation"></i>
+
+              </div>
+
+
+              <div class="emergency-name">
+
+                <div class="name-line">
+
+                  <h3>
+                    {{ emergency.emergencyType }}
+                  </h3>
+
+                  <span
+                    class="priority-badge"
+                    [class.low]="emergency.priority === 1"
+                    [class.medium]="emergency.priority === 2"
+                    [class.high]="emergency.priority === 3"
+                    [class.critical]="emergency.priority === 4">
+
+                    <i class="bi bi-circle-fill"></i>
+
+                    {{ getPriority(emergency.priority) }}
+
+                  </span>
+
+                </div>
+
+                <span class="report-number">
+                  Emergency #{{ emergency.id }}
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <span
+              class="status-badge"
+              [class.reported]="emergency.status === 1"
+              [class.progress]="emergency.status === 2"
+              [class.resolved]="emergency.status === 3">
+
+              <span class="status-dot"></span>
+
+              {{ getStatus(emergency.status) }}
+
             </span>
 
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Search resident, flat, type..."
-              [ngModel]="searchText()"
-              (ngModelChange)="searchText.set($event)"
-            />
+          </div>
+
+
+          <!-- DESCRIPTION -->
+
+          <div class="emergency-description">
+
+            <span>
+              DESCRIPTION
+            </span>
+
+            <p>
+              {{ emergency.description }}
+            </p>
+
+          </div>
+
+
+          <!-- INFORMATION -->
+
+          <div class="information-row">
+
+            <div class="information-item">
+
+              <div class="info-icon">
+                <i class="bi bi-person-fill"></i>
+              </div>
+
+              <div>
+
+                <span>Resident</span>
+
+                <strong>
+                  #{{ emergency.residentId }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="information-item">
+
+              <div class="info-icon">
+                <i class="bi bi-house-door-fill"></i>
+              </div>
+
+              <div>
+
+                <span>Flat</span>
+
+                <strong>
+                  {{ emergency.flatId }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="information-item">
+
+              <div class="info-icon">
+                <i class="bi bi-calendar3"></i>
+              </div>
+
+              <div>
+
+                <span>Reported</span>
+
+                <strong>
+                  {{ emergency.reportedDate | date:'dd MMM yyyy' }}
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ACTIONS -->
+
+          <div class="item-footer">
+
+            <span class="emergency-id">
+              ID #{{ emergency.id }}
+            </span>
+
+
+            <div class="card-actions">
+
+              <button
+                type="button"
+                class="edit-action"
+                (click)="openEditForm(emergency)">
+
+                <i class="bi bi-pencil"></i>
+
+                Edit
+
+              </button>
+
+
+              <button
+                type="button"
+                class="delete-action"
+                (click)="deleteEmergency(emergency.id)">
+
+                <i class="bi bi-trash3"></i>
+
+                Delete
+
+              </button>
+
+            </div>
 
           </div>
 
         </div>
 
-
-        <!-- PRIORITY -->
-        <div class="col-12 col-md-3">
-
-          <select
-            class="form-select"
-            [ngModel]="priorityFilter()"
-            (ngModelChange)="priorityFilter.set($event)">
-
-            <option>All Priority</option>
-            <option>Low</option>
-            <option>Medium</option>
-            <option>High</option>
-            <option>Critical</option>
-
-          </select>
-
-        </div>
+      }
 
 
-        <!-- RESULT COUNT -->
-        <div class="col-12 col-md-2">
+      <!-- =================================================
+           EMPTY STATE
+      ================================================== -->
 
-          <div class="text-muted small">
-            <i class="bi bi-list-ul me-1"></i>
-            {{ filteredEmergencies().length }} Records
+      @if (filteredEmergencies().length === 0) {
+
+        <div class="empty-state">
+
+          <div class="empty-icon">
+            <i class="bi bi-shield-x"></i>
           </div>
 
-        </div>
+          <h3>
+            No Emergency Reports
+          </h3>
 
-
-        <!-- ADD BUTTON -->
-        <div class="col-12 col-md-2">
+          <p>
+            No emergency reports match your current search or filter.
+          </p>
 
           <button
-            class="btn btn-danger w-100"
+            type="button"
+            class="empty-button"
             (click)="openAddForm()">
 
-            <i class="bi bi-plus-lg me-1"></i>
-            Report
+            <i class="bi bi-plus-lg"></i>
+
+            Report Emergency
+
+          </button>
+
+        </div>
+
+      }
+
+    </div>
+
+  }
+
+
+  <!-- =====================================================
+       INLINE FORM
+  ====================================================== -->
+
+  @if (showForm()) {
+
+    <div class="form-section">
+
+      <div class="form-card">
+
+
+        <!-- FORM HEADER -->
+
+        <div class="form-top">
+
+          <div class="form-heading">
+
+            <div class="form-icon">
+              <i class="bi bi-shield-plus"></i>
+            </div>
+
+            <div>
+
+              <h2>
+                {{ editMode()
+                  ? 'Update Emergency'
+                  : 'Report Emergency'
+                }}
+              </h2>
+
+              <p>
+                {{ editMode()
+                  ? 'Update the emergency report details below.'
+                  : 'Provide the details of the emergency report.'
+                }}
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="close-form"
+            (click)="closeForm()">
+
+            <i class="bi bi-x-lg"></i>
+
+          </button>
+
+        </div>
+
+
+        <!-- FORM BODY -->
+
+        <div class="form-body">
+
+
+          <div class="form-field">
+
+            <label>
+              Resident ID
+              <b>*</b>
+            </label>
+
+            <div class="field-wrapper">
+
+              <i class="bi bi-person"></i>
+
+              <input
+                type="number"
+                placeholder="Enter resident ID"
+                [ngModel]="emergencyForm().residentId"
+                (ngModelChange)="
+                  emergencyForm.update(form => ({
+                    ...form,
+                    residentId: $event
+                  }))
+                "
+              />
+
+            </div>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label>
+              Flat ID
+              <b>*</b>
+            </label>
+
+            <div class="field-wrapper">
+
+              <i class="bi bi-house"></i>
+
+              <input
+                type="number"
+                placeholder="Enter flat ID"
+                [ngModel]="emergencyForm().flatId"
+                (ngModelChange)="
+                  emergencyForm.update(form => ({
+                    ...form,
+                    flatId: $event
+                  }))
+                "
+              />
+
+            </div>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label>
+              Emergency Type
+              <b>*</b>
+            </label>
+
+            <div class="field-wrapper">
+
+              <i class="bi bi-exclamation-triangle"></i>
+
+              <input
+                type="text"
+                placeholder="Medical, Fire, Electrical..."
+                [ngModel]="emergencyForm().emergencyType"
+                (ngModelChange)="
+                  emergencyForm.update(form => ({
+                    ...form,
+                    emergencyType: $event
+                  }))
+                "
+              />
+
+            </div>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label>
+              Priority
+              <b>*</b>
+            </label>
+
+            <div class="field-wrapper">
+
+              <i class="bi bi-flag"></i>
+
+              <select
+                [ngModel]="emergencyForm().priority"
+                (ngModelChange)="
+                  emergencyForm.update(form => ({
+                    ...form,
+                    priority: $event
+                  }))
+                ">
+
+                <option [ngValue]="1">
+                  Low
+                </option>
+
+                <option [ngValue]="2">
+                  Medium
+                </option>
+
+                <option [ngValue]="3">
+                  High
+                </option>
+
+                <option [ngValue]="4">
+                  Critical
+                </option>
+
+              </select>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-field description-field">
+
+            <label>
+              Description
+              <b>*</b>
+            </label>
+
+            <textarea
+              rows="5"
+              placeholder="Describe the emergency in detail..."
+              [ngModel]="emergencyForm().description"
+              (ngModelChange)="
+                emergencyForm.update(form => ({
+                  ...form,
+                  description: $event
+                }))
+              ">
+            </textarea>
+
+          </div>
+
+        </div>
+
+
+        <!-- FORM FOOTER -->
+
+        <div class="form-footer">
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="closeForm()">
+
+            Cancel
+
+          </button>
+
+
+          <button
+            type="button"
+            class="save-button"
+            (click)="saveEmergency()">
+
+            <i
+              class="bi"
+              [class.bi-send]="!editMode()"
+              [class.bi-check-lg]="editMode()">
+            </i>
+
+            {{ editMode()
+              ? 'Update Emergency'
+              : 'Submit Emergency'
+            }}
 
           </button>
 
@@ -140,506 +729,32 @@
 
     </div>
 
+  }
 
-    <!-- ================= LOADING ================= -->
+
+  <!-- =====================================================
+       TOAST
+  ====================================================== -->
+
+  @if (showToast()) {
+
     <div
-      *ngIf="loading()"
-      class="text-center py-5">
+      class="toast-message"
+      [class.success]="toastType() === 'success'"
+      [class.error]="toastType() === 'error'">
 
-      <div
-        class="spinner-border text-danger mb-3"
-        role="status">
-      </div>
+      <i
+        class="bi"
+        [class.bi-check-circle-fill]="toastType() === 'success'"
+        [class.bi-exclamation-circle-fill]="toastType() === 'error'">
+      </i>
 
-      <p class="text-muted mb-0">
-        Loading emergency records...
-      </p>
+      <span>
+        {{ toastMessage() }}
+      </span>
 
     </div>
 
-
-    <!-- ================= TABLE ================= -->
-    <div
-      class="table-responsive"
-      *ngIf="!loading()">
-
-      <table class="table table-hover align-middle mb-0">
-
-        <thead class="table-light">
-
-          <tr>
-
-            <th>ID</th>
-            <th>Resident</th>
-            <th>Flat</th>
-            <th>Emergency Type</th>
-            <th>Priority</th>
-            <th>Status</th>
-            <th>Date</th>
-            <th class="text-center">Action</th>
-
-          </tr>
-
-        </thead>
-
-
-        <tbody>
-
-          <!-- ================= EMERGENCY LIST ================= -->
-
-          <tr
-            *ngFor="let emergency of filteredEmergencies()">
-
-            <!-- ID -->
-            <td>
-
-              <span class="fw-semibold text-secondary">
-                #{{ emergency.id }}
-              </span>
-
-            </td>
-
-
-            <!-- RESIDENT -->
-            <td>
-
-              <div class="d-flex align-items-center gap-2">
-
-                <div class="resident-avatar">
-                  <i class="bi bi-person-fill"></i>
-                </div>
-
-                <span>
-                  {{ emergency.residentId }}
-                </span>
-
-              </div>
-
-            </td>
-
-
-            <!-- FLAT -->
-            <td>
-
-              <span class="badge bg-light text-dark border">
-
-                <i class="bi bi-house-door me-1"></i>
-
-                {{ emergency.flatId }}
-
-              </span>
-
-            </td>
-
-
-            <!-- TYPE -->
-            <td>
-
-              <div class="fw-semibold">
-                {{ emergency.emergencyType }}
-              </div>
-
-            </td>
-
-
-            <!-- PRIORITY -->
-            <td>
-
-              <span
-                class="badge rounded-pill px-3 py-2"
-                [class.bg-success-subtle]="emergency.priority === 1"
-                [class.text-success-emphasis]="emergency.priority === 1"
-
-                [class.bg-warning-subtle]="emergency.priority === 2"
-                [class.text-warning-emphasis]="emergency.priority === 2"
-
-                [class.bg-orange-subtle]="emergency.priority === 3"
-                [class.text-danger]="emergency.priority === 3"
-
-                [class.bg-danger]="emergency.priority === 4"
-                [class.text-white]="emergency.priority === 4">
-
-                <i
-                  class="bi bi-circle-fill me-1 small">
-                </i>
-
-                {{ getPriority(emergency.priority) }}
-
-              </span>
-
-            </td>
-
-
-            <!-- STATUS -->
-            <td>
-
-              <span
-                class="badge rounded-pill px-3 py-2"
-
-                [class.bg-primary-subtle]="emergency.status === 1"
-                [class.text-primary]="emergency.status === 1"
-
-                [class.bg-warning-subtle]="emergency.status === 2"
-                [class.text-warning-emphasis]="emergency.status === 2"
-
-                [class.bg-success-subtle]="emergency.status === 3"
-                [class.text-success]="emergency.status === 3">
-
-                {{ getStatus(emergency.status) }}
-
-              </span>
-
-            </td>
-
-
-            <!-- DATE -->
-            <td>
-
-              <div class="text-muted">
-
-                <i class="bi bi-calendar3 me-1"></i>
-
-                {{ emergency.reportedDate | date:'dd MMM yyyy' }}
-
-              </div>
-
-            </td>
-
-
-            <!-- ACTION -->
-            <td>
-
-              <div class="d-flex justify-content-center gap-2">
-
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline-primary"
-                  title="Edit"
-                  (click)="openEditForm(emergency)">
-
-                  <i class="bi bi-pencil"></i>
-
-                </button>
-
-
-                <button
-                  type="button"
-                  class="btn btn-sm btn-outline-danger"
-                  title="Delete"
-                  (click)="deleteEmergency(emergency.id)">
-
-                  <i class="bi bi-trash"></i>
-
-                </button>
-
-              </div>
-
-            </td>
-
-          </tr>
-
-
-          <!-- ================= NO DATA ================= -->
-
-          <tr
-            *ngIf="filteredEmergencies().length === 0">
-
-            <td
-              colspan="8"
-              class="text-center py-5">
-
-              <div class="empty-state">
-
-                <i class="bi bi-inbox display-5 text-muted"></i>
-
-                <h6 class="mt-3 fw-semibold">
-                  No emergency records found
-                </h6>
-
-                <p class="text-muted mb-0">
-                  There are no emergency reports matching your search.
-                </p>
-
-              </div>
-
-            </td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  </div>
-
-
-  <!-- ================= FORM MODAL ================= -->
-
-  <div
-    class="modal-overlay"
-    *ngIf="showForm()">
-
-    <div class="modal-dialog-custom">
-
-      <div class="card border-0 shadow-lg">
-
-
-        <!-- MODAL HEADER -->
-        <div class="card-header bg-danger text-white p-3">
-
-          <div class="d-flex justify-content-between align-items-center">
-
-            <div class="d-flex align-items-center gap-2">
-
-              <i class="bi bi-shield-exclamation fs-4"></i>
-
-              <h5 class="mb-0 fw-bold">
-
-                {{ editMode()
-                  ? 'Edit Emergency'
-                  : 'Report Emergency'
-                }}
-
-              </h5>
-
-            </div>
-
-
-            <button
-              type="button"
-              class="btn-close btn-close-white"
-              (click)="closeForm()">
-            </button>
-
-          </div>
-
-        </div>
-
-
-        <!-- MODAL BODY -->
-        <div class="card-body p-4">
-
-          <div class="row g-3">
-
-
-            <!-- RESIDENT -->
-            <div class="col-md-6">
-
-              <label class="form-label fw-semibold">
-                Resident ID
-              </label>
-
-              <div class="input-group">
-
-                <span class="input-group-text">
-                  <i class="bi bi-person"></i>
-                </span>
-
-                <input
-                  type="number"
-                  class="form-control"
-                  [ngModel]="emergencyForm().residentId"
-                  (ngModelChange)="
-                    emergencyForm.update(form => ({
-                      ...form,
-                      residentId: $event
-                    }))
-                  "
-                />
-
-              </div>
-
-            </div>
-
-
-            <!-- FLAT -->
-            <div class="col-md-6">
-
-              <label class="form-label fw-semibold">
-                Flat ID
-              </label>
-
-              <div class="input-group">
-
-                <span class="input-group-text">
-                  <i class="bi bi-house-door"></i>
-                </span>
-
-                <input
-                  type="number"
-                  class="form-control"
-                  [ngModel]="emergencyForm().flatId"
-                  (ngModelChange)="
-                    emergencyForm.update(form => ({
-                      ...form,
-                      flatId: $event
-                    }))
-                  "
-                />
-
-              </div>
-
-            </div>
-
-
-            <!-- EMERGENCY TYPE -->
-            <div class="col-md-6">
-
-              <label class="form-label fw-semibold">
-                Emergency Type
-              </label>
-
-              <div class="input-group">
-
-                <span class="input-group-text">
-                  <i class="bi bi-exclamation-triangle"></i>
-                </span>
-
-                <input
-                  type="text"
-                  class="form-control"
-                  placeholder="Medical, Fire, Electrical..."
-                  [ngModel]="emergencyForm().emergencyType"
-                  (ngModelChange)="
-                    emergencyForm.update(form => ({
-                      ...form,
-                      emergencyType: $event
-                    }))
-                  "
-                />
-
-              </div>
-
-            </div>
-
-
-            <!-- PRIORITY -->
-            <div class="col-md-6">
-
-              <label class="form-label fw-semibold">
-                Priority
-              </label>
-
-              <div class="input-group">
-
-                <span class="input-group-text">
-                  <i class="bi bi-flag"></i>
-                </span>
-
-                <select
-                  class="form-select"
-                  [ngModel]="emergencyForm().priority"
-                  (ngModelChange)="
-                    emergencyForm.update(form => ({
-                      ...form,
-                      priority: $event
-                    }))
-                  ">
-
-                  <option [ngValue]="1">
-                    Low
-                  </option>
-
-                  <option [ngValue]="2">
-                    Medium
-                  </option>
-
-                  <option [ngValue]="3">
-                    High
-                  </option>
-
-                  <option [ngValue]="4">
-                    Critical
-                  </option>
-
-                </select>
-
-              </div>
-
-            </div>
-
-
-            <!-- DESCRIPTION -->
-            <div class="col-12">
-
-              <label class="form-label fw-semibold">
-                Description
-              </label>
-
-              <textarea
-                rows="5"
-                class="form-control"
-                placeholder="Describe the emergency"
-                [ngModel]="emergencyForm().description"
-                (ngModelChange)="
-                  emergencyForm.update(form => ({
-                    ...form,
-                    description: $event
-                  }))
-                ">
-              </textarea>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- MODAL FOOTER -->
-        <div class="card-footer bg-white p-3">
-
-          <div class="d-flex justify-content-end gap-2">
-
-            <button
-              type="button"
-              class="btn btn-light border px-4"
-              (click)="closeForm()">
-
-              <i class="bi bi-x-circle me-1"></i>
-              Cancel
-
-            </button>
-
-
-            <button
-              type="button"
-              class="btn btn-danger px-4"
-              (click)="saveEmergency()">
-
-              <i
-                class="bi"
-                [class.bi-send]="!editMode()"
-                [class.bi-check-circle]="editMode()">
-              </i>
-
-              {{ editMode()
-                ? 'Update'
-                : 'Report'
-              }}
-
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div>
-  <div
-  class="toast"
-  *ngIf="showToast()"
-  [class.success]="toastType() === 'success'"
-  [class.error]="toastType() === 'error'">
-
-  {{ toastMessage() }}
+  }
 
 </div>
-
-</div>
-

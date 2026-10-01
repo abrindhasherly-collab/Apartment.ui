@@ -1,154 +1,492 @@
-<div class="form-page">
 
-  <div class="form-card">
+<div class="user-form-page">
 
-    <h2>
+  <!-- ================================
+       TOP HEADER
+  ================================= -->
 
-      @if (isEdit()) {
-        Edit User
-      } @else {
-        Add User
-      }
+  <div class="form-header">
 
-    </h2>
+    <div class="breadcrumb">
+      <span>Dashboard</span>
+      <span>›</span>
+      <span>Users</span>
+      <span>›</span>
 
-    <form
-      [formGroup]="userForm"
-      (ngSubmit)="saveUser()">
+      <strong>
+        @if (isEdit()) {
+          Edit User
+        } @else {
+          Add User
+        }
+      </strong>
+    </div>
 
-      <div class="form-group">
+  </div>
 
-        <label>Name</label>
 
-        <input
-          type="text"
-          formControlName="name"
-          placeholder="Enter name">
+  <!-- ================================
+       FORM CONTAINER
+  ================================= -->
 
-      </div>
+  <div class="user-form-layout">
 
-      <div class="form-group">
 
-        <label>Email</label>
+    <!-- ==============================
+         PROFILE SIDE
+    =============================== -->
 
-        <input
-          type="email"
-          formControlName="email"
-          placeholder="Enter email">
+    <div class="profile-panel">
 
-      </div>
+      <div class="profile-background"></div>
 
-      @if (!isEdit()) {
+      <div class="profile-content">
 
-        <div class="form-group">
-
-          <label>Password</label>
-
-          <input
-            type="password"
-            formControlName="password"
-            placeholder="Enter password">
-
+        <div class="profile-avatar">
+          👤
         </div>
 
-      }
+        <h2>
 
-      <div class="form-group">
-
-        <label>Phone Number</label>
-
-        <input
-          type="text"
-          formControlName="phoneNumber"
-          placeholder="Enter phone number">
-
-      </div>
-
-      <div class="form-group">
-
-        <label>Role</label>
-
-        <select formControlName="role">
-
-          <option [ngValue]="1">
-            Secretary
-          </option>
-
-          <option [ngValue]="2">
-            Resident
-          </option>
-
-          <option [ngValue]="3">
-            Watchman
-          </option>
-
-          <option [ngValue]="4">
-            Owner
-          </option>
-
-        </select>
-
-      </div>
-
-      @if (isEdit()) {
-
-        <div class="form-group">
-
-          <label>Status</label>
-
-          <select formControlName="status">
-
-            <option [ngValue]="1">
-              Active
-            </option>
-
-            <option [ngValue]="2">
-              Inactive
-            </option>
-
-          </select>
-
-        </div>
-
-      }
-
-      @if (errorMessage()) {
-
-        <p class="error">
-          {{ errorMessage() }}
-        </p>
-
-      }
-
-      <div class="buttons">
-
-        <button
-          type="submit"
-          [disabled]="loading()">
-
-          @if (loading()) {
-            Saving...
-          } @else if (isEdit()) {
-            Update
+          @if (isEdit()) {
+            Edit User
           } @else {
-            Save
+            Create New User
           }
 
-        </button>
+        </h2>
 
-        <button
-          type="button"
-          class="cancel"
-          (click)="cancel()">
+        <p>
 
-          Cancel
+          @if (isEdit()) {
 
-        </button>
+            Update account information
+            and permissions.
+
+          } @else {
+
+            Add a new member to your
+            apartment community.
+
+          }
+
+        </p>
+
+
+        <!-- PROFILE FEATURES -->
+
+        <div class="profile-features">
+
+          <div class="feature">
+
+            <span class="feature-icon">
+              🔐
+            </span>
+
+            <div>
+              <strong>Secure Account</strong>
+              <small>Protected user access</small>
+            </div>
+
+          </div>
+
+
+          <div class="feature">
+
+            <span class="feature-icon">
+              🏠
+            </span>
+
+            <div>
+              <strong>Community Access</strong>
+              <small>Apartment management</small>
+            </div>
+
+          </div>
+
+
+          <div class="feature">
+
+            <span class="feature-icon">
+              ⚡
+            </span>
+
+            <div>
+              <strong>Role Based</strong>
+              <small>Controlled permissions</small>
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
 
-    </form>
+    </div>
+
+
+    <!-- ==============================
+         FORM SIDE
+    =============================== -->
+
+    <div class="form-card">
+
+
+      <!-- FORM HEADER -->
+
+      <div class="form-title">
+
+        <div>
+
+          <span class="form-label">
+            USER ACCOUNT
+          </span>
+
+          <h1>
+
+            @if (isEdit()) {
+              Edit User Details
+            } @else {
+              Create User
+            }
+
+          </h1>
+
+          <p>
+            Enter the information below to
+            manage the user account.
+          </p>
+
+        </div>
+
+        <div class="form-icon">
+          ✨
+        </div>
+
+      </div>
+
+
+      <!-- ==============================
+           FORM
+      =============================== -->
+
+      <form
+        [formGroup]="userForm"
+        (ngSubmit)="saveUser()">
+
+
+        <!-- ==========================
+             PERSONAL INFORMATION
+        =========================== -->
+
+        <div class="section">
+
+          <div class="section-heading">
+
+            <div class="section-number">
+              01
+            </div>
+
+            <div>
+              <h3>Personal Information</h3>
+              <p>Basic details of the user</p>
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+
+            <!-- NAME -->
+
+            <div class="form-group full">
+
+              <label>
+                Full Name
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  👤
+                </span>
+
+                <input
+                  type="text"
+                  formControlName="name"
+                  placeholder="Enter full name">
+
+              </div>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+              <label>
+                Email Address
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  ✉️
+                </span>
+
+                <input
+                  type="email"
+                  formControlName="email"
+                  placeholder="Enter email address">
+
+              </div>
+
+            </div>
+
+
+            <!-- PHONE -->
+
+            <div class="form-group">
+
+              <label>
+                Phone Number
+              </label>
+
+              <div class="input-wrapper">
+
+                <span class="input-icon">
+                  📱
+                </span>
+
+                <input
+                  type="text"
+                  formControlName="phoneNumber"
+                  placeholder="Enter phone number">
+
+              </div>
+
+            </div>
+
+
+            <!-- PASSWORD -->
+
+            @if (!isEdit()) {
+
+              <div class="form-group full">
+
+                <label>
+                  Password
+                </label>
+
+                <div class="input-wrapper">
+
+                  <span class="input-icon">
+                    🔒
+                  </span>
+
+                  <input
+                    type="password"
+                    formControlName="password"
+                    placeholder="Create a secure password">
+
+                </div>
+
+                <small class="input-hint">
+                  Use a strong password for better security.
+                </small>
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- ==========================
+             ACCESS INFORMATION
+        =========================== -->
+
+        <div class="section">
+
+          <div class="section-heading">
+
+            <div class="section-number">
+              02
+            </div>
+
+            <div>
+              <h3>Access & Permissions</h3>
+              <p>Define the user's community role</p>
+            </div>
+
+          </div>
+
+
+          <div class="form-grid">
+
+
+            <!-- ROLE -->
+
+            <div class="form-group">
+
+              <label>
+                User Role
+              </label>
+
+              <div class="input-wrapper select-wrapper">
+
+                <span class="input-icon">
+                  🛡️
+                </span>
+
+                <select formControlName="role">
+
+                  <option [ngValue]="1">
+                    Secretary
+                  </option>
+
+                  <option [ngValue]="2">
+                    Resident
+                  </option>
+
+                  <option [ngValue]="3">
+                    Watchman
+                  </option>
+
+                  <option [ngValue]="4">
+                    Owner
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            @if (isEdit()) {
+
+              <div class="form-group">
+
+                <label>
+                  Account Status
+                </label>
+
+                <div class="input-wrapper select-wrapper">
+
+                  <span class="input-icon">
+                    ●
+                  </span>
+
+                  <select formControlName="status">
+
+                    <option [ngValue]="1">
+                      Active
+                    </option>
+
+                    <option [ngValue]="2">
+                      Inactive
+                    </option>
+
+                  </select>
+
+                </div>
+
+              </div>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- ==========================
+             ERROR
+        =========================== -->
+
+        @if (errorMessage()) {
+
+          <div class="error-message">
+
+            <span>
+              ⚠️
+            </span>
+
+            <div>
+
+              <strong>
+                Unable to save user
+              </strong>
+
+              <p>
+                {{ errorMessage() }}
+              </p>
+
+            </div>
+
+          </div>
+
+        }
+
+
+        <!-- ==========================
+             ACTIONS
+        =========================== -->
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="cancel-btn"
+            (click)="cancel()">
+
+            <span>←</span>
+            Cancel
+
+          </button>
+
+
+          <button
+            type="submit"
+            class="save-btn"
+            [disabled]="loading()">
+
+            @if (loading()) {
+
+              <span class="button-spinner"></span>
+
+              Saving...
+
+            } @else {
+
+              <span>
+                ✓
+              </span>
+
+              @if (isEdit()) {
+                Update User
+              } @else {
+                Save User
+              }
+
+            }
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
 
   </div>
 
 </div>
+
