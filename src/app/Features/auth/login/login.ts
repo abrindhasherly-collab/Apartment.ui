@@ -1,7 +1,4 @@
-import {
-  Component,
-  signal
-} from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import {
   FormBuilder,
@@ -14,8 +11,8 @@ import {
   Router,
   RouterLink
 } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -35,7 +32,6 @@ export class Login {
   loginForm: FormGroup;
 
   errorMessage = signal('');
-
   loading = signal(false);
 
   constructor(
@@ -66,35 +62,66 @@ export class Login {
   login(): void {
 
     if (this.loginForm.invalid) {
-
       this.loginForm.markAllAsTouched();
-
       return;
     }
 
     this.loading.set(true);
-
     this.errorMessage.set('');
 
     this.authService
       .login(this.loginForm.value)
       .subscribe({
 
-        next: (response:any) => {
+        next: (response: any) => {
 
-          localStorage.setItem(
-            'token',
-            response.token
-            
+          const token = response.token;
+
+          localStorage.setItem('token', token);
+
+          const payload = JSON.parse(
+            atob(token.split('.')[1])
           );
 
-          this.loading.set(false);
-          this.toastr.success('Login successful!', 'Success');
+          const role =
+            payload[
+              'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+            ] || payload['role'];
 
-          this.router.navigate(['/dashboard']);
+          localStorage.setItem('role', role);
+
+          console.log('User Role:', role);
+
+          this.loading.set(false);
+
+          this.toastr.success(
+            'Login successful!',
+            'Success'
+          );
+
+          if (role === 'Admin') {
+
+            this.router.navigate(['/dashboard']);
+
+          }
+          else if (role === 'Resident') {
+
+            this.router.navigate(['/resident']);
+
+          }
+          else if (role === 'Secretary') {
+
+            this.router.navigate(['/dashboard']);
+
+          }
+          else {
+
+            this.router.navigate(['/dashboard']);
+
+          }
         },
 
-        error: (error:any) => {
+        error: (error: any) => {
 
           console.error(error);
 
@@ -104,7 +131,6 @@ export class Login {
             'Invalid email or password.'
           );
         }
-
       });
   }
 }

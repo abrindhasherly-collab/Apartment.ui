@@ -14,14 +14,23 @@ import {
 
 
 export interface ApartmentDocument {
+
   id: number;
+
   title: string;
+
   description: string;
+
   fileName: string;
+
   filePath: string;
+
   uploadedDate: string;
+
   uploadedBy: number;
+
   status: number;
+
 }
 
 
@@ -33,8 +42,11 @@ export class DocumentService {
   private apiUrl =
     'https://localhost:7202/api/Documents';
 
-  documents = signal<ApartmentDocument[]>([]);
-  loading = signal(false);
+  documents =
+    signal<ApartmentDocument[]>([]);
+
+  loading =
+    signal(false);
 
 
   constructor(
@@ -42,17 +54,25 @@ export class DocumentService {
   ) {}
 
 
-  getAll(): Observable<ApartmentDocument[]> {
+  getAll():
+    Observable<ApartmentDocument[]> {
 
     this.loading.set(true);
 
     return this.http
-      .get<ApartmentDocument[]>(this.apiUrl)
+      .get<ApartmentDocument[]>(
+        this.apiUrl
+      )
       .pipe(
+
         tap(documents => {
+
           this.documents.set(documents);
+
           this.loading.set(false);
+
         })
+
       );
   }
 
@@ -74,11 +94,24 @@ export class DocumentService {
     uploadedBy: number
   ): Observable<ApartmentDocument> {
 
-    const formData = new FormData();
+    const formData =
+      new FormData();
 
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('file', file);
+    formData.append(
+      'title',
+      title
+    );
+
+    formData.append(
+      'description',
+      description
+    );
+
+    formData.append(
+      'file',
+      file
+    );
+
     formData.append(
       'uploadedBy',
       uploadedBy.toString()
@@ -99,17 +132,31 @@ export class DocumentService {
     file?: File
   ): Observable<ApartmentDocument> {
 
-    const formData = new FormData();
+    const formData =
+      new FormData();
 
-    formData.append('title', title);
-    formData.append('description', description);
+    formData.append(
+      'title',
+      title
+    );
+
+    formData.append(
+      'description',
+      description
+    );
+
     formData.append(
       'status',
       status.toString()
     );
 
     if (file) {
-      formData.append('file', file);
+
+      formData.append(
+        'file',
+        file
+      );
+
     }
 
     return this.http.put<ApartmentDocument>(
@@ -127,4 +174,5 @@ export class DocumentService {
       `${this.apiUrl}/${id}`
     );
   }
+
 }

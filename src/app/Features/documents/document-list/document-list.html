@@ -4,12 +4,16 @@
   <div class="page-header">
 
     <div class="header-content">
-      <div class="header-icon">📄</div>
+
+      <div class="header-icon">
+        📄
+      </div>
 
       <div>
         <h2>Documents</h2>
         <p>View and manage apartment documents</p>
       </div>
+
     </div>
 
     <a
@@ -25,9 +29,17 @@
   @if (loading()) {
 
     <div class="loading-card">
-      <div class="loading-icon">📄</div>
+
+      <div class="loading-icon">
+        📄
+      </div>
+
       <h3>Loading Documents</h3>
-      <p>Please wait while documents are being loaded...</p>
+
+      <p>
+        Please wait while documents are being loaded...
+      </p>
+
     </div>
 
   }
@@ -37,8 +49,13 @@
   @if (errorMessage()) {
 
     <div class="error">
-      <span class="error-icon">⚠</span>
+
+      <span class="error-icon">
+        ⚠
+      </span>
+
       {{ errorMessage() }}
+
     </div>
 
   }
@@ -49,7 +66,9 @@
 
     <div class="empty">
 
-      <div class="empty-icon">📂</div>
+      <div class="empty-icon">
+        📂
+      </div>
 
       <h3>No Documents Found</h3>
 
@@ -76,6 +95,7 @@
       @for (document of documents(); track document.id) {
 
         <div class="document-card">
+
 
           <!-- Card Header -->
           <div class="document-card-header">
@@ -104,7 +124,8 @@
                   Active
                 </span>
 
-              } @else {
+              }
+              @else {
 
                 <span class="status archived">
                   Archived
@@ -120,7 +141,9 @@
           <!-- Description -->
           <div class="description-box">
 
-            <span>Description</span>
+            <span>
+              Description
+            </span>
 
             <p>
               {{ document.description }}
@@ -134,7 +157,9 @@
 
             <div class="detail-box">
 
-              <span>File Name</span>
+              <span>
+                File Name
+              </span>
 
               <strong>
                 {{ document.fileName }}
@@ -145,7 +170,9 @@
 
             <div class="detail-box">
 
-              <span>Uploaded By</span>
+              <span>
+                Uploaded By
+              </span>
 
               <strong>
                 {{ document.uploadedBy }}
@@ -156,7 +183,9 @@
 
             <div class="detail-box">
 
-              <span>Uploaded Date</span>
+              <span>
+                Uploaded Date
+              </span>
 
               <strong>
                 {{ document.uploadedDate | date }}
@@ -167,7 +196,9 @@
 
             <div class="detail-box">
 
-              <span>Document ID</span>
+              <span>
+                Document ID
+              </span>
 
               <strong>
                 #{{ document.id }}
@@ -181,15 +212,16 @@
           <!-- Actions -->
           <div class="document-actions">
 
-            <a
-              [routerLink]="[
-                '/documents',
-                document.id
-              ]"
-              class="view-button">
-              👁 View
-            </a>
+            <!-- View Document -->
+            <button
+              type="button"
+              class="view-button"
+              (click)="openDocument(document.filePath)">
+              👁 View Document
+            </button>
 
+
+            <!-- Edit -->
             <a
               [routerLink]="[
                 '/documents/edit',
@@ -199,6 +231,8 @@
               ✏ Edit
             </a>
 
+
+            <!-- Delete -->
             <button
               type="button"
               class="delete-button"
@@ -207,6 +241,7 @@
             </button>
 
           </div>
+
 
         </div>
 
